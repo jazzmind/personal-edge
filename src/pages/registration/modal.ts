@@ -129,7 +129,8 @@ export class RegistrationModalPage {
         password: this.regForm.get('password').value
       }).subscribe(regRespond => {
         //@TODO: set user data
-        console.log(regRespond);
+        // console.log(regRespond);
+        regRespond = regRespond.data;
         this.cache.setLocalObject('apikey', regRespond.apikey);
         this.cache.setLocalObject('timelineID', regRespond.Timeline.id);
         // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully

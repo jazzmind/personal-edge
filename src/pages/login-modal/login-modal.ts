@@ -86,6 +86,8 @@ export class LoginModalPage {
       this.authService.loginAuth(this.email, this.password)
         .subscribe(data => {
           // this.getLogInData(data);
+          data = data.data;
+          // console.log("login Data: ", data);
           self.cacheService.setLocalObject('apikey', data.apikey);
           // saved for 3 types of timeline id in order for later use
           self.cacheService.setLocalObject('timelineId', data.Timelines[0].Timeline.id);
