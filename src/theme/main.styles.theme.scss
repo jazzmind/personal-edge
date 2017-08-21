@@ -101,13 +101,13 @@ $title-font: 'Arvo';
 .header {
   .toolbar-background-md,
   .toolbar-background-ios {
-    background-color: color($colors, secondary, base);
+    background-color: color($colors, white, base);
   }
   .bar-button-default-md,
   .bar-button-default-ios,
   .toolbar-title-md,
   .toolbar-title-ios {
-    color: color($colors, primary, base);
+    color: color($colors, secondary, base);
   }
   .toolbar-title-md,
   .toolbar-title-ios {
@@ -448,6 +448,9 @@ event {
     font-size: 14px;
     line-height: 20px;
   }
+  .event-logo {
+    padding: 8px 3px;
+  }
 }
 // 9. General Dashboard Page Styling
 .whats-this {
@@ -709,7 +712,7 @@ event {
   p.login-welcome-text {
     padding: 0 10%;
   }
-  // general dashboard 
+  // general dashboard
   .score-board {
     display: inline-block;
     .col {

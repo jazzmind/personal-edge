@@ -58,6 +58,7 @@ $colors: (
     base: $secondary-bg,
     contrast: $primary-text
   ),
+  white: #FFF,
   button: (
     base: darken($primary-button, 10%),
     contrast: lighten($primary-button, 10%)

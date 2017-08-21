@@ -36,6 +36,7 @@ import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
+
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
@@ -51,6 +52,7 @@ import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
+import { SpinwheelPage } from '../pages/spinwheel/spinwheel.page';
 import { RankIconComponent } from '../components/rank/icon';
 // unused but necessary for build
 import { AssessmentsComponent } from '../components/assessments/assessments.component';
@@ -99,10 +101,7 @@ import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 // unused but needed for build
-import { CalendarPipe } from '../pipes/CalendarPipe';
-import { DateFormatPipe } from '../pipes/DateFormat';
 import { OrderByPipe } from '../pipes/OrderBy';
-import { UrlFilterPipe } from '../pipes/urlfilter.pipe';
 
 // configs
 import { default as Configure } from '../configs/config';
@@ -122,8 +121,6 @@ export function HttpLoaderFactory(http: Http) {
     AssessmentsComponent,
     AssessmentsGroupPage,
     AssessmentsPage,
-    CalendarPipe,
-    DateFormatPipe,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -164,6 +161,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinwheelPage,
     TabsPage,
     TeamPage,
     TestPage,
@@ -174,7 +172,6 @@ export function HttpLoaderFactory(http: Http) {
     TimeAgoPipe,
     TruncatePipe,
     UcfirstPipe,
-    UrlFilterPipe,
     EscapeHtmlPipe,
   ],
   imports: [
@@ -201,7 +198,7 @@ export function HttpLoaderFactory(http: Http) {
     }),
     TranslationModule,
     IonicModule.forRoot(MyApp, {}, {
-       links: [
+      links: [
         {
           component: LoginPage,
           name: 'Login',
@@ -275,6 +272,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinwheelPage,
     TabsPage,
     TestPage,
     TermConditionPage,
