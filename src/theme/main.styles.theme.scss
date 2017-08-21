@@ -44,6 +44,9 @@ $title-font: 'Arvo';
 .general-button {
   background-color: color($colors, button, base);
 }
+.theme-button {
+  color: color($colors, primary-button, base);
+}
 .back-button-text {
   padding-left: 4px;
 }
@@ -169,13 +172,19 @@ $title-font: 'Arvo';
 }
 .login-module {
   font-family: $font-secondary;
-  background-color: color($colors, background, contrast) !important;
-  background-repeat: no-repeat;
+  // background-color: color($colors, background, contrast) !important;
+  // background-repeat: no-repeat;
+  // background-image: url(../assets/img/main/main_bg03.png);
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-position:  center;
+  // width: 100%;
+  // height: 100%;
   .scroll-content {
     overflow-y: hidden;
   }
   ion-grid {
-    background-image: url(../assets/img/main/main_bg.png);
+    background-image: url(../assets/img/main/main_bg01.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -232,6 +241,9 @@ $title-font: 'Arvo';
     .general-circle-btn {
       background: none;
       padding-top: 20pt;
+    }
+    .forgot-password {
+      font-size: 12pt;
     }
   }
 }

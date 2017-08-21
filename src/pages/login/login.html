@@ -36,13 +36,14 @@
           <button ion-button
             type="submit"
             block
+            class="theme-button"
             color="button"
             (click)="userLogin()"
             [disabled]="loginForm.invalid">
             {{ 'LOGIN.PAGETITLE' | translate }}
           </button>
           <div class="forget-password-container">
-            <button class="general-circle-btn"
+            <button class="general-circle-btn forgot-password"
               (click)="linkToForgetPassword()">
               {{ 'LOGIN.PASSWORDFORGOT' | translate }}
             </button>

@@ -54,6 +54,10 @@ $secondary-palette-eight: #00b5ac;
 $colors: (
   primary: $primary,
   secondary: $secondary,
+  primary-button: (
+    base: $secondary-bg,
+    contrast: $primary-text
+  ),
   button: (
     base: darken($primary-button, 10%),
     contrast: lighten($primary-button, 10%)
