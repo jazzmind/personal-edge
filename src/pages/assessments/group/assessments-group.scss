@@ -1,8 +1,7 @@
 assessments-group-page {
-  .scroll-content {
-    background-color: color($colors, secondary, base);
+  .description > .item-inner {
+    border-bottom: none !important;
   }
-
   .btn-save[disabled] {
     display: none;
   }
