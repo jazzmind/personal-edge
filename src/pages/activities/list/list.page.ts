@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
   ActionSheetController,
+  AlertController,
   NavController,
   ToastController,
   LoadingController,
@@ -136,6 +137,7 @@ export class ActivitiesListPage implements OnInit {
   public userAchievementsIDs: any = [];
   public checkUserPointer: boolean = false;
   constructor(
+    public alertCtrl: AlertController,
     public navCtrl: NavController,
     public http: Http,
     public activityService: ActivityService,
@@ -161,7 +163,7 @@ export class ActivitiesListPage implements OnInit {
       this.email = JSON.parse(this.cacheService.getLocal('email'));
       this.viewPortfolioLink = `https://practera.com/assess/assessments/portfolio/${this.program_id}/${this.email}`;
     }else {
-      this.viewPortfolioLink = `https://practera.com/assess/assessments/portfolio/1/test@test.com`;
+      this.viewPortfolioLink = "";
     }
   }
   ngOnInit() {}
@@ -192,8 +194,16 @@ export class ActivitiesListPage implements OnInit {
     if (this.view_portfolio) {
       // go/open url in window viewPortfolioLink
       // @TODO: open url in new window isn't supported in PWA mode, this happen to be same behavior for opening link through <a> (anchor element) too!
-      let win = this.win.nativeWindow;
-      let openedWindow = win.open(this.viewPortfolioLink, '_blank');
+      if(this.viewPortfolioLink !== ""){
+        let win = this.win.nativeWindow;
+        let openedWindow = win.open(this.viewPortfolioLink, '_blank');
+      }else { // handling the error for unable displaying proper portfolio page
+        let portfolioAlert = this.alertCtrl.create({
+          title: 'Oops, you could not view portfolio for now, please come back again ..',
+          buttons: ["Close"]
+        });
+        portfolioAlert.present();
+      }
     } else {
       if (this.portfolio_request) {
         this.requestPortfolio();
