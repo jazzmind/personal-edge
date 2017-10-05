@@ -47,6 +47,8 @@ export class ActivitiesViewPage {
     submissions: false
   };
   initialised_eset() {
+    this.submissionTitles = [];
+    this.submissionTitle = [];
     this.findAchievementObj = [];
     this.achievementData = [];
     this.newTickIDsArray = [];
