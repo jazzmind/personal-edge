@@ -224,7 +224,9 @@ export class ActivitiesListPage implements OnInit {
             }
             if(this.activities.length == 1 && document.cookie == ""){
               document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-              this.navCtrl.push(InstructionPage);
+              let tutorialPopup = this.modalCtrl.create(InstructionPage);
+              tutorialPopup.present();
+              // this.navCtrl.push(InstructionPage);
             }
             if(this.activities.length == 1){
               this.achievementListIDs = [
