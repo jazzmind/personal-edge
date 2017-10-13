@@ -54,7 +54,7 @@ const HardcodeDataList = () => {
     this.hardcode_activity_id = 7850;
     this.hardcodeAssessmentIds = [2066, 2067, 2068, 2069, 2070, 2071, 2050];
     this.hardcodeQuestionIDs = [20775, 20785, 20795, 20805, 20815, 20825, 20661];
-  }else {
+  } else {
     this.prefixUrl = 'https://api.practera.com/';
     this.appKey = '69ad1e66dc';
     this.achievementListIDs = [
@@ -86,7 +86,7 @@ const HardcodeDataList = () => {
       apiKey: 'AO6F4C72uTPGRywaEijdLz'
     },
     prefixUrl: this.prefixUrl,
-    appKey: this.appKey, 
+    appKey: this.appKey,
     achievementListIDs: this.achievementListIDs,
     newbieOrderedIDs: this.newbieOrderedIDs,
     hardcode_assessment_id: this.hardcode_assessment_id,
