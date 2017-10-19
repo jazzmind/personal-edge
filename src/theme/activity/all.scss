@@ -15,7 +15,7 @@
   }
 }
 .activities {
-  .grid {
+  &.grid {
     padding: 0px !important;
   }
 
@@ -45,108 +45,109 @@
     ion-col:last-child {
       padding: 3% 0 6%;
     }
-    ion-col {
-      .score-inner-box {
-        width: 40%;
-        height: 40%;
-        margin: 5% auto;
-        background-color: color($colors, secondary);
-        div {
-          height: 100%;
-          padding: 10% 0;
-          h4 {
-            font-size: 16pt;
-            font-weight: 400;
-            text-transform: uppercase;
-            margin: 0px;
-            height: 40%;
-          }
-          h1 {
-            margin: 0px;
-            height: 40%;
-            font-size: 28pt;
-            font-weight: bold;
-          }
+    .score-inner-box {
+      width: 40%;
+      height: 40%;
+      margin: 5% auto;
+      background-color: color($colors, secondary);
+      div {
+        height: 100%;
+        padding: 10% 0;
+        h4 {
+          font-size: 16pt;
+          font-weight: 400;
+          text-transform: uppercase;
+          margin: 0px;
+          height: 40%;
         }
-      }
-      .dashboard-logo {
-        max-width: 80%;
-        height: 86px;
-      }
-      .dashboard-data {
-        max-width: 90%;
-        display: flex;
-        list-style: none;
-        color: color($colors, text, base);
-        padding: 0px;
-        .user-grade {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          .best-grade-color {
-            background-color: color($colors, palette-one, contrast);
-            border-radius: 18pt;
-          }
-          .better-grade-color {
-            background-color: color($colors, primary-button, base);
-            border-radius: 18pt;
-          }
-          .worse-grade-color {
-            background-color: color($colors, badge-bg, base);
-            border-radius: 18pt;
-          }
-          ion-badge {
-            font-size: 14pt;
-            padding: 6px 12px;
-            border-radius: 30pt;
-          }
-          button {
-            font-size: 16pt;
-            padding: 3px 15px;
-            border-radius: 18px;
-            background-color: color($colors, secondary);
-            .fa-clock-o {
-              color: color($colors, background, contrast);
-            }
-          }
-        }
-        li {
-          background-color: color($colors, background, contrast);
-          border: 1px solid color($colors, border, base);
-          p {
-            margin: 0px;
-          }
-          p.title {
-            text-transform: uppercase;
-            color: color($colors, text, base);
-          }
-          p.number {
-            font-size: 22pt;
-            font-weight: 600;
-            padding: 5pt 0;
-            color: color($colors, palette-five, base);
-          }
-          p.link, a.link {
-            color: color($colors, text, base);
-            text-decoration: none;
-          }
-        }
-
-        li:nth-child(1) {
-          border-top-left-radius: 5pt;
-          border-bottom-left-radius: 5pt;
-        }
-        li:nth-child(2) {
-          border-left: none;
-          border-right: none;
-        }
-        li:nth-child(3) {
-          border-top-right-radius: 5pt;
-          border-bottom-right-radius: 5pt;
+        h1 {
+          margin: 0px;
+          height: 40%;
+          font-size: 28pt;
+          font-weight: bold;
         }
       }
     }
-    ion-col:first-child {
+    .dashboard-logo {
+      max-width: 80%;
+      height: 86px;
+    }
+    .dashboard-data {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 90%;
+      display: flex;
+      list-style: none;
+      color: color($colors, text, base);
+      padding: 0px;
+      .user-grade {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .best-grade-color {
+          background-color: color($colors, palette-one, contrast);
+          border-radius: 18pt;
+        }
+        .better-grade-color {
+          background-color: color($colors, primary-button, base);
+          border-radius: 18pt;
+        }
+        .worse-grade-color {
+          background-color: color($colors, badge-bg, base);
+          border-radius: 18pt;
+        }
+        ion-badge {
+          font-size: 14pt;
+          padding: 6px 12px;
+          border-radius: 30pt;
+        }
+        button {
+          font-size: 16pt;
+          padding: 3px 15px;
+          border-radius: 18px;
+          background-color: color($colors, secondary);
+          .fa-clock-o {
+            color: color($colors, background, contrast);
+          }
+        }
+      }
+      li {
+        background-color: color($colors, background, contrast);
+        border: 1px solid color($colors, border, base);
+        p {
+          margin: 0px;
+        }
+        p.title {
+          text-transform: uppercase;
+          color: color($colors, text, base);
+        }
+        p.number {
+          font-size: 22pt;
+          font-weight: 600;
+          padding: 5pt 0;
+          color: color($colors, palette-five, base);
+        }
+        p.link, a.link {
+          color: color($colors, text, base);
+          text-decoration: none;
+        }
+      }
+
+      li:nth-child(1) {
+        border-top-left-radius: 5pt;
+        border-bottom-left-radius: 5pt;
+      }
+      li:nth-child(2) {
+        border-left: none;
+        border-right: none;
+      }
+      li:nth-child(3) {
+        border-top-right-radius: 5pt;
+        border-bottom-right-radius: 5pt;
+      }
+    }
+
+    &:first-child {
       div {
         margin-bottom: 0pt;
       }

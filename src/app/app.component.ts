@@ -36,14 +36,7 @@ export class MyApp implements OnInit {
   };
 
   // trace screen size (we serve only portrait size)
-  public isPortrait: boolean = this.initialStatus();
-  initialStatus() {
-    if (this.platform.isPortrait() || this.platform.is('core')) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  public isPortrait: boolean = true;
 
   constructor(
     authService: AuthService,
@@ -61,54 +54,14 @@ export class MyApp implements OnInit {
         duration: 3000
       });
     });
-    /*if (!platform.is('ios')) {
-      win.nativeWindow.onbeforeunload = (e) => {
-        e.preventDefault();
-        let alert = alertCtrl.create({
-          title: 'Quit App?',
-          subTitle: 'Confirm leaving the app.',
-          buttons: ['Ok'],
-          enableBackdropDismiss: true
-        });
-        zone.run(() => {
-          alert.present().then(() => {
-            console.log(e);
-          });
-        });
-      };
-    }*/
   }
 
   /* Customized Flag Start */
   // when screen size changed, disable mobile landscape mode
   // keep desktop (including iPad) devices landscape mode
-  test: any;
   onScreenResize(e) {
     let popoverDOM: any = document.querySelector("ion-popover");
     let modelDOM: any = document.querySelector("ion-modal");
-
-
-    if ((e.screen.orientation && e.screen.orientation.angle < 45) ||
-      (this.platform.is('ios') && ((e.innerWidth < 512 && e.innerWidth < e.innerHeight) || e.innerWidth >= 768)) ||
-      this.platform.is('core')
-    ) {
-      this.isPortrait = true;
-      if (popoverDOM){
-        popoverDOM.style.opacity = 1;
-      }
-      if (modelDOM){
-        modelDOM.style.opacity = 1;
-      }
-    } else {
-      this.isPortrait = false;
-      if (popoverDOM){
-        popoverDOM.style.opacity = 0;
-      }
-      if (modelDOM){
-        modelDOM.style.opacity = 0;
-      }
-    }
-    console.log(e.screen.orientation);
   }
 
   ngOnInit() {
