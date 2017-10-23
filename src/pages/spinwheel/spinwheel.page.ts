@@ -12,7 +12,10 @@ import { TweenLite } from "gsap";
 
 @Component({
   templateUrl: './spinwheel.html',
-  styleUrls: ['./spinwheel.scss']
+  styleUrls: ['./spinwheel.scss'],
+  host: {
+    '(window:orientationchange)': 'onScreenResize($event.target)'
+  }
 })
 export class SpinwheelPage implements OnInit {
   // hardcode prizes
@@ -132,6 +135,11 @@ export class SpinwheelPage implements OnInit {
 
   updateExp(newPoints?) {
     this.statuses.totalEP = newPoints || 0;
+  }
+
+  onScreenResize(event) {
+    this.draw();
+    this.pop();
   }
 
   /**

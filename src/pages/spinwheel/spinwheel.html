@@ -1,23 +1,31 @@
 <ion-content padding>
-  <segment>
-    <li col-6>
-      <h5>Spins</h5>
-      <p class="content" id="spinChances">{{ statuses.chances }}</p>
-    </li>
-    <li col-6>
-      <h5>Points</h5>
-      <p class="content" id="spinEP">{{ statuses.totalEP }}</p>
-    </li>
-  </segment>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-xs-12 col-sm-6>
+        <segment>
+          <li col-6>
+            <h5>Spins</h5>
+            <p class="content" id="spinChances">{{ statuses.chances }}</p>
+          </li>
+          <li col-6>
+            <h5>Points</h5>
+            <p class="content" id="spinEP">{{ statuses.totalEP }}</p>
+          </li>
+        </segment>
+      </ion-col>
 
-  <div class="center">
-    <div class="spinwheel-pointer"></div>
-    <div class="spinwheel" (tap)="tapSpin($event)" (swipe)="swipeSpin($event)">
-      <canvas id="spinwheel" [attr.width]="canvas.width" [attr.height]="canvas.height">
-        <p align="center">
-          Sorry, your browser doesn't support canvas. Please try another.
-        </p>
-      </canvas>
-    </div>
-  </div>
+      <ion-col col-xs-12 col-sm-6>
+        <div class="center">
+          <div class="spinwheel-pointer"></div>
+          <div class="spinwheel" (tap)="tapSpin($event)" (swipe)="swipeSpin($event)">
+            <canvas id="spinwheel" [attr.width]="canvas.width" [attr.height]="canvas.height">
+              <p align="center">
+                Sorry, your browser doesn't support canvas. Please try another.
+              </p>
+            </canvas>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
