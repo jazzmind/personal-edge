@@ -51,7 +51,6 @@ export class ActivityService {
 
     if (!this.cachedActivites[mid]) {
       this.cachedActivites[mid] = this.request.get('api/activities.json', options);
-      return this.request.get('api/activities.json', options);
     }
 
     return this.cachedActivites[mid];
