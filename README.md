@@ -1,4 +1,4 @@
-# RMIT Personal Edge App
+# Practera eXPerience App
 based on Practera SDK
 Overview
 

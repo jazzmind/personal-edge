@@ -1,7 +1,7 @@
 // list of hardcode ids && pre-config data
 // from list.page.ts file
-const prefixUrl = 'https://api.practera.com/';
-const appKey = '69ad1e66dc';
+const prefixUrl = 'https://us.practera.com/';
+const appKey = '1ec748c932';
 const achievementListIDs = [ // for handling activities ticks data display order
   [355, 402, 353, 354],
   [351, 404, 349, 350],
@@ -29,7 +29,7 @@ const hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661]; /
 const portfolio_domain = 'assess/assessments/portfolio'; //for handling digital portfolio url
 // function of hardcode list data
 const HardcodeDataList = () => {
-  const liveEndpoints = ['pe.practera.com', 'pe.rmit.edu.vn'];
+  const liveEndpoints = ['xp.practera.app'];
   this.appKey = appKey;
 
   // if not live server, then, go to sandbox hardcode list and pre-config data
@@ -60,31 +60,31 @@ const HardcodeDataList = () => {
     this.hardcodeQuestionIDs = [20775, 20785, 20795, 20805, 20815, 20825, 20661];
     this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
   } else { // use live endpoint
-    this.prefixUrl = 'https://api.practera.com/';
+    this.prefixUrl = 'https://us.practera.com/';
     this.achievementListIDs = [
-      [355, 402, 353, 354],
-      [351, 404, 349, 350],
-      [370, 407, 368, 369],
-      [344, 403, 342, 343],
-      [361, 405, 359, 360],
-      [365, 406, 363, 364],
-      [341, 341, 341, 341]
+      [571, 553, 551, 554],
+      [552, 572, 565, 566],
+      [564, 576, 557, 560],
+      [550, 570, 556, 563],
+      [559, 586, 585, 562],
+      [561, 573, 555, 584],
+      [567, 567, 567, 567]
     ];
     this.newbieOrderedIDs = [
-      [341, 341, 341, 341],
-      [355, 402, 353, 354],
-      [351, 404, 349, 350],
-      [370, 407, 368, 369],
-      [344, 403, 342, 343],
-      [361, 405, 359, 360],
-      [365, 406, 363, 364]
+      [567, 567, 567, 567],
+      [571, 553, 551, 554],
+      [552, 572, 565, 566],
+      [564, 576, 557, 560],
+      [550, 570, 556, 563],
+      [559, 586, 585, 562],
+      [561, 573, 555, 584],
     ];
-    this.hardcode_assessment_id = 2134;
+    this.hardcode_assessment_id = 2638;
     this.hardcode_context_id = 2532;
-    this.hardcode_activity_id = 7850;
-    this.hardcodeAssessmentIds = [2124, 2125, 2126, 2127, 2128, 2129, 2050];
-    this.hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661];
-    this.portfolio_domain = `https://my.practera.com/${portfolio_domain}`;
+    this.hardcode_activity_id = 8308;
+    this.hardcodeAssessmentIds = [2632, 2633, 2634, 2635, 2636, 2637, 2050];
+    this.hardcodeQuestionIDs = [24673, 24683, 24693, 24703, 24713, 24723, 24703];
+    this.portfolio_domain = `https://us.practera.com/${portfolio_domain}`;
   }
   return {
     filestack: {

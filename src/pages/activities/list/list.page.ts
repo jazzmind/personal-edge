@@ -371,7 +371,7 @@ export class ActivitiesListPage {
               References: [{
                 Assessment: {
                   id: this.hardcode_assessment_id,
-                  name: "Personal Edge pre-program questionnaire"
+                  name: "Practera eXPerience pre-program questionnaire"
                 },
                 context_id: this.hardcode_context_id // hardcode for context_id
               }],
