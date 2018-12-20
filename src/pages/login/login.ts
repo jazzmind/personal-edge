@@ -134,22 +134,19 @@ export class LoginPage {
                 });
 
               // get milestone data after login
-              this.milestoneService.getMilestones()
-                  .subscribe(
-                    data => {
-                      loading.dismiss().then(() => {
-                        this.milestone_id = data.data[0].id;
-                        self.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                        this.navCtrl.setRoot(TabsPage).then(() => {
-                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                          window.history.replaceState({}, '', window.location.origin);
-                        });
-                      });
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  )
+              this.milestoneService.getMilestones().subscribe(data => {
+                loading.dismiss().then(() => {
+                  this.milestone_id = data.data[0].id;
+                  self.cacheService.setLocalObject('milestone_id', data.data[0].id);
+                  this.navCtrl.setRoot(TabsPage).then(() => {
+                    this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                    window.history.replaceState({}, '', window.location.origin);
+                  });
+                });
+              }, err => {
+                console.log(err);
+              });
+
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             }, err => {

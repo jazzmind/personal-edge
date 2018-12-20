@@ -50,5 +50,4 @@ export class TabsPage {
       this.spins = (unopened.length === 0) ? null : unopened.length;
     });
   }
-
 }

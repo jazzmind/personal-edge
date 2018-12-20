@@ -5,7 +5,7 @@ import { NavController,
          AlertController } from 'ionic-angular';
 import 'rxjs/Rx';
 import * as _ from 'lodash';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -43,10 +43,9 @@ export class MagicLinkPage {
   ionViewWillEnter(){
     this.magicLinkAccess();
   }
-  magicLinkAccess(){
+  magicLinkAccess() {
     let observable = this.authService.magicLinkLogin(this.auth_token);
     const loading = this.loadingCtrl.create({
-      dismissOnPageChange: true,
       content: this.loginLoadingMessage
     });
     loading.present();
@@ -57,7 +56,7 @@ export class MagicLinkPage {
       this.cacheService.setLocalObject('apikey', data.apikey);
       this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
       this.cacheService.setLocalObject('teams', data.Teams);
-      // get game_id data after login 
+      // get game_id data after login
       this.gameService.getGames()
           .subscribe(
             data => {
