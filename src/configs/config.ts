@@ -1,6 +1,6 @@
 // list of hardcode ids && pre-config data
 // from list.page.ts file
-const prefixUrl = 'https://us.practera.com/';
+const prefixUrl = 'https://api.practera.com/';
 const appKey = '1ec748c932';
 const achievementListIDs = [ // for handling activities ticks data display order
   [355, 402, 353, 354],
@@ -26,7 +26,7 @@ const hardcode_context_id = 2532; // Reference Model - Assessment Context ID
 const hardcode_activity_id = 7850; // <Activity ID> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
 const hardcodeAssessmentIds = [2124, 2125, 2126, 2127, 2128, 2129, 2050]; // for handling submitted assessments title display
 const hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661]; // for handling submitted assessments title display
-const portfolio_domain = 'assess/assessments/portfolio'; //for handling digital portfolio url
+const portfolio_path = 'portfolio'; //for handling digital portfolio url
 // function of hardcode list data
 const HardcodeDataList = () => {
   const liveEndpoints = ['xp.practera.app'];
@@ -34,7 +34,7 @@ const HardcodeDataList = () => {
 
   // if not live server, then, go to sandbox hardcode list and pre-config data
   if (!liveEndpoints.includes(window.location.hostname)) {
-    this.prefixUrl = 'https://sandbox.practera.com/';
+    this.prefixUrl = 'http://127.0.0.1:8080/';
     this.achievementListIDs = [
       [349, 350, 347, 348],
       [345, 346, 343, 344],
@@ -58,7 +58,7 @@ const HardcodeDataList = () => {
     this.hardcode_activity_id = 7655;
     this.hardcodeAssessmentIds = [2066, 2067, 2068, 2069, 2070, 2071, 2050];
     this.hardcodeQuestionIDs = [20775, 20785, 20795, 20805, 20815, 20825, 20661];
-    this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
+    this.portfolio_domain = `http://127.0.0.1:8080/${portfolio_path}`;
   } else { // use live endpoint
     this.prefixUrl = 'https://us.practera.com/';
     this.achievementListIDs = [
@@ -84,7 +84,7 @@ const HardcodeDataList = () => {
     this.hardcode_activity_id = 8305;
     this.hardcodeAssessmentIds = [2632, 2633, 2634, 2635, 2636, 2637, 2050];
     this.hardcodeQuestionIDs = [24673, 24683, 24693, 24703, 24713, 24723, 24703];
-    this.portfolio_domain = `https://us.practera.com/${portfolio_domain}`;
+    this.portfolio_domain = `https://us.practera.com/${portfolio_path}`;
   }
   return {
     filestack: {
