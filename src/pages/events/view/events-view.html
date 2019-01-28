@@ -58,7 +58,7 @@
         *ngIf="!event.isBooked"
         class="book-btn primary-button"
         (click)="book()"
-        disabled="isReadonly">
+        [disabled]="isReadonly">
         {{ 'EVENTS.BOOK' | translate }}
       </button>
 
