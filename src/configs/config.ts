@@ -36,7 +36,7 @@ const HardcodeDataList = () => {
   if (!liveEndpoints.includes(window.location.hostname)) {
 
     this.prefixUrl = 'http://127.0.0.1:8080/';
-    this.portfolio_domain = `https://127.0.0.1:8080/${portfolio_domain}`;
+    this.portfolio_domain = `https://127.0.0.1:8080/portfolio`;
 
     this.achievementListIDs = [
       [349, 350, 347, 348],
