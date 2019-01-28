@@ -105,8 +105,9 @@ export class LoginPage {
               self.cacheService.setLocal('gotNewItems', false);
 
               // get game_id data after login
+              // For now only have one game per project
               this.gameService.getGames()
-                  .subscribe(
+                .subscribe(
                     data => {
                       _.map(data, (element) => {
                         this.cacheService.setLocal('game_id', element[0].id);
@@ -130,14 +131,6 @@ export class LoginPage {
                       console.log(err);
                     }
                   );
-
-              this.gameService.getGames()
-                .subscribe((data) => {
-                  if (data.Games) {
-                    // For now only have one game per project
-                    self.cacheService.setLocalObject('game_id', data.Games[0].id);
-                  }
-                });
 
               // get milestone data after login
               this.milestoneService.getMilestones()

@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { NavController,
          NavParams,
          LoadingController,
-         AlertController } from 'ionic-angular';
+         AlertController,
+         ViewController } from 'ionic-angular';
 import 'rxjs/Rx';
 import * as _ from 'lodash';
 import { loadingMessages, errMessages } from '../../app/messages'; 
@@ -30,6 +31,7 @@ export class MagicLinkPage {
     private navParams: NavParams,
     private authService: AuthService,
     private loadingCtrl: LoadingController,
+    private viewCtrl: ViewController,
     private alertCtrl: AlertController,
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
@@ -49,16 +51,32 @@ export class MagicLinkPage {
       dismissOnPageChange: true,
       content: this.loginLoadingMessage
     });
-    loading.present();
-    observable.subscribe(data => {
-      // localStorage.setItem('isAuthenticated', 'true');
-      // this.navCtrl.push(TabsPage);
-      data = data.data;
-      this.cacheService.setLocalObject('apikey', data.apikey);
-      this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
-      this.cacheService.setLocalObject('teams', data.Teams);
-      // get game_id data after login 
-      this.gameService.getGames()
+    loading.present().then(() => {
+      observable.subscribe(data => {
+        // localStorage.setItem('isAuthenticated', 'true');
+        // this.navCtrl.push(TabsPage);
+        data = data.data;
+
+        this.cacheService.setLocalObject('apikey', data.apikey);
+
+        // saved timeline id for later
+        const thisTimeline = data.Timelines[0];
+
+        // if no timeline available (throw error)
+        if (!thisTimeline) {
+          throw "Current student hasn't enrolled in any timeline.";
+        }
+
+        if (data.Timelines.length > 0) {
+          this.cacheService.setLocalObject('timelineID', thisTimeline.Timeline.id);
+          // to tell current enrolment status ('fullaccess'/'readonly')
+          this.cacheService.setLocalObject('enrolmentStatus', thisTimeline.Enrolment.status);
+        }
+        this.cacheService.setLocalObject('teams', data.Teams);
+        this.cacheService.setLocal('gotNewItems', false);
+
+        // get game_id data after login 
+        this.gameService.getGames()
           .subscribe(
             data => {
               _.map(data, (element) => {
@@ -68,50 +86,56 @@ export class MagicLinkPage {
             err => {
               console.log("game err: ", err);
             }
-          );
-      // get milestone data after login
-      this.authService.getUser()
-        .subscribe(
-          data => {
-            this.cacheService.setLocalObject('name', data.User.name);
-            this.cacheService.setLocalObject('email', data.User.email);
-            this.cacheService.setLocalObject('program_id', data.User.program_id);
-            this.cacheService.setLocalObject('project_id', data.User.project_id);
-          },
-          err => {
-            console.log(err);
-          }
         );
-      // get milestone data after login
-      this.milestoneService.getMilestones()
-        .subscribe(
-          data => {
-            this.milestone_id = data.data[0].id;
-            this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-            loading.dismiss();
-            this.navCtrl.setRoot(TabsPage).then(() => {
-              window.history.replaceState({}, '', window.location.origin);
+        // get milestone data after login
+        this.authService.getUser()
+          .subscribe(
+            data => {
+              this.cacheService.setLocalObject('name', data.User.name);
+              this.cacheService.setLocalObject('email', data.User.email);
+              this.cacheService.setLocalObject('program_id', data.User.program_id);
+              this.cacheService.setLocalObject('project_id', data.User.project_id);
+              this.cacheService.setLocalObject('user', data.User);
+            },
+            err => {
+              console.log(err);
+            }
+          );
+
+        // get milestone data after login
+        this.milestoneService.getMilestones()
+          .subscribe(
+            data => {
+              this.milestone_id = data.data[0].id;
+              this.cacheService.setLocalObject('milestone_id', data.data[0].id);
+              loading.dismiss();
+              this.navCtrl.setRoot(TabsPage).then(() => {
+                this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                window.history.replaceState({}, '', window.location.origin);
+              });
+            },
+            err => {
+              console.log(err);
+            }
+          )
+        this.cacheService.write('isAuthenticated', true);
+        this.cacheService.setLocal('isAuthenticated', true);
+        },
+        err => {
+          loading.dismiss().then(() => {
+            const failAlert = this.alertCtrl.create({
+              title: 'Magic did NOT happen',
+              message: this.misMatchTokenErrMessage,
+              buttons: ['Close']
             });
-          },
-          err => {
-            console.log(err);
-          }
-        )
-      this.cacheService.write('isAuthenticated', true);
-      this.cacheService.setLocal('isAuthenticated', true);
-      },
-      err => {
-      const failAlert = this.alertCtrl.create({
-        title: 'Magic did NOT happen',
-        message: this.misMatchTokenErrMessage,
-        buttons: ['Close']
-      });
-      failAlert.present();
-        this.navCtrl.push(LoginPage).then(() => {
-          window.history.replaceState({}, '', window.location.origin);
+            failAlert.present();
+              this.navCtrl.push(LoginPage).then(() => {
+                window.history.replaceState({}, '', window.location.origin);
+              });
+              this.cacheService.removeLocal('isAuthenticated');
+              this.cacheService.write('isAuthenticated', false);
+            });
         });
-        this.cacheService.removeLocal('isAuthenticated');
-        this.cacheService.write('isAuthenticated', false);
       });
   }
 }
