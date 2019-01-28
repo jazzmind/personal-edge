@@ -117,6 +117,9 @@ import { OrderByPipe } from '../pipes/OrderBy';
 import { CardHeightDirective } from '../components/event/card-height.directive';
 // configs
 import { default as Configure } from '../configs/config';
+// livechat
+import { LivechatWidgetModule } from '@livechat/angular-widget';
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
@@ -195,6 +198,7 @@ export function HttpLoaderFactory(http: Http) {
   ],
   imports: [
     BrowserModule,
+    LivechatWidgetModule,
     CacheModule,
     FormsModule,
     MomentModule,

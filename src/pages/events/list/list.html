@@ -42,7 +42,7 @@
     <event *ngFor="let event of events; let i = index" [event]="event" (click)="view(event)" tappable></event>
   </ion-list>
 
-  <ion-fab right bottom #fab data-track-name="fab button">
+  <!-- <ion-fab right bottom #fab data-track-name="fab button">
     <button data-track-piece="filter location" ion-fab color="palette-five" (click)="setIonFab($event, fab)">
       <p *ngIf="filterLocation">{{ filterLocation }}</p>
       <ion-icon *ngIf="filterLocation === null" name="pin"></ion-icon>
@@ -55,5 +55,5 @@
         <p>All</p>
       </button>
     </ion-fab-list>
-  </ion-fab>
+  </ion-fab> -->
 </ion-content>

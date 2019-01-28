@@ -21,10 +21,9 @@ export class AuthService {
   }
   verifyRegistration(data) {
     let options = new RequestOptions({headers: this.headerData()});
-    let urlSearchParams = new URLSearchParams([
-      `email=${data.email}`,
-      `key=${data.key}`
-    ].join('&'));
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.set('email', data.email);
+    urlSearchParams.set('key', data.key);
     return this.http.post(this.AUTH_ENDPOINT+'verify_registration', urlSearchParams.toString(), options)
                     .map(res => res.json());
   }

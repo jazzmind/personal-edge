@@ -10,6 +10,7 @@ import { LeaderboardSettingsPage } from '../settings/leaderboard/leaderboard-set
 import { LoginPage } from '../../pages/login/login';
 import { TutorialPage } from '../settings/tutorial/tutorial.page';
 import { TermConditionPage } from '../term-condition/term-condition.page';
+
 @Component({
   selector: 'settings-page',
   templateUrl: 'settings.html'

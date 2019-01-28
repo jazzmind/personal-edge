@@ -2,6 +2,7 @@
   <readonly></readonly>
 </ion-header>
 <ion-content class="settings" padding="true" data-track-content>
+
   <ion-list no-lines data-track-name="setting">
     <ion-list-header>
       {{ 'SETTINGS.PROFILE' | translate }} <span *ngIf="getUserEmail()">({{ getUserEmail() }})</span>
@@ -39,4 +40,6 @@
       <ion-icon name="exit" item-left></ion-icon> {{ 'SETTINGS.LOGOUT' | translate }}
     </button>
   </ion-list>
+  <livechat-widget licenseId="7430141"></livechat-widget>
+
 </ion-content>
