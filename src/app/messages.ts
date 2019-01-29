@@ -111,7 +111,7 @@ export const loadingMessages = {
     "logout": "See you next time"
   },
   SendingEmail: {
-    "send": "Sending email to us ..."
+    "send": "Sending email ..."
   },
   SentMessage: { // the reason why this message has been divided into two parts, because of we have a variable (${this.email}) in the middle of message
     "partOne": "We have sent an email to",

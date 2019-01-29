@@ -4,7 +4,7 @@ const HardcodeDataList = () => {
   this.prefixUrl = 'http://local.practera.com:8080/';
 
   // this is the AppKey from the experience admin screen
-  this.appKey = 'b11e7c189b';
+  this.appKey = 'pe-test-app';
 
   // This is the base URL for the student to access their portfolio 
   this.portfolio_domain = `http://local.practera.com:8080/portfolio`;
