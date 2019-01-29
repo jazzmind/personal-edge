@@ -1,10 +1,19 @@
 {
   "ACTIVITY": {
-    "PAGETITLE": "Dashboard",
+    "PAGETITLE": "Skills Passport",
     "POINTS": "Points",
     "PROGRESS": "Progress",
     "SUBMISSION": "Submission",
-    "EVIDENCE": "Evidence"
+    "EVIDENCE": "Evidence",
+    "EVENTS": "Events",
+    "BOOKEVENTS": "Browse Events",
+    "BROWSEEVENTS": "Browse Events",
+    "GOTOSHOP": "Go to Shop",
+    "LEADERBOARD": "Leaderboard",
+    "GRADE": "Grade",
+    "EXPLAINPORTFOLIO": "What's this?",
+    "REQUESTPORTFOLIO": "Request Passport",
+    "VIEWPORTFOLIO": "View Passport"
   },
   "ASSESSMENT": {
     "PAGETITLE": "Assessment"
@@ -24,7 +33,7 @@
   "FORGOTPASSWORD": {
     "INPUTTITLE": "Please enter your email address to reset password",
     "PAGETITLE": "Forgot Password",
-    "SENDBUTTON": "Send to Mailbox"
+    "SENDBUTTON": "Send"
   },
   "GAME": {
     "PAGETITLE": "Spinner Wheel"
@@ -40,7 +49,8 @@
   "LOGIN": {
     "HEADER": "Welcome to Practera",
     "PAGETITLE": "Login",
-    "PASSWORDFORGOT": "Forget Your Password?"
+    "PASSWORDFORGOT": "Forgot Password?",
+    "NEWUSER": "New User?"
   },
   "REGISTRATION": {
     "HEADER": "Great - you are almost there! Just one more thing...",
@@ -49,10 +59,10 @@
   "RANKING": {
     "DETAIL": "Ranking Details",
     "ME": "Me",
-    "MONTHLYPOINTS": "Points(Monthly)",
+    "MONTHLYPOINTS": "Points (Monthly)",
     "PAGETITLE": "Leaderboard",
     "MAINPAGETITLE": "Monthly Leaderboard",
-    "TOTALPOINTS": "Points(Total)"
+    "TOTALPOINTS": "Points (Total)"
   },
   "RESETPASSWORD": {
     "PAGETITLE": "Reset Password"
@@ -67,14 +77,14 @@
     "SWITCHER": "Program Switcher",
     "TUTORIAL": "Tutorial",
     "TERMS": "Terms of Use",
-    "HANDBOOK": "PE Handbook"
+    "HANDBOOK": "Skills Passport Handbook"
   },
   "SPINNER": {
     "PAGETITLE": "Spin Wheel"
   },
   "TABS": {
     "ACCOUNT": "Account",
-    "DASHBOARD": "Dashboard",
+    "DASHBOARD": "Passport",
     "EVENTS": "Events",
     "RANKING": "Leaderboard",
     "ACTIVITIES": "Activities",

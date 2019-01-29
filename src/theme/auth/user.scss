@@ -56,8 +56,8 @@
   }
 }
 .login-module {
-  font-family: $font-secondary;
-  background-color: color($colors, background, contrast) !important;
+  font-family: $font-primary;
+  background-color: color($colors, background, base) !important;
   background-repeat: no-repeat;
   .scroll-content {
     overflow-y: hidden;
@@ -79,6 +79,24 @@
     margin: 0px;
   }
   .main-login-text {
+    h1 {
+      position: relative;
+      margin: 0 auto;
+      color: color($colors, text, contrast);
+      font-size: 32pt;
+      text-align: center;
+      // padding-bottom: 40pt;
+      span {
+        display: block;
+        font-family: $title-font;
+      }
+    }
+    p {
+      margin: 0px;
+      padding: 0px;
+      padding-bottom: 50px;
+      color: color($colors, text, contrast);
+    }
     h3 {
       position: relative;
       margin: 0 auto;
@@ -120,14 +138,30 @@
         border-bottom: 1px solid color($colors, border, base) !important;
       }
     }
+    ion-input {
+      margin-bottom: 30px;
+      background: color($colors, white);
+      border-radius: 7px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
     .forget-password-container {
+      .right {
+        text-align: right;
+      }
+      .left {
+        text-align: left;
+      }
       .general-circle-btn {
-        font-size: 11pt;
+        font-size: 10pt;
+        font-weight: bold;
+        text-transform: uppercase;
       }
     }
     .general-circle-btn {
       background: none;
       padding: 20pt 0 10pt 0;
+      color: color($colors, white);
     }
   }
 }

@@ -17,22 +17,28 @@ $item-wp-detail-push-show: true;
 
 // General Colors (Shared File)
 // logo colours
-$teal: #00b5ac;
+$teal: #00c4dd;
 
 // main colors
-$primary: #000054; // BLUE
-$secondary: #EBEBEB; // GRAY
+$primary: #00c4dd; // BLUE
+$secondary: #713ae9; // GRAY
 
 // Buttons/tabs
-$primary-button: #3A74BA;
+$primary-button: #00c4dd;
 $primary-text: #000054;
 
-$secondary-text: #000000;
+$alert: #fe0061;
+$warning: #ff9100;
+$success: #00b241;
+$disabled: #d7dbed;
+
+$secondary-text: #c6cbe3;
+$secondary-text-dark: #7e89b5;
 $dashboard-bg: #c9e9e6;
-$primary-bg: #EBEBEB;
-$secondary-bg: #ffffff;
-$border-primary: #dddddd;
-$border-secondary: #cccccc;
+$primary-bg: #00c4dd;
+$secondary-bg: #713ae9;
+$border-primary: #c6cbe3;
+$border-secondary: #d7dbed;
 $primary-dark: #AFAFAF;
 $secondary-palette-one: #FFCB05;
 $secondary-palette-two: #8CC747;
@@ -62,13 +68,19 @@ $colors: (
   secondary: $secondary,
   white: #FFF,
   black: #000,
+  tabs: (
+    contrast: $primary-button,
+    base: $secondary-text
+  ),
   button: (
     base: darken($primary-button, 10%),
-    contrast: lighten($primary-button, 10%)
+    contrast: lighten($primary-button, 10%),
+    disabled: $disabled,
+    disabledtext: $secondary-text-dark
   ),
   primary-button: (
-    base: $secondary-palette-one,
-    contrast: lighten($secondary-palette-one, 10%)
+    base: $secondary,
+    contrast: lighten($secondary, 10%)
   ),
   badge-text: #FFF,
   badge-bg: (
@@ -123,7 +135,7 @@ $colors: (
     base: $secondary-palette-eight,
     contrast: $secondary-bg
   ),
-  dahsboard-bg: (
+  dashboard-bg: (
     base: $dashboard-bg,
     contrast: $primary-bg
   ),
