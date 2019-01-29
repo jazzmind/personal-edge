@@ -1,9 +1,9 @@
-<ion-header class="activities">
+<ion-header class="activities-header">
   <readonly></readonly>
   <ion-grid>
     <ion-row class="score-board">
       <ion-col col-12>
-        <img class="dashboard-logo" src="" (click)="refreshPage()" />
+        <img class="dashboard-logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" (click)="refreshPage()" />
       </ion-col>
 
       <ion-col col-12>
@@ -52,7 +52,7 @@
   </ion-grid>
 </ion-header>
 
-<ion-content class="activities" no-bounce data-track-content>
+<ion-content class="activities-content" no-bounce data-track-content>
   <ion-refresher *ngIf="checkUserPointer" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
