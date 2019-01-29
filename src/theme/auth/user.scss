@@ -82,7 +82,7 @@
     h1 {
       position: relative;
       margin: 0 auto;
-      color: color($colors, text, contrast);
+      color: color($colors, white);
       font-size: 32pt;
       text-align: center;
       // padding-bottom: 40pt;
@@ -95,7 +95,7 @@
       margin: 0px;
       padding: 0px;
       padding-bottom: 50px;
-      color: color($colors, text, contrast);
+      color: color($colors, white);
     }
     h3 {
       position: relative;
@@ -114,6 +114,12 @@
       margin: 0 auto;
       color: color($colors, text, base);
       // text-align: left;
+    }
+  }
+  .loginbutton {
+    border-radius: 20px;
+    &:hover {
+      background-color: color($colors, primary-button, contrast);
     }
   }
   .forgot-password-button {

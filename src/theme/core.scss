@@ -48,7 +48,7 @@ $mono-font: 'Roboto Mono';
 // 5. General Button Styling
 .primary-button {
   background-color: color($colors, primary-button, base);
-  color: color($colors, text, contrast) !important;
+  color: color($colors, white) !important;
 }
 .general-button {
   background-color: color($colors, button, base);
