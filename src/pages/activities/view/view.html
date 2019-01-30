@@ -19,10 +19,13 @@
     </ion-row>
     <ion-row>
       <ion-col col-12 class="activity-badge">
-        <img *ngIf="activityIndex == 1" src="{{ logo_act1 }}" alt="Activity Badge 1"/>
+        <img *ngIf="activityIndex == 1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Activity Badge 1"/>
+        <!-- {{ logo_act1 }} -->
         <img *ngIf="activityIndex > 1"
-          src="./assets/img/badges/badge{{ activityIndex }}.svg"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
           alt="Activity Badge {{ activityIndex }}"/>
+          <!-- srcbadge="./assets/img/badges/badge{{ activityIndex }}.svg" -->
+
       </ion-col>
     </ion-row>
     <ion-row>

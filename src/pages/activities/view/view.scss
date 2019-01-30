@@ -1,23 +1,37 @@
 .activity-badge-bg-1 {
   background-color: rgba(215, 238, 236, 1);
+  background-image: url(/assets/img/skills/skill-illustration-service-oriented@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-2 {
   background-color: rgba(253, 214, 153, 0.9);
+  background-image: url(/assets/img/skills/skill-illustration-problem-solver@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-3 {
   background-color: rgba(204, 213, 235, 1);
+  background-image: url(/assets/img/skills/skill-illustration-collaborator@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-4 {
   background-color: rgba(228, 240, 214, 1);
+  background-image: url(/assets/img/skills/skill-illustration-innovator@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-5 {
   background-color: rgba(217, 240, 247, 1);
+  background-image: url(/assets/img/skills/skill-illustration-culturally-conscious@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-6 {
   background-color: rgba(255, 240, 203, 1);
+  background-image: url(/assets/img/skills/skill-illustration-leader@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-7 {
   background-color: rgba(233, 246, 245, 1);
+  background-image: url(/assets/img/skills/skill-illustration-starter@3x.png);
+  background-size: cover;
 }
 .activity-badge {
   display: flex;
@@ -156,8 +170,8 @@
     border-radius: 20px;
     width: 32px;
     font-size: 1.5rem;
-    color: color($colors, background, contrast);
-    background-color: color($colors, secondary);
+    color: color($colors, button, disabledtext);
+    background-color: color($colors,button, disabled);
   }
   .medals-display {
     margin-bottom: 0px;
@@ -187,8 +201,8 @@
           border-radius: 18px;
         }
         button {
-          background-color: color($colors, secondary);
-          color: color($colors, background, contrast);
+          background-color: color($colors, button, disabled);
+          color: color($colors, button, disabledtext);
         }
       }
     }

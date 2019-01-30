@@ -79,6 +79,10 @@ $colors: (
     disabledtext: $secondary-text-dark
   ),
   primary-button: (
+    base: $primary,
+    contrast: lighten($primary, 10%)
+  ),
+  secondary-button: (
     base: $secondary,
     contrast: lighten($secondary, 10%)
   ),
