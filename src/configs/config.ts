@@ -150,24 +150,24 @@ const HardcodeDataList = () => {
     // these are achievement IDs for the achievements earned when skills are submitted and pass review
     // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
     this.achievementListIDs = [
-        [ 3440, 3462, 3438, 3439 ],
-        [ 3437, 3464, 3435, 3436 ],
-        [ 3449, 3467, 3447, 3448 ],
-        [ 3434, 3463, 3432, 3433 ],
-        [ 3443, 3465, 3441, 3442 ],
-        [ 3446, 3466, 3444, 3445 ],
-        [ 3431, 3431, 3431, 3431 ]
+        [ 3443, 3465, 3441, 3442 ], // service oriented
+        [ 3449, 3467, 3447, 3448 ], // collaborative
+        [ 3434, 3463, 3432, 3433 ], // problem solver
+        [ 3437, 3464, 3435, 3436 ], // innovative
+        [ 3440, 3462, 3438, 3439 ], // culturally conscious
+        [ 3446, 3466, 3444, 3445 ], // leader
+        [ 3431, 3431, 3431, 3431 ]  // starter
     ];
 
     // this version puts the newbie achievement first so that the "tutorial mode" can show the newbie first.
     this.newbieOrderedIDs = [
-        [ 3431, 3431, 3431, 3431 ],
-        [ 3440, 3462, 3438, 3439 ],
-        [ 3437, 3464, 3435, 3436 ],
-        [ 3449, 3467, 3447, 3448 ],
-        [ 3434, 3463, 3432, 3433 ],
-        [ 3443, 3465, 3441, 3442 ],
-        [ 3446, 3466, 3444, 3445 ]
+        [ 3431, 3431, 3431, 3431 ], // starter
+        [ 3443, 3465, 3441, 3442 ], // service oriented
+        [ 3449, 3467, 3447, 3448 ], // collaborative
+        [ 3434, 3463, 3432, 3433 ], // problem solver
+        [ 3437, 3464, 3435, 3436 ], // innovative
+        [ 3440, 3462, 3438, 3439 ], // culturally conscious
+        [ 3446, 3466, 3444, 3445 ], // leader
     ];
 
     // this is the AssessmentId and ContextId of the post-program survey, used as the "application" for a the final transcript
@@ -180,10 +180,10 @@ const HardcodeDataList = () => {
     this.hardcode_activity_id = 12848; 
 
     // These are the IDs of the skill submission assessments
-    this.hardcodeAssessmentIds = [ 5800, 5801, 5802, 5803, 5804, 5805 ];
+    this.hardcodeAssessmentIds = [ 5804, 5802, 5803, 5801, 5800, 5805 ];
 
     // These are the QuestionIDs for the "title" question for each of the above assessment Ids, in the same order
-    this.hardcodeQuestionIDs = [ 50202, 50212, 50222, 50232, 50242, 50252 ];
+    this.hardcodeQuestionIDs = [ 50242, 50222, 50232, 50212, 50202, 50252 ];
 
   }  else { // use live endpoint
       // if not live server, then, go to sandbox hardcode list and pre-config data
