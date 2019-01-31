@@ -47,6 +47,7 @@ export class EventsListPage {
   noEvents = false;
   filter = 'browses'; // currently support ['browses', 'attended', 'my-bookings']
   filterLocation: string = null; // default value for location filtration
+  hasLocationFilter = false; // disable the location filter by default
   private loadedEvents = []; // Further processed events array, for private use
 
   constructor(

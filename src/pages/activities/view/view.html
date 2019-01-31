@@ -1,4 +1,4 @@
-<ion-header class="activity-detail activity-badge-bg-{{ activityIndex }}" data-track-content>
+<ion-header [ngClass]="(activity.name == 'Starter') ? 'starter' : ''" class="activity-detail activity-badge-bg-{{ activityIndex }}" data-track-content>
   <readonly></readonly>
   <ion-navbar>
     <ion-title data-track-name>{{ activity.name }}</ion-title>
