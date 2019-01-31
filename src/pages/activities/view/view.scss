@@ -48,6 +48,7 @@
 }
 
 .activity-detail {
+    background-color: color($colors, background, contrast) !important;
   .pulse-button {
     border: none;
     box-shadow: 0 0 0 0 rgba(255, 203, 5, 0.8);
@@ -79,7 +80,7 @@
     .header-content {
       text-align: center;
       color: $background-color;
-      border-bottom: 1px solid color($colors, background, base);
+      border-bottom: 1px solid color($colors, background, contrast);
       .icon {
         font-size: 10rem;
       }
@@ -91,12 +92,12 @@
   }
   .better-grade-color {
     padding: 0.2em 1em;
-    background-color: color($colors, primary-button, base);
+    background-color: color($colors, primary-button, contrast);
     border-radius: 18pt;
   }
   .worse-grade-color {
     padding: 0.2em 1em;
-    background-color: color($colors, badge-bg, base);
+    background-color: color($colors, badge-bg, contrast);
     border-radius: 18pt;
   }
   .badges {

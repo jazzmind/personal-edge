@@ -15,7 +15,7 @@ import { TermConditionPage } from '../term-condition/term-condition.page';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
-  public helpline = "personaledge@rmit.edu.vn";
+  public helpline = "help@practera.com";
   public logoutMessage: any = loadingMessages.Logout.logout;
   public hideMe: boolean;
   constructor(

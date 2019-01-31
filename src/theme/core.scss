@@ -13,6 +13,10 @@ $font-secondary: 'Merriweather', Arial, "Helvetica Neue", Helvetica, sans-serif;
 @import url('https://fonts.googleapis.com/css?family=Arvo|Cabin|Zilla+Slab+Highlight');
 $title-font: 'Roboto';
 $mono-font: 'Roboto Mono';
+.content {
+  background-color: color($colors, background, base);
+}
+
 // 3. General Tab Styling
 .tab-color {
   background-color: color($colors, primary, base);
@@ -48,7 +52,7 @@ $mono-font: 'Roboto Mono';
 // 5. General Button Styling
 .primary-button {
   background-color: color($colors, primary-button, base);
-  color: color($colors, white) !important;
+  color: color($colors,white) !important;
 }
 .general-button {
   background-color: color($colors, button, base);

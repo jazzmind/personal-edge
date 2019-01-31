@@ -30,6 +30,7 @@ export class TermConditionPage {
     public translationService: TranslationService,
   ) {}
   private accessMethod(){
+    console.log(window.location);
     return (window.location.href.indexOf('?do=') > -1) ? this.checkAccessMethod = true : this.checkAccessMethod = false
   }
   private displayError(errorMessage?: any): void {
