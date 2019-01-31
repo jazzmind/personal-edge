@@ -56,6 +56,7 @@ $mono-font: 'Roboto Mono';
 }
 .general-button {
   background-color: color($colors, button, base);
+  color: color($colors,white) !important;
 }
 .back-button-text {
   padding-left: 4px;

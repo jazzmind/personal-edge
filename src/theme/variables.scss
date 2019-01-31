@@ -37,6 +37,8 @@ $secondary-text-dark: #7e89b5;
 $dashboard-bg: #c9e9e6;
 $primary-bg: #f5f6fa;
 $secondary-bg: #FFF;
+$login-bg: #00c4dd; // BLUE
+
 $border-primary: #c6cbe3;
 $border-secondary: #d7dbed;
 $primary-dark: #AFAFAF;
@@ -117,7 +119,8 @@ $colors: (
   ),
   background: (
     base: $primary-bg,
-    contrast: $secondary-bg
+    contrast: $secondary-bg,
+    login: $login-bg
   ),
   palette-one: (
     base: $secondary-palette-one,

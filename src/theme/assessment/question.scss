@@ -23,7 +23,9 @@
   }
 }
 .general-textarea {
-  padding: 0px;
+  padding: 5px;
   width: 100%;
-  resize: none;
+  border-radius: 5px;
+  resize: vertical;
+  background-color: color($colors, background, contrast);
 }
