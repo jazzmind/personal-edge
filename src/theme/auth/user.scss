@@ -118,8 +118,9 @@
   }
   .loginbutton {
     border-radius: 20px;
+    background-color: color($colors, secondary-button, base);
     &:hover {
-      background-color: color($colors, primary-button, contrast);
+      background-color: color($colors, secondary-button, contrast);
     }
   }
   .forgot-password-button {

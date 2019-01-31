@@ -71,7 +71,7 @@
       (click)="goToDetail(activity)">
       <p col-7 class="activity-title" data-content-name>
         {{ activity.Activity.name }}
-        <span *ngIf="activity.Activity.name == 'Newbie' && activities.length == 1">
+        <span *ngIf="activity.Activity.name == 'Starter' && activities.length == 1">
           <i id="fingerPointer" class="fa fa-hand-o-left shake" aria-hidden="true"></i>
           Click Here
         </span>
