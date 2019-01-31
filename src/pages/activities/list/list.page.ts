@@ -198,135 +198,143 @@ export class ActivitiesListPage {
     let modal = this.modalCtrl.create(NewItemsPage, params);
     modal.present();
   }
+
   // display user achievemnt statistics score points
-  loadingDashboard() {
-    let loadingData = this.loadingCtrl.create({
+  async loadingDashboard() {
+    let loadingData = await this.loadingCtrl.create({
       content: 'Loading ..'
     });
-    let loadingFailed = this.toastCtrl.create({
+    let loadingFailed = await this.toastCtrl.create({
       message: this.activitiesLoadingErr,
       duration: 4000,
       position: 'bottom'
     });
-    let getActivities = this.activityService.getList();
-    loadingData.present().then(() => {
-      getActivities.subscribe(
-        results => {
-            // get activities data
-            this.activities = results;
-            if(this.activities.length == 0){
-              this.returnError = true;
-            }
-            if(this.activities.length == 1 && document.cookie == ""){
-              document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-              this.navCtrl.push(InstructionPage);
-            }
-            if(this.activities.length == 1){
-              this.achievementListIDs = Configure.newbieOrderedIDs
-            }else {
-              this.achievementListIDs = Configure.achievementListIDs;
-            }
-            _.forEach(this.activities, ((element,index) => {
-              this.activityIndex = index + 1;
-              let indeObj = {indexID: this.activityIndex};
-              this.activities[index].Activity = _.extend({}, this.activities[index].Activity, indeObj);
-              this.activityIDs.push(this.activities[index].Activity.id);
-            }));
-            // this.activityIDs = this.activityIDs.toString();
-            let gameId = this.cacheService.getLocalObject('game_id');
-            let getCharacter = this.gameService.getCharacters(gameId);
-            let getSubmission = this.submissionService.getSubmissionsData();
-            let getUserAchievemnt = this.achievementService.getAchievements();
-            let getUserEvents = this.eventService.getUserEvents(this.activityIDs);
-            Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt, getUserEvents])
-              .subscribe(results => { // save API request results as a single integrated object
-                loadingData.dismiss().then(() => {
-                  // Now only support 1 character in a game
-                  this.characterData = results[1].Characters[0];
-                  this.cacheService.setLocalObject('character', this.characterData);
-                  this.cacheService.setLocal('character_id', this.characterData.id);
-                  // display user experience points
-                  this.showUserExperience(this.characterData.experience_points);
-                  // achievement list data handling
-                  this.getUserAchievementData = results[2];
-                  _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
-                    this.userAchievementsIDs[index] = ele.id;
-                  });
 
-                  if (this.userAchievementsIDs && this.achievementListIDs) {
-                    // find ahievement ID whether inside achievemnt list or not
-                    this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
-                  }
-                  // find all 4 boxes are ticked index value inside changeColor array
-                  _.forEach(this.changeColor, (ele, index) => {
-                    let findTrueIndex: any = _.uniq(ele, 'true');
-                    if(findTrueIndex[0] == true && findTrueIndex.length == 1){
-                      this.activityIndexArray.push(index);
-                    }
-                  });
-                  // submission data handling
-                  let findPostProgramAssessmentSubmission: any = [];
-                  this.submissionData = results[0];
-                  _.forEach(this.submissionData, (element, index) => {
-                    if(element.Assessment.id == this.hardcode_assessment_id){ // hardcode for post program assessment_id
-                      this.findDataStatus = element.AssessmentSubmission.status;
-                    }
-                  });
-                  if(this.findDataStatus != "done"){
-                    this.view_portfolio = false;
-                  }else {
-                    this.view_portfolio = true;
-                  }
-                  // match founded array index to activityIDs array and find each of activity IDs
-                  for(let index = 0, len = this.activityIndexArray.length; index < len; index++) {
-                    this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
-                  };
-                  // find submission based on founded activity IDs
-                  this.displayAverageScore(this.filteredActivityIDs,
-                    this.submissionData,
-                    this.findSubmissions,
-                    this.show_score_act,
-                    this.activityIndexArray,
-                    this.AverageScore);
-                  // get items API call
-                  this.gameService.getItems({
-                    character_id: this.characterData.id
-                  }).subscribe(
-                    data => {
-                      this.initialItems = data.Items;
-                      this.cacheService.setLocalObject('initialItems', this.initialItems);
-                      // dispatch event
-                      this.eventListener.publish('spinner:update', data);
-                    },
-                    err => {
-                      console.log("Items Data error: ", err);
-                    }
-                  );
-                  this.eventsData = results[3];
-                  if (this.eventsData){
-                    _.forEach(this.eventsData, (element, index) => {
-                      if(this.eventsData[index].isBooked == true && moment().isBefore(moment(this.eventsData[index].end))){
-                        this.bookedEventsCount++;
-                      }
-                    });
-                  } else {
-                    this.bookedEventsCount = 0;
-                  }
-                });
-              },
-              err => {
-                loadingData.dismiss().then(() => {
-                  loadingFailed.present();
-                });
-              }
-            );
-          },
-          error => {
-            loadingData.dismiss().then(() => {
-              loadingFailed.present();
-            });
+    let getActivities = this.activityService.getList();
+    try {
+      const modal = await loadingData.present();
+    } catch (e) {
+      throw `Fatal: ${e}`;
+    }
+
+    getActivities.subscribe(results => {
+      // get activities data
+      this.activities = results;
+      if (this.activities.length == 0){
+        this.returnError = true;
+      }
+
+      if (this.activities.length == 1 && document.cookie == ""){
+        document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+        this.navCtrl.push(InstructionPage);
+      }
+
+      if (this.activities.length == 1){
+        this.achievementListIDs = Configure.newbieOrderedIDs
+      } else {
+        this.achievementListIDs = Configure.achievementListIDs;
+      }
+      _.forEach(this.activities, ((element, index) => {
+        this.activityIndex = index + 1;
+        let indeObj = {indexID: this.activityIndex};
+        this.activities[index].Activity = _.extend({}, this.activities[index].Activity, indeObj);
+        this.activityIDs.push(this.activities[index].Activity.id);
+      }));
+
+      // this.activityIDs = this.activityIDs.toString();
+      let gameId = this.cacheService.getLocalObject('game_id');
+      let getCharacter = this.gameService.getCharacters(gameId);
+      let getSubmission = this.submissionService.getSubmissionsData();
+      let getUserAchievemnt = this.achievementService.getAchievements();
+      let getUserEvents = this.eventService.getUserEvents(this.activityIDs);
+      Observable.forkJoin([
+        getSubmission,
+        getCharacter,
+        getUserAchievemnt,
+        getUserEvents
+      ]).subscribe(results => { // save API request results as a single integrated object
+        loadingData.dismiss().then(() => {
+          // Now only support 1 character in a game
+          this.characterData = results[1].Characters[0];
+          this.cacheService.setLocalObject('character', this.characterData);
+          this.cacheService.setLocal('character_id', this.characterData.id);
+          // display user experience points
+          this.showUserExperience(this.characterData.experience_points);
+          // achievement list data handling
+          this.getUserAchievementData = results[2];
+          _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
+            this.userAchievementsIDs[index] = ele.id;
+          });
+
+          if (this.userAchievementsIDs && this.achievementListIDs) {
+            // find ahievement ID whether inside achievemnt list or not
+            this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
           }
-        );
+          // find all 4 boxes are ticked index value inside changeColor array
+          _.forEach(this.changeColor, (ele, index) => {
+            let findTrueIndex: any = _.uniq(ele, 'true');
+            if(findTrueIndex[0] == true && findTrueIndex.length == 1){
+              this.activityIndexArray.push(index);
+            }
+          });
+          // submission data handling
+          let findPostProgramAssessmentSubmission: any = [];
+          this.submissionData = results[0];
+          _.forEach(this.submissionData, (element, index) => {
+            if(element.Assessment.id == this.hardcode_assessment_id){ // hardcode for post program assessment_id
+              this.findDataStatus = element.AssessmentSubmission.status;
+            }
+          });
+          if(this.findDataStatus != "done"){
+            this.view_portfolio = false;
+          }else {
+            this.view_portfolio = true;
+          }
+          // match founded array index to activityIDs array and find each of activity IDs
+          for(let index = 0, len = this.activityIndexArray.length; index < len; index++) {
+            this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
+          };
+          // find submission based on founded activity IDs
+          this.displayAverageScore(this.filteredActivityIDs,
+            this.submissionData,
+            this.findSubmissions,
+            this.show_score_act,
+            this.activityIndexArray,
+            this.AverageScore);
+          // get items API call
+          this.gameService.getItems({
+            character_id: this.characterData.id
+          }).subscribe(
+            data => {
+              this.initialItems = data.Items;
+              this.cacheService.setLocalObject('initialItems', this.initialItems);
+              // dispatch event
+              this.eventListener.publish('spinner:update', data);
+            },
+            err => {
+              console.log("Items Data error: ", err);
+            }
+          );
+          this.eventsData = results[3];
+          if (this.eventsData){
+            _.forEach(this.eventsData, (element, index) => {
+              if(this.eventsData[index].isBooked == true && moment().isBefore(moment(this.eventsData[index].end))){
+                this.bookedEventsCount++;
+              }
+            });
+          } else {
+            this.bookedEventsCount = 0;
+          }
+        });
+      }, error => {
+        loadingData.dismiss().then(() => {
+          loadingFailed.present();
+        });
+      });
+    }, error => {
+      loadingData.dismiss().then(() => {
+        loadingFailed.present();
+      });
     });
   }
   // redirect to activity detail page
