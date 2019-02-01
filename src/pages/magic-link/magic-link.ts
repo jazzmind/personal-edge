@@ -4,8 +4,9 @@ import { NavController,
          LoadingController,
          AlertController } from 'ionic-angular';
 import 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -19,7 +20,6 @@ import { LoginPage } from '../login/login';
   templateUrl: 'magic-link.html'
 })
 export class MagicLinkPage {
-  private verifySuccess = null;
   private auth_token: string;
   public milestone_id: string;
   // loading & error messages variables
@@ -40,78 +40,80 @@ export class MagicLinkPage {
     console.log('ionViewDidLoad MagiclinkPage');
     this.auth_token = this.navParams.get('auth_token');
   }
-  ionViewWillEnter(){
+
+  ionViewWillEnter() {
     this.magicLinkAccess();
   }
-  magicLinkAccess(){
+
+  async magicLinkAccess() {
     let observable = this.authService.magicLinkLogin(this.auth_token);
+
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
       content: this.loginLoadingMessage
     });
-    loading.present();
-    observable.subscribe(data => {
-      // localStorage.setItem('isAuthenticated', 'true');
-      // this.navCtrl.push(TabsPage);
-      data = data.data;
-      this.cacheService.setLocalObject('apikey', data.apikey);
-      this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
-      this.cacheService.setLocalObject('teams', data.Teams);
-      // get game_id data after login 
-      this.gameService.getGames()
-          .subscribe(
-            data => {
-              _.map(data, (element) => {
-                this.cacheService.setLocal('game_id', element[0].id);
-              });
-            },
-            err => {
-              console.log("game err: ", err);
-            }
-          );
-      // get milestone data after login
-      this.authService.getUser()
-        .subscribe(
-          data => {
-            this.cacheService.setLocalObject('name', data.User.name);
-            this.cacheService.setLocalObject('email', data.User.email);
-            this.cacheService.setLocalObject('program_id', data.User.program_id);
-            this.cacheService.setLocalObject('project_id', data.User.project_id);
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      // get milestone data after login
-      this.milestoneService.getMilestones()
-        .subscribe(
-          data => {
-            this.milestone_id = data.data[0].id;
-            this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-            loading.dismiss();
+    loading.present().then(() => {
+      observable.subscribe(data => {
+        // localStorage.setItem('isAuthenticated', 'true');
+        // this.navCtrl.push(TabsPage);
+        data = data.data;
+        this.cacheService.setLocalObject('apikey', data.apikey);
+        this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
+        this.cacheService.setLocalObject('teams', data.Teams);
+
+        Observable.forkJoin([
+          // get game_id data after login
+          this.gameService.getGames(),
+
+          // get milestone data after login
+          this.authService.getUser(),
+
+          // get milestone data after login
+          this.milestoneService.getMilestones(),
+        ]).subscribe(responses => {
+          loading.dismiss().then(() => {
+            const games = responses[0],
+              userData = responses[1],
+              milestone = responses[2];
+
+            // game data
+            _.map(games, game => {
+              this.cacheService.setLocal('game_id', game[0].id);
+            });
+
+            // user data
+            this.cacheService.setLocalObject('name', userData.User.name);
+            this.cacheService.setLocalObject('email', userData.User.email);
+            this.cacheService.setLocalObject('program_id', userData.User.program_id);
+            this.cacheService.setLocalObject('project_id', userData.User.project_id);
+
+            // milestone
+            this.milestone_id = milestone.data[0].id;
+            this.cacheService.setLocalObject('milestone_id', milestone.data[0].id);
             this.navCtrl.setRoot(TabsPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
             });
-          },
-          err => {
-            console.log(err);
-          }
-        )
-      this.cacheService.write('isAuthenticated', true);
-      this.cacheService.setLocal('isAuthenticated', true);
-      },
-      err => {
-      const failAlert = this.alertCtrl.create({
-        title: 'Magic did NOT happen',
-        message: this.misMatchTokenErrMessage,
-        buttons: ['Close']
-      });
-      failAlert.present();
-        this.navCtrl.push(LoginPage).then(() => {
-          window.history.replaceState({}, '', window.location.origin);
+
+            this.cacheService.write('isAuthenticated', true);
+            this.cacheService.setLocal('isAuthenticated', true);
+          });
         });
-        this.cacheService.removeLocal('isAuthenticated');
-        this.cacheService.write('isAuthenticated', false);
+
+      }, async err => {
+        const failAlert = this.alertCtrl.create({
+          title: 'Magic did NOT happen',
+          message: this.misMatchTokenErrMessage,
+          buttons: ['Close']
+        });
+
+        failAlert.present().then(() => {
+          this.navCtrl.push(LoginPage).then(() => {
+            window.history.replaceState({}, '', window.location.origin);
+          });
+          this.cacheService.removeLocal('isAuthenticated');
+          this.cacheService.write('isAuthenticated', false);
+        });
       });
+    });
   }
 }
