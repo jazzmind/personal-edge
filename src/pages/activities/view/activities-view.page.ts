@@ -14,12 +14,15 @@ import { AchievementService } from '../../../services/achievement.service';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
 import { CacheService } from '../../../shared/cache/cache.service';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
   public hardcode_activity_id: any = Configure.hardcode_activity_id;
+  public hardcodeAssessmentIds: any = Configure.hardcodeAssessmentIds;
+  public hardcodeQuestionIDs: any = Configure.hardcodeQuestionIDs;
   public logo_act1 = "./assets/img/badges/badge7.svg";
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
@@ -50,7 +53,10 @@ export class ActivitiesViewPage {
     submissions: false
   };
   public isReadonly: boolean = false;
-
+  public config: any = {};
+  public experiencePrimaryColor: SafeStyle = "";
+  public experienceSecondaryColor: SafeStyle = "";
+  
   initialised_eset() {
     this.isReadonly = this.cache.isReadonly();
 
@@ -74,9 +80,26 @@ export class ActivitiesViewPage {
     private activityService: ActivityService,
     private submissionService: SubmissionService,
     private alertCtrl: AlertController,
-    private cache: CacheService
+    private cache: CacheService,
+    public sanitization: DomSanitizer
+ 
   ) {
     this.portfolioView = this.navParams.get('portfolioView');
+    this.config = JSON.parse(this.cache.getLocal('config'));
+    console.log(this.config);
+    if (this.config.hardcodeAssessmentIds) {
+      this.hardcodeAssessmentIds = this.config.hardcodeAssessmentIds;
+      this.hardcodeQuestionIDs = this.config.hardcodeQuestionIDs;
+      this.hardcode_activity_id = this.config.hardcode_activity_id;
+    }
+    this.config = JSON.parse(this.cache.getLocal('config'));
+
+    if (this.config.primaryColor) {
+      this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
+    }
+    if (this.config.secondaryColor) {
+      this.experienceSecondaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.secondaryColor);
+    }
   }
   ionViewWillEnter(): void {
     this.initialised_eset();

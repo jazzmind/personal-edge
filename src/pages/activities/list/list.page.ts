@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 import { loadingMessages, errMessages } from '../../../app/messages';
 import { default as Configure } from '../../../configs/config';
 // services
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { ActivityService } from '../../../services/activity.service';
 import { AssessmentService } from '../../../services/assessment.service';
 import { AchievementService } from '../../../services/achievement.service';
@@ -100,6 +101,7 @@ export class ActivitiesListPage {
   public eventsListPage = EventsListPage;
   public program_id: any = "1";
   public email: any = "test@test.com";
+  public config: any = {};
   public viewPortfolioLink: any = '';
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
@@ -111,6 +113,7 @@ export class ActivitiesListPage {
     available: []
   };
   public achievementListIDs: any = Configure.achievementListIDs;
+  public newbieOrderedIDs: any = Configure.newbieOrderedIDs;
   public show_score_act: any = [
     false,false,false,false,false,false,false
   ];
@@ -127,6 +130,10 @@ export class ActivitiesListPage {
   public tickedIDsArray: any = [];
   public userAchievementsIDs: any = [];
   public checkUserPointer: boolean = false;
+  public experiencePrimaryColor: SafeStyle = "";
+  public experienceSecondaryColor: SafeStyle = "";
+  public experienceBackgroundUrl: SafeStyle = "url(/assets/img/main/skills-generic-cover@3x.png)";
+  public experience: any = {};
   constructor(
     public navCtrl: NavController,
     public activityService: ActivityService,
@@ -143,7 +150,8 @@ export class ActivitiesListPage {
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
     public translationService: TranslationService,
-    public win: WindowRef
+    public win: WindowRef,
+    public sanitization: DomSanitizer
   ) {
     if (this.email && this.program_id) {
       this.program_id = this.cacheService.getLocal('program_id');
@@ -151,6 +159,22 @@ export class ActivitiesListPage {
       this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
     } else {
       this.viewPortfolioLink = `${this.portfolio_domain}/1/test@test.com`;
+    }
+    this.config = JSON.parse(this.cacheService.getLocal('config'));
+    if (this.config.backgroundImageUrl) {
+      this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl+ ')');
+    }
+    if (this.config.primaryColor) {
+      this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
+    }
+    if (this.config.secondaryColor) {
+      this.experienceSecondaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.secondaryColor);
+    }
+    if (this.config.achievementListIDs) {
+      this.achievementListIDs = this.config.achievementListIDs;
+      this.hardcode_assessment_id = this.config.hardcode_assessment_id;
+      this.hardcode_context_id = this.config.hardcode_context_id;
+      this.newbieOrderedIDs = this.config.newbieOrderedIDs;
     }
   }
   ionViewWillEnter(){
@@ -222,9 +246,9 @@ export class ActivitiesListPage {
               this.navCtrl.push(InstructionPage);
             }
             if(this.activities.length == 1){
-              this.achievementListIDs = Configure.newbieOrderedIDs
+              this.achievementListIDs = this.newbieOrderedIDs
             }else {
-              this.achievementListIDs = Configure.achievementListIDs;
+              this.achievementListIDs = this.achievementListIDs;
             }
             _.forEach(this.activities, ((element,index) => {
               this.activityIndex = index + 1;

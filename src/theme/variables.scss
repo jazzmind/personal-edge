@@ -142,6 +142,10 @@ $colors: (
     base: $secondary-palette-eight,
     contrast: $secondary-bg
   ),
+  palette-neutral: (
+    base: $primary-dark,
+    contrast: $secondary-bg
+  ),
   dashboard-bg: (
     base: $dashboard-bg,
     contrast: $primary-bg

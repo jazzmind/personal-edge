@@ -1,7 +1,7 @@
 <ion-header class="activities-header">
   <readonly></readonly>
   <ion-grid>
-    <ion-row class="score-board">
+    <ion-row class="score-board" [style.background-image]="experienceBackgroundUrl">
       <ion-col col-12>
         <img class="dashboard-logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" (click)="refreshPage()" />
       </ion-col>
@@ -14,7 +14,7 @@
               <p *ngIf="bookedEventsCount != 0" [ngClass]="sameFontSize == true ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
                 {{bookedEventsCount}}
               </p>
-              <ion-icon class="event-btn-icon event-btn-pulse" [style.height.px]="47.31" *ngIf="bookedEventsCount === 0" name="md-calendar"></ion-icon>
+              <ion-icon class="event-btn-icon event-btn-pulse" [style.color]="experiencePrimaryColor" [style.height.px]="47.31" *ngIf="bookedEventsCount === 0" name="md-calendar"></ion-icon>
               <p *ngIf="bookedEventsCount === 0" class="link">{{ 'ACTIVITY.BOOKEVENTS' | translate }}</p>
               <p *ngIf="bookedEventsCount > 0" class="link">{{ 'ACTIVITY.BROWSEEVENTS' | translate }}</p>
             </div>
@@ -22,7 +22,7 @@
           <li col-4>
             <div (click)="openLeaderboard()">
               <p class="title">{{ 'ACTIVITY.POINTS' | translate }}</p>
-              <p [ngClass]="userExperiencePoint >= 10000 ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
+              <p [ngClass]="userExperiencePoint >= 10000 ? 'font-20pt': 'font-22pt'" class="number" [style.color]="experiencePrimaryColor" [style.height.px]="47.31">
                 {{ characterCurrentExperience || '' }}
               </p>
               <p class="link">{{ 'ACTIVITY.LEADERBOARD' | translate }}</p>
@@ -34,8 +34,8 @@
               <p *ngIf="!button_show" [style.height.px]="47.31" [ngClass]="{'best-grade-color': totalAverageScore >= 3.5, 'better-grade-color': (totalAverageScore < 3.5 && totalAverageScore >= 2), 'worse-grade-color': totalAverageScore < 2 }" class="number user-grade">        
                 {{ finalAverageScoreShow }}
               </p>
-              <p *ngIf="button_show" [style.height.px]="47.31"  class="number user-grade">
-                  <ion-icon class="fa fa-clock-o" [style.height.px]="47.31"  aria-hidden="true"></ion-icon>
+              <p *ngIf="button_show" [style.height.px]="47.31"  [style.color]="experiencePrimaryColor" class="number user-grade">
+                  <ion-icon class="fa fa-clock-o" [style.height.px]="47.31" [style.color]="experiencePrimaryColor" aria-hidden="true"></ion-icon>
               </p>
               <div *ngIf="!view_portfolio">
                 <p *ngIf="!portfolio_request" class="link">{{ 'ACTIVITY.EXPLAINPORTFOLIO' | translate }}</p>

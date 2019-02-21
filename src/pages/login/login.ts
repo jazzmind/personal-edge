@@ -91,6 +91,10 @@ export class LoginPage {
               // saved timeline id for later
               const thisTimeline = data.Timelines[0];
 
+              if (data.Experience.config) {
+                self.cacheService.setLocalObject('config', data.Experience.config);            
+              }
+
               // if no timeline available (throw error)
               if (!thisTimeline) {
                 throw "Current student hasn't enrolled in any timeline.";
@@ -181,6 +185,7 @@ export class LoginPage {
     cacheProcesses.push(this.cacheService.write('timeline_id', data.Timelines[0].Timeline.id));
     cacheProcesses.push(this.cacheService.write('apikey', data.apikey));
     cacheProcesses.push(this.cacheService.write('timelines', data.Timelines));
+    cacheProcesses.push(this.cacheService.write('experience', data.Experience));
     cacheProcesses.push(this.cacheService.write('teams', data.Teams));
     this.cacheService.setLocal('apikey', data.apikey);
     this.cacheService.setLocal('timeline_id', data.Timelines[0].Timeline.id);

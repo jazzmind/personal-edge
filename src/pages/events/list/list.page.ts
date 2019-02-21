@@ -6,6 +6,8 @@ import { loadingMessages, errMessages } from '../../../app/messages';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { EventService } from '../../../services/event.service';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { CacheService } from '../../../shared/cache/cache.service';
 // pages
 import { EventsViewPage } from '../view/events-view.page';
 
@@ -49,13 +51,27 @@ export class EventsListPage {
   filterLocation: string = null; // default value for location filtration
   hasLocationFilter = false; // disable the location filter by default
   private loadedEvents = []; // Further processed events array, for private use
-
+  public experiencePrimaryColor: SafeStyle = "";
+  public experienceSecondaryColor: SafeStyle = "";
+  public config: any = {};
+  
   constructor(
     public navCtrl: NavController,
     public eventService: EventService,
+    public cacheService: CacheService,
     public activityService: ActivityService,
-    public loadingCtrl: LoadingController
-  ) {}
+    public loadingCtrl: LoadingController,
+    public sanitization: DomSanitizer
+  ) {
+    this.config = JSON.parse(this.cacheService.getLocal('config'));
+
+    if (this.config.primaryColor) {
+      this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
+    }
+    if (this.config.secondaryColor) {
+      this.experienceSecondaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.secondaryColor);
+    }
+  }
 
   ionViewWillLeave() {
     if (this.fab) {

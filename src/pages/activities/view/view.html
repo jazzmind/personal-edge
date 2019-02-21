@@ -36,6 +36,7 @@
             [ngClass]="(submissions.length > 0 || isReadonly) ? '' : 'pulse-button'"
             (click)="goAssessment()"
             [disabled]="isReadonly"
+            [style.background-color]="experiencePrimaryColor"
             >
             <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
           </button>
