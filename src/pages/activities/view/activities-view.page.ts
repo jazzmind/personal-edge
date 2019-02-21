@@ -24,7 +24,7 @@ export class ActivitiesViewPage {
   public hardcodeAssessmentIds: any = Configure.hardcodeAssessmentIds;
   public hardcodeQuestionIDs: any = Configure.hardcodeQuestionIDs;
   public logo_act1 = "./assets/img/badges/badge7.svg";
-  public activityIDsArrary: any = [];
+  public activityIDsArray: any = [];
   public submissionTitles: any = [];
   public submissionTitle: any = [];
   public newSubmissionTitle: any = [];
@@ -118,16 +118,18 @@ export class ActivitiesViewPage {
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
     this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
-    this.activityIDsArrary = this.navParams.get('activityIDs');
+    this.activityIDsArray = this.navParams.get('activityIDs');
     this.tickArray = this.navParams.get('tickArray');
     this.newTickArray = this.tickArray[this.activityIndex-1];
     this.ticksLength = this.newTickArray.length;
     this.eachFinalScore = this.navParams.get('eachFinalScore');
     this.eachScore = this.eachFinalScore[this.activityIndex-1];
     this.newTickIDsArray = this.navParams.get('newTickIDsArray');
-    this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
+    if (this.newTickIDsArray.length) {
+      this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
+    }
     // <Activity ID> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
-    if (this.activityIDsArrary.includes(this.hardcode_activity_id)){
+    if (this.activityIDsArray.includes(this.hardcode_activity_id)){
       this.logo_act1 = "./assets/img/badges/badge1.svg"; // if <Activity ID> exist, show career logo for the first activity, otherwise, show product logo for the first activity.
     }
     // all achievements data
