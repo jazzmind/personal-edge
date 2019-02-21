@@ -174,7 +174,7 @@ export class ActivitiesListPage {
       this.achievementListIDs = this.config.achievementListIDs;
       this.hardcode_assessment_id = this.config.hardcode_assessment_id;
       this.hardcode_context_id = this.config.hardcode_context_id;
-      this.newbieOrderedIDs = this.config.newbieOrderedIDs;
+      this.newbieOrderedIDs = this.config.achievementListNewbieIDs;
     }
   }
   ionViewWillEnter(){
