@@ -44,6 +44,7 @@ export class QuestionBase<T> {
   type: string;
   description: string;
   required: boolean;
+  audience: string | Array<any>;
   file_type?: string | any;
   choices?: ChoiceBase<any>[];
   answer?: any;
@@ -298,6 +299,26 @@ export class AssessmentService {
     }
   }
 
+  /**
+   * filter submission by:
+   * - "submitter" as audience
+   * - "submitter" as audience && status as "published"
+   * @name isAccessible
+   * @param {object} question Single normalised assessment
+   *                            object from this.normalise above
+   */
+  public isAccessible(question, status) {
+    let result = true;
+    if (question.audience.indexOf('submitter') === -1) {
+      result = false;
+    }
+
+    if (result && status === 'published') {
+      result = false;
+    }
+    return result;
+  }
+
   /*
     turn "AssessmentGroupQuestion" array format from:
     {
@@ -347,6 +368,7 @@ export class AssessmentService {
       group_id: question.assessment_group_id,
       name: thisQuestion.name,
       type: thisQuestion.question_type,
+      audience: thisQuestion.audience,
       description: thisQuestion.description,
       file_type: thisQuestion.file_type,
       required: thisQuestion.is_required,
@@ -423,9 +445,13 @@ export class AssessmentService {
       if (q.answer === null) {
         questionsStatus.push('incomplete');
       }
+
+      if(q.answer === null && q.audience == '["reviewer"]'){
+        questionsStatus.push('reviewed');
+      }
     });
 
-    // get final status by checking all collected questions statuses
+    // get final status by checking aggregated questions statuses
     let status = 'incomplete';
     if (_.every(questionsStatus, v => v === 'completed')) {
       status = 'completed';
