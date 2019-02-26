@@ -36,13 +36,13 @@ const HardcodeDataList = () => {
   if (devEndpoints.includes(window.location.hostname)) {
     // function for app to access hardcoded data
     // this is the URL prefix for all api requests
-    this.prefixUrl = 'http://local.practera.com:8080/';
+    this.prefixUrl = 'https://stage-test.practera.com/';
 
     // this is the AppKey from the experience admin screen
-    this.appKey = 'PETestAppK';
+    this.appKey = appKey;
 
-    // This is the base URL for the student to access their portfolio 
-    this.portfolio_domain = `http://local.practera.com:8080/portfolio`;
+    // This is the base URL for the student to access their portfolio
+    this.portfolio_domain = `https://stage-test.practera.com/portfolio`;
 
     // these are achievement IDs for the achievements earned when skills are submitted and pass review
     // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
@@ -69,12 +69,12 @@ const HardcodeDataList = () => {
 
     // this is the AssessmentId and ContextId of the post-program survey, used as the "application" for a the final transcript
     // the transcript button will not link to the final transcript page until this is done
-    this.hardcode_assessment_id = 138; 
-    this.hardcode_context_id = 109; 
+    this.hardcode_assessment_id = 138;
+    this.hardcode_context_id = 109;
 
     // Activity ID is the activity id of Ethical Leader; if this is present on the screen then
     // we know that all of the skills activities has been revealed.
-    this.hardcode_activity_id = 156; 
+    this.hardcode_activity_id = 156;
 
     // These are the IDs of the skill submission assessments
     this.hardcodeAssessmentIds = [ 134, 135, 131, 132, 133, 136 ];
