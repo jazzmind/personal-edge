@@ -309,7 +309,7 @@ export class AssessmentService {
    */
   public isAccessible(question, status) {
     let result = true;
-    if (question.audience.indexOf('submitter') === -1) {
+    if (!question.audience.includes('submitter')) {
       result = false;
     }
 
@@ -446,7 +446,7 @@ export class AssessmentService {
         questionsStatus.push('incomplete');
       }
 
-      if(q.answer === null && q.audience == '["reviewer"]'){
+      if(q.answer === null && q.audience.includes('reviewer')){
         questionsStatus.push('reviewed');
       }
     });
