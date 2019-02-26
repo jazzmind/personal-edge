@@ -148,18 +148,24 @@ export class AssessmentsPage {
               });
             });
 
-            questionsResult.push(Object.assign(question, questionResult));
+            // set assessmentGroup as accessible (submitter has no permission to view)
+            if (this.isAccessibleBySubmitter(question, submissionResult.status)) {
+              assessmentGroup.accessible = true;
+              questionsResult.push(Object.assign(question, questionResult));
+            }
           });
 
           let summaries = this.assessmentService.getSummaries(questionsResult);
-          assessmentGroupResult.push(Object.assign(assessmentGroup, {
-            questions: questionsResult,
-            submission: submissionResult,
-            totalRequiredQuestions: summaries.totalRequiredQuestions,
-            answeredQuestions: summaries.answeredQuestions,
-            reviewerFeedback: summaries.reviewerFeedback,
-            status: this.assessmentService.getStatus(questionsResult, submissionResult)
-          }));
+          if (assessmentGroup.accessible) {
+            assessmentGroupResult.push(Object.assign(assessmentGroup, {
+              questions: questionsResult,
+              submission: submissionResult,
+              totalRequiredQuestions: summaries.totalRequiredQuestions,
+              answeredQuestions: summaries.answeredQuestions,
+              reviewerFeedback: summaries.reviewerFeedback,
+              status: this.assessmentService.getStatus(questionsResult, submissionResult)
+            }));
+          }
         });
 
         normalised.AssessmentGroup = assessmentGroupResult;
@@ -170,6 +176,22 @@ export class AssessmentsPage {
     });
 
     return result;
+  }
+
+  // filter question by condition (submitter cannot view reviewer question before it is published/reviewed)
+  isAccessibleBySubmitter(question, submissionStatus: string) {
+    let accessible = true;
+    let submitterAllowed = false;
+
+    if (question.audience && question.audience.includes('submitter')) {
+      submitterAllowed = true;
+    }
+
+    if (!submitterAllowed && submissionStatus !== 'published') {
+      accessible = false;
+    }
+
+    return accessible;
   }
 
   /**
