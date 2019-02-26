@@ -49,6 +49,7 @@ export class QuestionBase<T> {
   choices?: ChoiceBase<any>[];
   answer?: any;
   order?: string | number;
+  isAccessible?: boolean;
 
   constructor(id, assessment_id, name, type) {
     this.id = id;
@@ -303,20 +304,20 @@ export class AssessmentService {
    * filter submission by:
    * - "submitter" as audience
    * - "submitter" as audience && status as "published"
-   * @name isAccessible
+   * @name isAccessibleBySubmitter
    * @param {object} question Single normalised assessment
    *                            object from this.normalise above
    */
-  public isAccessible(question, status) {
-    let result = true;
+  private isAccessibleBySubmitter(question, status?) {
+    let accessible = true;
     if (!question.audience.includes('submitter')) {
-      result = false;
+      accessible = false;
     }
 
-    if (result && status === 'published') {
-      result = false;
+    if (accessible && (status && status === 'published')) {
+      accessible = false;
     }
-    return result;
+    return accessible;
   }
 
   /*
@@ -375,6 +376,7 @@ export class AssessmentService {
       choices: choices,
       order: question.order,
       answer: thisQuestion.answer,
+      isAccessible: this.isAccessibleBySubmitter(thisQuestion),
     };
   }
 
