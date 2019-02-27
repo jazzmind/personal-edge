@@ -125,6 +125,9 @@ export class ActivitiesViewPage {
     this.eachFinalScore = this.navParams.get('eachFinalScore');
     this.eachScore = this.eachFinalScore[this.activityIndex-1];
     this.newTickIDsArray = this.navParams.get('newTickIDsArray');
+    if (this.activity.lead_image) {
+      this.activity.backgroundImgUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.activity.lead_image+ ')');   
+    }
     if (this.newTickIDsArray.length) {
       this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
     }
