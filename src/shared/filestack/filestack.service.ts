@@ -1,12 +1,24 @@
 import { Injectable, Optional } from '@angular/core';
 
 declare var filestack: any;
-declare var filepicker: any;
 
 export class FilestackUpload {
   filesFailed: Array<any>;
   filesUploaded: Array<any>;
 }
+
+const FILESTACK_CONFIG = {
+  s3: {
+    location: 's3',
+    container: 'practera-aus',
+    region: 'ap-southeast-2',
+    paths: {
+      any: '/pe/skills/uploads/',
+      image: '/pe/skills/uploads/',
+      video: '/pe/skills/video/upload/'
+    }
+  }
+};
 
 @Injectable()
 export class FilestackConfig {
@@ -15,15 +27,23 @@ export class FilestackConfig {
 
 export class FilestackService {
   private filestack: any;
-  private filepicker: any;
   version: any;
 
   constructor(@Optional() config: FilestackConfig) {
     this.filestack = filestack.init(config.apikey);
     this.version = filestack.version;
+  }
 
-    this.filepicker = filepicker;
-    this.filepicker.setKey(config.apikey);
+  getS3Config(hash) {
+    const conf = FILESTACK_CONFIG.s3;
+    // add user hash to the path
+    const path = `${conf.paths.any}${hash}/`;
+    return {
+      location: FILESTACK_CONFIG.s3.location,
+      container: FILESTACK_CONFIG.s3.container,
+      region: FILESTACK_CONFIG.s3.region,
+      path,
+    };
   }
 
   /**
@@ -33,32 +53,36 @@ export class FilestackService {
    * @param  {object} config filestack object
    * @return {Promise} single resolved object
    */
-  pick(config?): Promise<any> {
-    if (!config) {
-      config = {
-        maxFiles: 5, // default by max 5 files
-        storeTo: {
-          location: 's3'
-        }
-      };
-    }
+  pick(hash, options?): Promise<any> {
+    const config = {
+      dropPane: {},
+      maxFiles: 5, // default by max 5 files
+      storeTo: this.getS3Config(hash),
+      fromSources: [
+        'local_file_system',
+        'googledrive',
+        'dropbox',
+        'gmail',
+        'video'
+      ],
+    };
 
-    return this.filestack.pick(config);
+    return this.filestack.picker(Object.assign(config, options)).open();
   }
 
   // single file picker
-  pickV1(config, onSuccess, onError?, onProgress?) {
-    if (!config) {
-      config = {
-        // container: 'modal',
-        // mimetypes: ['image/*', 'text/*',…],
-        // maxSize: 1024*1024
-        services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
-      };
-    }
+  // pickV1(config, onSuccess, onError?, onProgress?) {
+  //   if (!config) {
+  //     config = {
+  //       // container: 'modal',
+  //       // mimetypes: ['image/*', 'text/*',…],
+  //       // maxSize: 1024*1024
+  //       services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+  //     };
+  //   }
 
-    this.filepicker.pick(config, onSuccess, onError, onProgress);
-  }
+  //   this.filestack.picker(config, onSuccess, onError, onProgress);
+  // }
 
   getSecurity() {
     return this.filestack.getSecurity();
