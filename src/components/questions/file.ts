@@ -5,6 +5,8 @@ import { FilestackService, FilestackUpload } from '../../shared/filestack/filest
 import { UtilsService } from '../../shared/utils/utils.service';
 import { PreviewComponent } from '../preview/preview.component';
 import { WindowRef } from '../../shared/window';
+import { CacheService } from '../../shared/cache/cache.service';
+
 import * as _ from 'lodash';
 
 @Component({
@@ -24,7 +26,8 @@ export class FileQuestionComponent implements OnInit {
     private zone: NgZone,
     private modalCtrl: ModalController,
     private win: WindowRef,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private cache: CacheService,
   ) {}
 
   /**
@@ -41,7 +44,8 @@ export class FileQuestionComponent implements OnInit {
   async upload(event) {
     let self = this;
 
-    const fs = await this.fs.pick({
+    const user = this.cache.getLocalObject('user');
+    const fs = await this.fs.pick(user.userhash, {
       maxFiles: 1, // default by max 5 files
       onUploadDone: (response) => {
         if (response.filedUploaded && response.filedUploaded[0]) {
