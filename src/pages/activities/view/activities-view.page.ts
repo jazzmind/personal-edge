@@ -273,6 +273,7 @@ export class ActivitiesViewPage {
       });
     }
   }
+
   getSubmissionStatus(Submissions){ // get user assessment status based on its achieved marks
     let result: any = [];
     let result_name = "";
