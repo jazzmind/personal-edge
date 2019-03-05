@@ -38,19 +38,29 @@ export class FileQuestionComponent implements OnInit {
   /**
    * @description Upload file and trigger ngzone to update this.uploaded variable
    */
-  upload(event) {
+  async upload(event) {
     let self = this;
 
-    this.fs.pick({
+    const fs = await this.fs.pick({
       maxFiles: 1, // default by max 5 files
-      storeTo: {
-        location: 's3'
+      onUploadDone: (response) => {
+        if (response.filedUploaded && response.filedUploaded[0]) {
+          self.zone.run(() => {
+            const file = response.filesUploaded[0]; // pick the first file
+            file.icon = self.utils.getIcon(file.mimetype);
+            self.uploaded = file;
+            this.form.controls.answer.setValue(self.uploaded);
+          });
+        }
+
+        return this.pickUploaded(response);
       },
-      onUploadDone: (response) => this.pickUploaded(response), 
       onFileUploadFailed: (err) => {
         console.log(err);
       }
     });
+
+    return fs;
   }
 
   /**
