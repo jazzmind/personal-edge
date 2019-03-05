@@ -1,7 +1,6 @@
 import { Injectable, Optional } from '@angular/core';
 
 declare var filestack: any;
-declare var filepicker: any;
 
 export class FilestackUpload {
   filesFailed: Array<any>;
@@ -15,15 +14,11 @@ export class FilestackConfig {
 
 export class FilestackService {
   private filestack: any;
-  private filepicker: any;
   version: any;
 
   constructor(@Optional() config: FilestackConfig) {
     this.filestack = filestack.init(config.apikey);
     this.version = filestack.version;
-
-    this.filepicker = filepicker;
-    this.filepicker.setKey(config.apikey);
   }
 
   /**
@@ -43,22 +38,22 @@ export class FilestackService {
       };
     }
 
-    return this.filestack.pick(config);
+    return this.filestack.picker(config).open();
   }
 
   // single file picker
-  pickV1(config, onSuccess, onError?, onProgress?) {
-    if (!config) {
-      config = {
-        // container: 'modal',
-        // mimetypes: ['image/*', 'text/*',…],
-        // maxSize: 1024*1024
-        services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
-      };
-    }
+  // pickV1(config, onSuccess, onError?, onProgress?) {
+  //   if (!config) {
+  //     config = {
+  //       // container: 'modal',
+  //       // mimetypes: ['image/*', 'text/*',…],
+  //       // maxSize: 1024*1024
+  //       services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+  //     };
+  //   }
 
-    this.filepicker.pick(config, onSuccess, onError, onProgress);
-  }
+  //   this.filestack.picker(config, onSuccess, onError, onProgress);
+  // }
 
   getSecurity() {
     return this.filestack.getSecurity();

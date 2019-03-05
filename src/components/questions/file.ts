@@ -41,15 +41,15 @@ export class FileQuestionComponent implements OnInit {
   upload(event) {
     let self = this;
 
-    this.fs.pickV1(null, (uploaded) => {
-      self.zone.run(() => {
-        let file = uploaded;
-        file.icon = self.utils.getIcon(file.mimetype);
-        self.uploaded = file;
-        this.form.controls.answer.setValue(self.uploaded);
-      });
-    }, err => {
-      console.log(err.code);
+    this.fs.pick({
+      maxFiles: 1, // default by max 5 files
+      storeTo: {
+        location: 's3'
+      },
+      onUploadDone: (response) => this.pickUploaded(response), 
+      onFileUploadFailed: (err) => {
+        console.log(err);
+      }
     });
   }
 
