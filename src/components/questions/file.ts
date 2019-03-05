@@ -48,7 +48,7 @@ export class FileQuestionComponent implements OnInit {
     const fs = await this.fs.pick(user.userhash, {
       maxFiles: 1, // default by max 5 files
       onUploadDone: (response) => {
-        if (response.filedUploaded && response.filedUploaded[0]) {
+        if (response.filesUploaded && response.filesUploaded[0]) {
           self.zone.run(() => {
             const file = response.filesUploaded[0]; // pick the first file
             file.icon = self.utils.getIcon(file.mimetype);

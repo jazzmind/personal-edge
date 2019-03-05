@@ -53,15 +53,21 @@ export class FilestackService {
    * @param  {object} config filestack object
    * @return {Promise} single resolved object
    */
-  pick(hash, config?): Promise<any> {
-    if (!config) {
-      config = {
-        maxFiles: 5, // default by max 5 files
-        storeTo: this.getS3Config(hash),
-      };
-    }
+  pick(hash, options?): Promise<any> {
+    const config = {
+      dropPane: {},
+      maxFiles: 5, // default by max 5 files
+      storeTo: this.getS3Config(hash),
+      fromSources: [
+        'local_file_system',
+        'googledrive',
+        'dropbox',
+        'gmail',
+        'video'
+      ],
+    };
 
-    return this.filestack.picker(config).open();
+    return this.filestack.picker(Object.assign(config, options)).open();
   }
 
   // single file picker
