@@ -15,9 +15,11 @@ import { TermConditionPage } from '../term-condition/term-condition.page';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
+  public handbookUrl = "./assets/files/handbook.pdf";
   public helpline = "help@practera.com";
   public logoutMessage: any = loadingMessages.Logout.logout;
   public hideMe: boolean;
+  public config: any = {};
   constructor(
     private cache: CacheService,
     private navCtrl: NavController,
@@ -28,7 +30,12 @@ export class SettingsPage {
     public translationService: TranslationService,
     private appCtrl: App,
     private gameService: GameService
-  ) {}
+  ) {
+    this.config = JSON.parse(this.cache.getLocal('config'));
+    if (this.config.handbookUrl) {
+      this.handbookUrl = this.config.handbookUrl;
+    }
+  }
   public settings = [];
   ionViewWillEnter() {
     if (this.navCtrl.getPrevious() !== undefined) {

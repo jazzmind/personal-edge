@@ -92,8 +92,7 @@ export class ActivitiesViewPage {
       this.hardcodeQuestionIDs = this.config.hardcodeQuestionIDs;
       this.hardcode_activity_id = this.config.hardcode_activity_id;
     }
-    this.config = JSON.parse(this.cache.getLocal('config'));
-
+    
     if (this.config.primaryColor) {
       this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
     }
