@@ -7,6 +7,19 @@ export class FilestackUpload {
   filesUploaded: Array<any>;
 }
 
+const FILESTACK_CONFIG = {
+  s3: {
+    location: 's3',
+    container: 'practera-aus',
+    region: 'ap-southeast-2',
+    paths: {
+      any: '/pe/skills/uploads/',
+      image: '/pe/skills/uploads/',
+      video: '/pe/skills/video/upload/'
+    }
+  }
+};
+
 @Injectable()
 export class FilestackConfig {
   apikey = null;
@@ -21,6 +34,18 @@ export class FilestackService {
     this.version = filestack.version;
   }
 
+  getS3Config(hash) {
+    const conf = FILESTACK_CONFIG.s3;
+    // add user hash to the path
+    const path = `${conf.paths.any}${hash}/`;
+    return {
+      location: FILESTACK_CONFIG.s3.location,
+      container: FILESTACK_CONFIG.s3.container,
+      region: FILESTACK_CONFIG.s3.region,
+      path,
+    };
+  }
+
   /**
    * display pick/upload popup for file upload,
    * refer to filestack documentation for more config information
@@ -28,17 +53,21 @@ export class FilestackService {
    * @param  {object} config filestack object
    * @return {Promise} single resolved object
    */
-  pick(config?): Promise<any> {
-    if (!config) {
-      config = {
-        maxFiles: 5, // default by max 5 files
-        storeTo: {
-          location: 's3'
-        }
-      };
-    }
+  pick(hash, options?): Promise<any> {
+    const config = {
+      dropPane: {},
+      maxFiles: 5, // default by max 5 files
+      storeTo: this.getS3Config(hash),
+      fromSources: [
+        'local_file_system',
+        'googledrive',
+        'dropbox',
+        'gmail',
+        'video'
+      ],
+    };
 
-    return this.filestack.picker(config).open();
+    return this.filestack.picker(Object.assign(config, options)).open();
   }
 
   // single file picker
