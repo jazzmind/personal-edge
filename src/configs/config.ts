@@ -30,11 +30,64 @@ const portfolio_domain = 'assess/assessments/portfolio'; //for handling digital 
 // function of hardcode list data
 const HardcodeDataList = () => {
   const liveEndpoints = ['pe.practera.com', 'pe.rmit.edu.vn'];
+  const devEndpoints = ['localhost', 'local.practera.com', '127.0.0.1'];
   this.appKey = appKey;
 
-  // if not live server, then, go to sandbox hardcode list and pre-config data
-  if (!liveEndpoints.includes(window.location.hostname)) {
-    this.prefixUrl = 'https://sandbox.practera.com/';
+  if (devEndpoints.includes(window.location.hostname)) {
+    // function for app to access hardcoded data
+    // this is the URL prefix for all api requests
+    this.prefixUrl = 'https://stage-test.practera.com/';
+
+    // this is the AppKey from the experience admin screen
+    this.appKey = appKey;
+
+    // This is the base URL for the student to access their portfolio
+    this.portfolio_domain = `https://stage-test.practera.com/portfolio`;
+
+    // these are achievement IDs for the achievements earned when skills are submitted and pass review
+    // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
+    this.achievementListIDs = [
+        [ 117, 139, 115, 116 ],
+        [ 114, 141, 112, 113 ],
+        [ 126, 144, 124, 125 ],
+        [ 111, 140, 109, 110 ],
+        [ 120, 142, 118, 119 ],
+        [ 123, 143, 121, 122 ],
+        [ 108, 108, 108, 108 ]
+    ];
+
+    // this version puts the newbie achievement first so that the "tutorial mode" can show the newbie first.
+    this.newbieOrderedIDs = [
+        [ 108, 108, 108, 108 ],
+        [ 117, 139, 115, 116 ],
+        [ 114, 141, 112, 113 ],
+        [ 126, 144, 124, 125 ],
+        [ 111, 140, 109, 110 ],
+        [ 120, 142, 118, 119 ],
+        [ 123, 143, 121, 122 ]
+    ];
+
+    // this is the AssessmentId and ContextId of the post-program survey, used as the "application" for a the final transcript
+    // the transcript button will not link to the final transcript page until this is done
+    this.hardcode_assessment_id = 138;
+    this.hardcode_context_id = 109;
+
+    // Activity ID is the activity id of Ethical Leader; if this is present on the screen then
+    // we know that all of the skills activities has been revealed.
+    this.hardcode_activity_id = 156;
+
+    // These are the IDs of the skill submission assessments
+    this.hardcodeAssessmentIds = [ 134, 135, 131, 132, 133, 136 ];
+
+    // These are the QuestionIDs for the "title" question for each of the above assessment Ids, in the same order
+    this.hardcodeQuestionIDs = [ 1813, 1823, 1783, 1793, 1803, 1833 ];
+
+  } else if (!liveEndpoints.includes(window.location.hostname)) {
+     // if not live server, then, go to sandbox hardcode list and pre-config data
+    this.prefixUrl = 'https://stage-test.practera.com/';
+    this.portfolio_domain = `https://stage-test.practera.com/${portfolio_domain}`;
+    // this.prefixUrl = 'https://sandbox.practera.com/';
+    // this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
     this.achievementListIDs = [
       [349, 350, 347, 348],
       [345, 346, 343, 344],
@@ -58,8 +111,7 @@ const HardcodeDataList = () => {
     this.hardcode_activity_id = 7655;
     this.hardcodeAssessmentIds = [2066, 2067, 2068, 2069, 2070, 2071, 2050];
     this.hardcodeQuestionIDs = [20775, 20785, 20795, 20805, 20815, 20825, 20661];
-    this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
-  } else { // use live endpoint
+  }  else { // use live endpoint
     this.prefixUrl = 'https://api.practera.com/';
     this.achievementListIDs = [
       [355, 402, 353, 354],
