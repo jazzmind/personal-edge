@@ -167,6 +167,7 @@ export class ActivitiesListPage {
       this.experienceSecondaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.secondaryColor);
     }
     if (this.config.achievementListIDs) {
+      console.log(this.config.achievementListIDs);
       this.achievementListIDs = this.config.achievementListIDs;
       this.hardcode_assessment_id = this.config.hardcode_assessment_id;
       this.hardcode_context_id = this.config.hardcode_context_id;
@@ -243,10 +244,9 @@ export class ActivitiesListPage {
       }
 
       if (this.activities.length == 1){
-        this.achievementListIDs = Configure.newbieOrderedIDs;
-      } else {
-        this.achievementListIDs = Configure.achievementListIDs;
-      }
+        this.achievementListIDs = this.newbieOrderedIDs;
+      } 
+      
       _.forEach(this.activities, ((element, index) => {
         this.activityIndex = index + 1;
         let indeObj = {indexID: this.activityIndex};
