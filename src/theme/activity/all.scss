@@ -110,7 +110,7 @@
             padding: 3px 15px;
             border-radius: 18px;
             background-color: color($colors, white);
-            .fa-clock-o {
+            .fa-hourglass-o, .fa-clock-o {
               color: color($colors, text, base);
             }
           }
@@ -133,7 +133,7 @@
             padding: 5pt 0;
             font-family: $mono-font;
             color: color($colors, palette-five, base);
-            .fa-clock-o {
+            .fa-hourglass-o, .fa-clock-o {
               padding-top: 11px;
             }
           }
@@ -192,7 +192,7 @@
         border-radius: 20px;
         width: 32px;
         background-color: color($colors, button, disabled);
-        .fa-clock-o {
+        .fa-hourglass-o, .fa-clock-o {
           font-size: 12pt;
           color: color($colors, button, disabledtext);
         }

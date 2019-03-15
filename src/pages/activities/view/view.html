@@ -61,13 +61,16 @@
         </span>
       </ion-item>
       <ion-item col-2 class="badge-default">
-        <ion-badge *ngIf="eachScore != -1"
+          <button *ngIf="eachScore == -2 || eachScore == undefined">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+          </button>
+          <button *ngIf="eachScore == -1">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+            </button>
+          <ion-badge *ngIf="eachScore > -1"
           [ngClass]="{'best-grade-color': eachScore >= 3.5, 'better-grade-color': (eachScore < 3.5 && eachScore >= 2), 'worse-grade-color': eachScore < 2 }">
           {{ eachScore }}
         </ion-badge>
-        <button *ngIf="eachScore == -1">
-          <i class="fa fa-clock-o" aria-hidden="true"></i>
-        </button>
       </ion-item>
     </ion-row>
   </ion-list>

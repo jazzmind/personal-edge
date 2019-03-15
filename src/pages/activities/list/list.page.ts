@@ -54,7 +54,7 @@ export class ActivitiesListPage {
     this.filteredActivityIDs = [];
     this.findSubmissions = [[], [], [], [], [], [],[]];
     this.tickedIDsArray = [[], [], [], [], [], [],[]];
-    this.AverageScore = [0, 0, 0, 0, 0, 0, 4];
+    this.AverageScore = [];
     this.userExperiencePoint = 0;
     this.eachActivityScores = [];
     this.totalAverageScore = 0;
@@ -246,7 +246,7 @@ export class ActivitiesListPage {
       if (this.activities.length == 1){
         this.achievementListIDs = this.newbieOrderedIDs;
       } 
-      
+ 
       _.forEach(this.activities, ((element, index) => {
         this.activityIndex = index + 1;
         let indeObj = {indexID: this.activityIndex};
@@ -443,6 +443,7 @@ export class ActivitiesListPage {
     return tick;
   }
   displayAverageScore(filteredActivityIDs, submissionData, findSubmissions, show_score_act, activityIndexArray, AverageScore){
+ 
     for(let j = 0; j < filteredActivityIDs.length; j++){
       for(let i = 0; i < submissionData.length; i++){
         if(submissionData[i].AssessmentSubmission.activity_id == filteredActivityIDs[j] && submissionData[i].AssessmentSubmission.status == 'published'){
@@ -485,5 +486,6 @@ export class ActivitiesListPage {
       }
       this.eachActivityScores.push(this.eachActivityScores[index]);
     });
+
   }
 }

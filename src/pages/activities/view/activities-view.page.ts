@@ -43,7 +43,7 @@ export class ActivitiesViewPage {
   public assessments: any = {};
   public submissions: Array<any> = [];
   public eachFinalScore: any = 0;
-  public eachScore: any = 0;
+  public eachScore: any = -2;
   public achievements: any = {
     available: [],
     obtained: {},
@@ -122,7 +122,7 @@ export class ActivitiesViewPage {
     this.newTickArray = this.tickArray[this.activityIndex-1];
     this.ticksLength = this.newTickArray.length;
     this.eachFinalScore = this.navParams.get('eachFinalScore');
-    this.eachScore = this.eachFinalScore[this.activityIndex-1];
+    this.eachScore = this.eachFinalScore.length ? this.eachFinalScore[this.activityIndex-1] : -1;
     this.newTickIDsArray = this.navParams.get('newTickIDsArray');
     if (this.activity.lead_image) {
       this.activity.backgroundImgUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.activity.lead_image+ ')');   
