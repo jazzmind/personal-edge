@@ -49,15 +49,14 @@ export class ActivitiesListPage {
     this.characterCurrentExperience = 0;
     this.currentPercentage = 0;
     this.activityIDs = [];
-    this.activityIndexes = [];
+    this.completedActivityIndexes = [];
     this.filteredActivityIDs = [];
-    this.findSubmissions = [[], [], [], [], [], [],[]];
     this.tickedIDsArray = [[], [], [], [], [], [],[]];
-    this.AverageScore = [0, 0, 0, 0, 0, 0, 4];
+    this.averageScore = [0, 0, 0, 0, 0, 0, 4];
     this.userExperiencePoint = 0;
     this.eachActivityScores = [];
     this.totalAverageScore = 0;
-    this.findDataStatus = [];
+    this.submissionStatus = null;
   }
   public hardcode_assessment_id: any = Configure.hardcode_assessment_id;
   public hardcode_context_id: any = Configure.hardcode_context_id;
@@ -65,13 +64,12 @@ export class ActivitiesListPage {
   public activityIndex: any = 0;
   public activities: any = [];
   public activityIDs: any = [];
-  public activityIndexes: any = [];
+  public completedActivityIndexes: any = [];
   public filteredActivityIDs: any = [];
-  public AverageScore: any = [];
+  public averageScore: any = [];
   public totalAverageScore: any = 0;
   public eachActivityScores: any = [];
   public finalAverageScoreShow: any = '0';
-  public findSubmissions: any = [];
   public button_show: boolean = true;
   public portfolio_request: boolean = false;
   public view_portfolio: boolean = false;
@@ -83,7 +81,7 @@ export class ActivitiesListPage {
   public maxPoints: number = 0;
   public currentPercentage: any = '0';
   public filteredSubmissions: any = [];
-  public findDataStatus: any = [];
+  public submissionStatus: string = null;
   public characterData: any = [];
   public submissionData: any = [];
   public sameFontSize: boolean = false;
@@ -233,7 +231,7 @@ export class ActivitiesListPage {
 
       // extract activity ids
       _.forEach(this.activities, ((act, index) => {
-        this.activities[index].Activity = Object.assign(act.Activity, { indexID: index + 1 });
+        this.activities[index].Activity.indexID = index + 1;
         this.activityIDs.push(act.Activity.id);
       }));
 
@@ -256,6 +254,7 @@ export class ActivitiesListPage {
 
         this.cacheService.setLocalObject('character', this.characterData);
         this.cacheService.setLocal('character_id', this.characterData.id);
+
         // display user experience points
         this.showUserExperience(this.characterData.experience_points);
         // achievement list data handling
@@ -263,46 +262,45 @@ export class ActivitiesListPage {
           this.userAchievementsIDs[index] = achievement.id;
         });
 
+        // render ticks for each acheivements
         if (this.userAchievementsIDs && this.achievementListIDs) {
           // find ahievement ID whether inside achievemnt list or not
           this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
         }
 
-        // find all 4 boxes are ticked index value inside changeColor array
+        // find activity with 4 boxes ticked from changeColor array (result: this.completedActivityIndexes)
         _.forEach(this.changeColor, (ele, index) => {
-          let findTrueIndex: any = _.uniq(ele, 'true');
+          let findTrueIndex: any = _.uniqBy(ele, 'true');
           if (findTrueIndex[0] == true && findTrueIndex.length == 1) {
-            this.activityIndexes.push(index);
+            this.completedActivityIndexes.push(index);
           }
         });
 
         // submission data handling
-        let findPostProgramAssessmentSubmission: any = [];
         _.forEach(this.submissionData, submission => {
           if (submission.Assessment.id == this.hardcode_assessment_id) { // hardcode for post program assessment_id
-            this.findDataStatus = submission.AssessmentSubmission.status;
+            this.submissionStatus = submission.AssessmentSubmission.status;
           }
         });
 
-        if (this.findDataStatus != "done") {
+        if (this.submissionStatus != "done") {
           this.view_portfolio = false;
         } else {
           this.view_portfolio = true;
         }
 
-        // match founded array index to activityIDs array and find each of activity IDs
-        for(let index = 0, len = this.activityIndexes.length; index < len; index++) {
-          this.filteredActivityIDs.push(this.activityIDs[this.activityIndexes[index]]);
-        };
+        // find matching array index from activityIDs array and find each of activity IDs
+        for (let index = 0, len = this.completedActivityIndexes.length; index < len; index++) {
+          this.filteredActivityIDs.push(this.activityIDs[this.completedActivityIndexes[index]]);
+        }
 
         // find submission based on founded activity IDs
         this.displayAverageScore(
           this.filteredActivityIDs,
           this.submissionData,
-          this.findSubmissions,
           this.show_score_act,
-          this.activityIndexes,
-          this.AverageScore
+          this.completedActivityIndexes,
+          this.averageScore
         );
 
         // get items API call
@@ -434,48 +432,56 @@ export class ActivitiesListPage {
     return tick;
   }
 
-  displayAverageScore(filteredActivityIDs, submissionData, findSubmissions, show_score_act, activityIndexes, AverageScore) {
+  displayAverageScore(filteredActivityIDs, submissionData, show_score_act, activityIndexes, averageScore) {
+    let findSubmissions = {0:[], 1:[], 2:[], 3:[], 4:[], 5:[], 6:[]};
     for (let j = 0; j < filteredActivityIDs.length; j++) {
       for (let i = 0; i < submissionData.length; i++) {
-        if (submissionData[i].AssessmentSubmission.activity_id == filteredActivityIDs[j] && submissionData[i].AssessmentSubmission.status == 'published') {
+        if (submissionData[i].AssessmentSubmission.activity_id == filteredActivityIDs[j]
+          && submissionData[i].AssessmentSubmission.status == 'published') {
           findSubmissions[j].push(parseFloat(submissionData[i].AssessmentSubmission.moderated_score));
         }
       }
 
-      findSubmissions[j].sort();
       findSubmissions[j].reverse();
       show_score_act[activityIndexes[j]] = true;
+
       if (findSubmissions[j].length > 1) {
-        AverageScore[activityIndexes[j]] = (findSubmissions[j][0]+findSubmissions[j][1])*2;
+        averageScore[activityIndexes[j]] = (findSubmissions[j][0]+findSubmissions[j][1]) * 2;
       } else if (findSubmissions[j].length == 1) {
-        AverageScore[activityIndexes[j]] = findSubmissions[j][0] * 4;
+        averageScore[activityIndexes[j]] = findSubmissions[j][0] * 10;
       }
+      // if index = 6, just assign full score
       if (activityIndexes[j] == 6) {
-        AverageScore[activityIndexes[j]] = 4;
+        averageScore[activityIndexes[j]] = 10;
       }
+
       if (activityIndexes[j] <= 5) { // add up together about each acitity average score
-        this.totalAverageScore += AverageScore[activityIndexes[j]];
+        this.totalAverageScore += averageScore[activityIndexes[j]];
       }
     }
 
     this.totalAverageScore = this.totalAverageScore/6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
-    //check if all activity's score has been displayed
+
+    // check if every activity has a score
     if (show_score_act.includes(false)) {
       this.button_show = true;
     } else {
       this.button_show = false;
     }
+
     if (this.button_show == false) {
       this.portfolio_request = true;
     } else {
       this.portfolio_request = false;
     }
+
+    // prepare scores for each activity for Detailed view (ActivitiesViewPage)
     _.forEach(show_score_act, (ele, index=6) => {
       if (ele == false) {
         this.eachActivityScores[index] = -1;
       } else {
-        this.eachActivityScores[index] = AverageScore[index];
+        this.eachActivityScores[index] = averageScore[index];
       }
       this.eachActivityScores.push(this.eachActivityScores[index]);
     });

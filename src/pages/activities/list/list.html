@@ -97,11 +97,11 @@
         </button>
         <ion-badge *ngIf="show_score_act[i]"
           [ngClass]="{
-            'best-grade-color': AverageScore[i] >= 3.5,
-            'better-grade-color': (AverageScore[i] < 3.5 && AverageScore[i] >= 2),
-            'worse-grade-color': AverageScore[i] < 2
+            'best-grade-color': averageScore[i] >= 3.5,
+            'better-grade-color': (averageScore[i] < 3.5 && averageScore[i] >= 2),
+            'worse-grade-color': averageScore[i] < 2
           }">
-          {{ AverageScore[i] }}
+          {{ averageScore[i] }}
         </ion-badge>
       </p>
     </div>

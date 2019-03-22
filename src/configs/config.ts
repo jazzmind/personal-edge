@@ -47,12 +47,12 @@ const HardcodeDataList = () => {
     // these are achievement IDs for the achievements earned when skills are submitted and pass review
     // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
     this.achievementListIDs = [
-      [628, 650, 626, 354], // creative thinker
-      [351, 404, 349, 350], // confident communicator
-      [370, 407, 368, 369], // ethical leader
-      [344, 403, 342, 343], // career strategist
-      [361, 405, 359, 360], // cross-cultural team player
-      [365, 406, 363, 364], // digital citizen
+      [628, 650, 626, 627], // creative thinker
+      [625, 652, 623, 624], // confident communicator
+      [637, 655, 635, 636], // ethical leader
+      [622, 651, 620, 621], // career strategist
+      [631, 653, 629, 630], // cross-cultural team player
+      [634, 654, 632, 633], // digital citizen
       [619, 619, 619, 619], // newbie
     ];
 
