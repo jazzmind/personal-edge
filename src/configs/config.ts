@@ -48,11 +48,11 @@ const HardcodeDataList = () => {
     // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
     this.achievementListIDs = [
       [628, 650, 626, 627], // creative thinker
-      [625, 652, 623, 624], // confident communicator
-      [637, 655, 635, 636], // ethical leader
-      [622, 651, 620, 621], // career strategist
-      [631, 653, 629, 630], // cross-cultural team player
-      [634, 654, 632, 633], // digital citizen
+      [625, 623, 652, 624], // confident communicator
+      [637, 635, 655, 636], // ethical leader
+      [622, 620, 651, 621], // career strategist
+      [631, 629, 653, 630], // cross-cultural team player
+      [634, 632, 654, 633], // digital citizen
       [619, 619, 619, 619], // newbie
     ];
 

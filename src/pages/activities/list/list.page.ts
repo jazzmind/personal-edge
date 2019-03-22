@@ -50,7 +50,7 @@ export class ActivitiesListPage {
     this.currentPercentage = 0;
     this.activityIDs = [];
     this.completedActivityIndexes = [];
-    this.filteredActivityIDs = [];
+    this.completedActivityIds = [];
     this.tickedIDsArray = [[], [], [], [], [], [],[]];
     this.averageScore = [0, 0, 0, 0, 0, 0, 4];
     this.userExperiencePoint = 0;
@@ -65,7 +65,7 @@ export class ActivitiesListPage {
   public activities: any = [];
   public activityIDs: any = [];
   public completedActivityIndexes: any = [];
-  public filteredActivityIDs: any = [];
+  public completedActivityIds: any = [];
   public averageScore: any = [];
   public totalAverageScore: any = 0;
   public eachActivityScores: any = [];
@@ -105,7 +105,7 @@ export class ActivitiesListPage {
     available: []
   };
   public achievementListIDs: any = Configure.achievementListIDs;
-  public show_score_act: any = [
+  public show_score: any = [
     false,false,false,false,false,false,false
   ];
   public getUserAchievementData: any = [];
@@ -224,7 +224,6 @@ export class ActivitiesListPage {
         this.navCtrl.push(InstructionPage);
       }
 
-      this.achievementListIDs = Configure.achievementListIDs;
       if (this.activities.length == 1) {
         this.achievementListIDs = Configure.newbieOrderedIDs;
       }
@@ -263,15 +262,15 @@ export class ActivitiesListPage {
         });
 
         // render ticks for each acheivements
-        if (this.userAchievementsIDs && this.achievementListIDs) {
-          // find ahievement ID whether inside achievemnt list or not
-          this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
+        if (this.userAchievementsIDs) {
+          // find if awarded achievement ID whether inside hardcoded achievemnt list
+          this.changeColor = this.isTicked(this.userAchievementsIDs);
         }
 
         // find activity with 4 boxes ticked from changeColor array (result: this.completedActivityIndexes)
-        _.forEach(this.changeColor, (ele, index) => {
-          let findTrueIndex: any = _.uniqBy(ele, 'true');
-          if (findTrueIndex[0] == true && findTrueIndex.length == 1) {
+        _.forEach(this.changeColor, (activityIds, index) => {
+          let completedAndMatched: any = _.uniqBy(activityIds, 'true'); // find any available `true`
+          if (completedAndMatched[0] == true && completedAndMatched.length == 1) {
             this.completedActivityIndexes.push(index);
           }
         });
@@ -291,14 +290,14 @@ export class ActivitiesListPage {
 
         // find matching array index from activityIDs array and find each of activity IDs
         for (let index = 0, len = this.completedActivityIndexes.length; index < len; index++) {
-          this.filteredActivityIDs.push(this.activityIDs[this.completedActivityIndexes[index]]);
+          this.completedActivityIds.push(this.activityIDs[this.completedActivityIndexes[index]]);
         }
 
         // find submission based on founded activity IDs
         this.displayAverageScore(
-          this.filteredActivityIDs,
+          this.completedActivityIds,
           this.submissionData,
-          this.show_score_act,
+          this.show_score,
           this.completedActivityIndexes,
           this.averageScore
         );
@@ -418,11 +417,11 @@ export class ActivitiesListPage {
     }
   }
 
-  isTicked(userAchievementIDs, hardcodedAchievements) {
+  isTicked(userAchievementIDs) {
     let tick = this.changeColor;
     for (let i = 0; i < 7; i++) { // we have 7 activities
       for (let j = 0; j < 4; j++) { // we have 4 ticks
-        if (userAchievementIDs.includes(hardcodedAchievements[i][j])) {
+        if (userAchievementIDs.includes(this.achievementListIDs[i][j])) {
           tick[i][j] = true;
         } else {
           tick[i][j] = false;
@@ -432,27 +431,33 @@ export class ActivitiesListPage {
     return tick;
   }
 
-  displayAverageScore(filteredActivityIDs, submissionData, show_score_act, activityIndexes, averageScore) {
-    let findSubmissions = {0:[], 1:[], 2:[], 3:[], 4:[], 5:[], 6:[]};
-    for (let j = 0; j < filteredActivityIDs.length; j++) {
+  displayAverageScore(completedActivityIds, submissionData, show_score, activityIndexes, averageScore) {
+    let scoresBySubmission = {
+      0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6:[]
+    };
+
+    for (let j = 0; j < completedActivityIds.length; j++) {
+      // extract score from reviewed subsmission
       for (let i = 0; i < submissionData.length; i++) {
-        if (submissionData[i].AssessmentSubmission.activity_id == filteredActivityIDs[j]
-          && submissionData[i].AssessmentSubmission.status == 'published') {
-          findSubmissions[j].push(parseFloat(submissionData[i].AssessmentSubmission.moderated_score));
+        const submission = submissionData[i].AssessmentSubmission;
+        if (submission.activity_id == completedActivityIds[j] && submission.status == 'published') {
+          scoresBySubmission[j].push(parseFloat(submission.moderated_score));
         }
       }
 
-      findSubmissions[j].reverse();
-      show_score_act[activityIndexes[j]] = true;
+      scoresBySubmission[j].reverse();
+      show_score[activityIndexes[j]] = true;
 
-      if (findSubmissions[j].length > 1) {
-        averageScore[activityIndexes[j]] = (findSubmissions[j][0]+findSubmissions[j][1]) * 2;
-      } else if (findSubmissions[j].length == 1) {
-        averageScore[activityIndexes[j]] = findSubmissions[j][0] * 10;
+      if (scoresBySubmission[j].length > 1) { // only first 2 highest reviews are counted
+        // old calculation (by scoring system from reviewer's choice)
+        // averageScore[activityIndexes[j]] = (scoresBySubmission[j][0] + scoresBySubmission[j][1]) * 2.5;
+        averageScore[activityIndexes[j]] = scoresBySubmission[j].length * 2.5;
+      } else if (scoresBySubmission[j].length == 1) {
+        averageScore[activityIndexes[j]] = 2.5; // scoresBySubmission[j][0] * 4;
       }
       // if index = 6, just assign full score
       if (activityIndexes[j] == 6) {
-        averageScore[activityIndexes[j]] = 10;
+        averageScore[activityIndexes[j]] = 5;
       }
 
       if (activityIndexes[j] <= 5) { // add up together about each acitity average score
@@ -464,7 +469,7 @@ export class ActivitiesListPage {
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
 
     // check if every activity has a score
-    if (show_score_act.includes(false)) {
+    if (show_score.includes(false)) {
       this.button_show = true;
     } else {
       this.button_show = false;
@@ -477,7 +482,7 @@ export class ActivitiesListPage {
     }
 
     // prepare scores for each activity for Detailed view (ActivitiesViewPage)
-    _.forEach(show_score_act, (ele, index=6) => {
+    _.forEach(show_score, (ele, index=6) => {
       if (ele == false) {
         this.eachActivityScores[index] = -1;
       } else {
