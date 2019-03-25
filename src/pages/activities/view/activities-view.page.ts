@@ -94,7 +94,12 @@ export class ActivitiesViewPage {
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
+
+    // indexID relayed from ActivitiesListPage
+    // purpose: to match current activity with the other navParams values (reuse same result of identical calculations logic)
     this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
+
+    // --- BEGINNING match navParams from ActivitiesListPage --
     this.activityIDsArrary = this.navParams.get('activityIDs');
     this.tickArray = this.navParams.get('tickArray');
     this.newTickArray = this.tickArray[this.activityIndex-1];
@@ -103,6 +108,8 @@ export class ActivitiesViewPage {
     this.eachScore = this.eachFinalScore[this.activityIndex-1];
     this.newTickIDsArray = this.navParams.get('newTickIDsArray');
     this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
+    // --- ENDING match navParams from ActivitiesListPage --
+
     // <Activity ID> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
     if (this.activityIDsArrary.includes(this.hardcode_activity_id)){
       this.logo_act1 = "./assets/img/badges/badge1.svg"; // if <Activity ID> exist, show career logo for the first activity, otherwise, show product logo for the first activity.

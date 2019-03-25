@@ -3,13 +3,13 @@
 const prefixUrl = 'https://api.practera.com/';
 const appKey = '69ad1e66dc';
 const achievementListIDs = [ // for handling activities ticks data display order
-  [355, 402, 353, 354],
-  [351, 404, 349, 350],
-  [370, 407, 368, 369],
-  [344, 403, 342, 343],
-  [361, 405, 359, 360],
-  [365, 406, 363, 364],
-  [341, 341, 341, 341]
+  [355, 402, 353, 354], // creative thinker
+  [351, 404, 349, 350], // confident communicator
+  [370, 407, 368, 369], // ethical leader
+  [344, 403, 342, 343], // career strategist
+  [361, 405, 359, 360], // cross-cultural team player
+  [365, 406, 363, 364], // digital citizen
+  [341, 341, 341, 341], // newbie
 ];
 const newbieOrderedIDs = [ // for handling initialized newbie assessment data display
   [341, 341, 341, 341],
@@ -47,6 +47,17 @@ const HardcodeDataList = () => {
     // these are achievement IDs for the achievements earned when skills are submitted and pass review
     // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
     this.achievementListIDs = [
+      [628, 650, 626, 627], // creative thinker
+      [625, 623, 652, 624], // confident communicator
+      [637, 635, 655, 636], // ethical leader
+      [622, 620, 651, 621], // career strategist
+      [631, 629, 653, 630], // cross-cultural team player
+      [634, 632, 654, 633], // digital citizen
+      [619, 619, 619, 619], // newbie
+    ];
+
+    // deprecated due to changes in BE
+    /*this.achievementListIDs = [
         [ 117, 139, 115, 116 ],
         [ 114, 141, 112, 113 ],
         [ 126, 144, 124, 125 ],
@@ -54,7 +65,7 @@ const HardcodeDataList = () => {
         [ 120, 142, 118, 119 ],
         [ 123, 143, 121, 122 ],
         [ 108, 108, 108, 108 ]
-    ];
+    ];*/
 
     // this version puts the newbie achievement first so that the "tutorial mode" can show the newbie first.
     this.newbieOrderedIDs = [

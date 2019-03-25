@@ -79,14 +79,29 @@
         </span>
       </p>
 
-      <rainbow-icons *ngIf="changeColor && changeColor[i]" col-3 class="ticks" [styling]="i" [colorings]="[changeColor[i][0], changeColor[i][1], changeColor[i][2], changeColor[i][3]]"></rainbow-icons>
+      <rainbow-icons col-3
+        *ngIf="changeColor && changeColor[i]"
+        class="ticks"
+        [styling]="i"
+        [colorings]="[
+          changeColor[i][0],
+          changeColor[i][1],
+          changeColor[i][2],
+          changeColor[i][3]
+        ]"
+      ></rainbow-icons>
 
       <p col-2 class="assessment-score" data-content-piece>
-        <button block *ngIf="!show_score_act[i]" >
+        <button block *ngIf="!show_score[i]" >
           <i class="fa fa-clock-o" aria-hidden="true"></i>
         </button>
-        <ion-badge *ngIf="show_score_act[i]" [ngClass]="{'best-grade-color': AverageScore[i] >= 3.5, 'better-grade-color': (AverageScore[i] < 3.5 && AverageScore[i] >= 2), 'worse-grade-color': AverageScore[i] < 2 }">
-          {{ AverageScore[i] }}
+        <ion-badge *ngIf="show_score[i]"
+          [ngClass]="{
+            'best-grade-color': averageScore[i] >= 3.5,
+            'better-grade-color': (averageScore[i] >= 2 && averageScore[i] < 3.5),
+            'worse-grade-color': averageScore[i] < 2
+          }">
+          {{ averageScore[i] }}
         </ion-badge>
       </p>
     </div>
