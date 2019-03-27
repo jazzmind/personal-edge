@@ -70,7 +70,7 @@ export class ActivitiesListPage {
   public totalAverageScore: any = 0;
   public eachActivityScores: any = [];
   public finalAverageScoreShow: any = '0';
-  public button_show: boolean = true;
+  public show_badge: boolean = true;
   public portfolio_request: boolean = false;
   public view_portfolio: boolean = false;
   public bookedEventsCount: number = 0;
@@ -468,17 +468,12 @@ export class ActivitiesListPage {
     this.totalAverageScore = this.totalAverageScore/6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
 
+    this.show_badge = false;
+    this.portfolio_request = false;
     // check if every activity has a score
-    if (show_score.includes(false)) {
-      this.button_show = true;
-    } else {
-      this.button_show = false;
-    }
-
-    if (this.button_show == false) {
+    if (!show_score.includes(false)) {
+      this.show_badge = true;
       this.portfolio_request = true;
-    } else {
-      this.portfolio_request = false;
     }
 
     // prepare scores for each activity for Detailed view (ActivitiesViewPage)
