@@ -22,6 +22,7 @@ import { AssessmentsGroupPage } from './group/assessments-group.page'
 import { ItemsPopupPage } from './popup/items-popup.page';
 // import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ActivitiesListPage } from '../activities/list/list.page';
+import { NotificationService } from '../../shared/notification/notification.service';
 
 @Component({
   selector: 'assessments-page',
@@ -67,7 +68,8 @@ export class AssessmentsPage {
     private gameService: GameService,
     private submissionService: SubmissionService,
     private translationService: TranslationService,
-    public events: Events
+    public events: Events,
+    private notificationService: NotificationService,
   ) {
     this.activity = this.navParams.get('activity');
     if (!this.activity) {
@@ -420,6 +422,12 @@ export class AssessmentsPage {
                     assessment_question_id: answ.assessment_question_id,
                     answer: answ.answer
                   }
+                } else {
+                  // return empty object to accommodate submission format accepted by server
+                  return {
+                    assessment_question_id: answ.assessment_question_id,
+                    answer: '',
+                  };
                 }
               })
             }));
@@ -430,14 +438,18 @@ export class AssessmentsPage {
         .forkJoin(tasks)
         .subscribe(
           (assessments: any) => {
-            loading.dismiss().then(_ => {
+            loading.dismiss().then(() => {
               this.allowSubmit = false;
               this.popupAfterSubmit();
             });
           },
           err => {
-            loading.dismiss().then(_ => {
-              console.log('err', err);
+            loading.dismiss().then(() => {
+              this.notificationService.alert({
+                title: 'Submission Failed.',
+                subTitle: err.msg,
+                buttons: ['Close']
+              });
             });
           }
         );
