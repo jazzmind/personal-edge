@@ -45,7 +45,7 @@ const hardcode_context_id = 2532; // Reference Model - Assessment Context ID
 // from activities-view.page.ts file
 const hardcode_activity_id = 7850; // <Activity ID> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
 const hardcodeAssessmentIds = [2124, 2125, 2126, 2127, 2128, 2129, 2050]; // for handling submitted assessments title display
-const hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661]; // for handling submitted assessments title display
+// const hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661]; // for handling submitted assessments title display
 const portfolio_domain = 'assess/assessments/portfolio'; //for handling digital portfolio url
 // function of hardcode list data
 const HardcodeDataList = () => {
