@@ -2,6 +2,26 @@
 // from list.page.ts file
 const prefixUrl = 'https://api.practera.com/';
 const appKey = '69ad1e66dc';
+const milestones = {
+  2391: [
+   [349, 350, 347, 348], // creative thinker
+   [345, 346, 343, 344], // confident communicator
+   [361, 362, 359, 360], // ethical leader
+   [341, 342, 339, 340], // career strategist
+   [353, 354, 351, 352], // cross-cultural team player
+   [357, 358, 355, 356], // digital citizen
+   [326, 326, 326, 326], // newbie
+ ],
+  2535: [
+    [628, 650, 626, 627], // creative thinker
+    [625, 623, 652, 624], // confident communicator
+    [637, 635, 655, 636], // ethical leader
+    [622, 620, 651, 621], // career strategist
+    [631, 629, 653, 630], // cross-cultural team player
+    [634, 632, 654, 633], // digital citizen
+    [619, 619, 619, 619], // newbie
+  ],
+};
 const achievementListIDs = [ // for handling activities ticks data display order
   [355, 402, 353, 354], // creative thinker
   [351, 404, 349, 350], // confident communicator
@@ -46,6 +66,7 @@ const HardcodeDataList = () => {
 
     // these are achievement IDs for the achievements earned when skills are submitted and pass review
     // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
+    // experience (PE 2.0)
     this.achievementListIDs = [
       [628, 650, 626, 627], // creative thinker
       [625, 623, 652, 624], // confident communicator
@@ -99,7 +120,20 @@ const HardcodeDataList = () => {
     this.portfolio_domain = `https://stage-test.practera.com/${portfolio_domain}`;
     // this.prefixUrl = 'https://sandbox.practera.com/';
     // this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
+
+    // hardcoded for Personal Edge Test Experience 1.0
     this.achievementListIDs = [
+      [349, 350, 347, 348], // creative thinker
+      [345, 346, 343, 344], // confident communicator
+      [361, 362, 359, 360], // ethical leader
+      [341, 342, 339, 340], // career strategist
+      [353, 354, 351, 352], // cross-cultural team player
+      [357, 358, 355, 356], // digital citizen
+      [326, 326, 326, 326], // newbie
+    ];
+
+    // deprecated as in local environments
+    /*this.achievementListIDs = [
       [349, 350, 347, 348],
       [345, 346, 343, 344],
       [361, 362, 359, 360],
@@ -107,7 +141,7 @@ const HardcodeDataList = () => {
       [353, 354, 351, 352],
       [357, 358, 355, 356],
       [326, 326, 326, 326]
-    ];
+    ];*/
     this.newbieOrderedIDs = [
       [326, 326, 326, 326],
       [349, 350, 347, 348],
@@ -162,7 +196,8 @@ const HardcodeDataList = () => {
     hardcode_activity_id: this.hardcode_activity_id,
     hardcodeAssessmentIds: this.hardcodeAssessmentIds,
     hardcodeQuestionIDs: this.hardcodeQuestionIDs,
-    portfolio_domain: this.portfolio_domain
+    portfolio_domain: this.portfolio_domain,
+    achievementsByMilestone: milestones,
   }
 }
 export default HardcodeDataList();
