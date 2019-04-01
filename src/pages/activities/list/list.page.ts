@@ -224,6 +224,8 @@ export class ActivitiesListPage {
         this.navCtrl.push(InstructionPage);
       }
 
+      const milestoneId = this.cacheService.getLocalObject('milestone_id');
+      this.achievementListIDs = Configure.achievementsByMilestone[milestoneId] || this.achievementListIDs;
       if (this.activities.length == 1) {
         this.achievementListIDs = Configure.newbieOrderedIDs;
       }
