@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { App, NavController, MenuController, LoadingController, AlertController, ModalController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
+import { AuthService } from '../../services/auth.service';
+import { FilestackService, FilestackUpload } from '../../shared/filestack/filestack.service';
+import { UtilsService } from '../../shared/utils/utils.service';
 // pages
 import { LeaderboardSettingsPage } from '../settings/leaderboard/leaderboard-settings.page';
 import { LoginPage } from '../../pages/login/login';
@@ -18,6 +21,7 @@ export class SettingsPage {
   public helpline = "personaledge@rmit.edu.vn";
   public logoutMessage: any = loadingMessages.Logout.logout;
   public hideMe: boolean;
+  private user: any = {};
   constructor(
     private cache: CacheService,
     private navCtrl: NavController,
@@ -27,7 +31,11 @@ export class SettingsPage {
     public alertCtrl: AlertController,
     public translationService: TranslationService,
     private appCtrl: App,
-    private gameService: GameService
+    private gameService: GameService,
+    private authService: AuthService,
+    private fs: FilestackService,
+    private zone: NgZone,
+    private utils: UtilsService,
   ) {}
   public settings = [];
   ionViewWillEnter() {
@@ -58,6 +66,9 @@ export class SettingsPage {
           loading.dismiss();
         });
     }
+    // getting user data saved in cashe
+    this.user = this.cache.getLocalObject('user');
+    
   }
   public getUserEmail() {
     return this.cache.getLocalObject('email') || '';
@@ -120,4 +131,41 @@ export class SettingsPage {
       });
     });
   }
+
+  private _updateProfile() {
+    this.authService.editUserProfile({
+      image: ''
+    })
+    .subscribe((result) => {
+
+    }, (err) => {
+
+    });
+  }
+
+  async upload(event) {
+    let self = this;
+
+    const user = this.cache.getLocalObject('user');
+    const fs = await this.fs.pick(user.userhash, {
+      maxFiles: 1, // default by max 5 files
+      onUploadDone: (response) => {
+        if (response.filesUploaded && response.filesUploaded[0]) {
+          self.zone.run(() => {
+            const file = response.filesUploaded[0]; // pick the first file
+            file.icon = self.utils.getIcon(file.mimetype);
+            // self.uploaded = file;
+          });
+        }
+
+        // return this.pickUploaded(response);
+      },
+      onFileUploadFailed: (err) => {
+        console.log(err);
+      }
+    });
+
+    return fs;
+  }
+
 }
