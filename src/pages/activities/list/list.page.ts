@@ -445,7 +445,13 @@ export class ActivitiesListPage {
       show_score[activityIndexes[j]] = true;
 
       if (scoresBySubmission[j].length > 1) { // only first 2 highest reviews are counted
-        averageScore[activityIndexes[j]] = (scoresBySubmission[j][0] + scoresBySubmission[j][1]) * 2;
+        // old calculation,
+        // averageScore[activityIndexes[j]] = (scoresBySubmission[j][0] + scoresBySubmission[j][1]) * 2;
+
+        // new calculation:
+        // - pick the highest one instead of average
+        // - Moderated_score comes in the form of pointer (0.0 - 0.5 - 1.0) as percentage
+        averageScore[activityIndexes[j]] = Math.max(...scoresBySubmission[j]) * 4;
       } else if (scoresBySubmission[j].length == 1) {
         averageScore[activityIndexes[j]] = scoresBySubmission[j][0] * 4;
       }
