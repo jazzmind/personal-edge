@@ -11,7 +11,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { loadingMessages, errMessages } from '../../../app/messages';
+import { errMessages } from '../../../app/messages';
 import { default as Configure } from '../../../configs/config';
 // services
 import { ActivityService } from '../../../services/activity.service';
@@ -203,9 +203,6 @@ export class ActivitiesListPage {
 
   // display user achievemnt statistics score points
   async loadingDashboard() {
-    let loadingData = await this.loadingCtrl.create({
-      content: 'Loading ..'
-    });
     let loadingFailed = await this.toastCtrl.create({
       message: this.activitiesLoadingErr,
       duration: 4000,
@@ -361,9 +358,6 @@ export class ActivitiesListPage {
   }
 
   requestPortfolio() { // request protfolio link action sheet box display functionality
-    let processLoading = this.loadingCtrl.create({
-      content: 'loading ..'
-    });
     let requestPortfolioPopup = this.actionSheetCtrl.create({
       title: `Please note, that once you have requested the digital portfolio your grade can not be changed by doing more submissions. It will be final.`,
       buttons:[
@@ -451,11 +445,15 @@ export class ActivitiesListPage {
       show_score[activityIndexes[j]] = true;
 
       if (scoresBySubmission[j].length > 1) { // only first 2 highest reviews are counted
-        // old calculation (by scoring system from reviewer's choice)
-        // averageScore[activityIndexes[j]] = (scoresBySubmission[j][0] + scoresBySubmission[j][1]) * 2.5;
-        averageScore[activityIndexes[j]] = scoresBySubmission[j].length * 2.5;
+        // old calculation,
+        // averageScore[activityIndexes[j]] = (scoresBySubmission[j][0] + scoresBySubmission[j][1]) * 2;
+
+        // new calculation:
+        // - pick the highest one instead of average
+        // - Moderated_score comes in the form of pointer (0.0 - 0.5 - 1.0) as percentage
+        averageScore[activityIndexes[j]] = Math.max(...scoresBySubmission[j]) * 4;
       } else if (scoresBySubmission[j].length == 1) {
-        averageScore[activityIndexes[j]] = 2.5; // scoresBySubmission[j][0] * 4;
+        averageScore[activityIndexes[j]] = scoresBySubmission[j][0] * 4;
       }
       // if index = 6, just assign full score
       if (activityIndexes[j] == 6) {
