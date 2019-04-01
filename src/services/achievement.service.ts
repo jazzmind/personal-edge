@@ -29,19 +29,19 @@ export class AchievementService {
   /*
     turn:
     {
-        "Achievement": {
-            "id": 1,
-            "name": "test",
-            "description": "",
-            "badge": "https://www.filepicker.io/api/file/test",
-            "visibility": 1,
-            "condition": "AND",
-            "model": "Program",
-            "model_id": 4,
-            "is_default": false,
-            "scope": "individual",
-            "points": 100
-        }
+      "Achievement": {
+        "id": 1,
+        "name": "test",
+        "description": "",
+        "badge": "https://www.filepicker.io/api/file/test",
+        "visibility": 1,
+        "condition": "AND",
+        "model": "Program",
+        "model_id": 4,
+        "is_default": false,
+        "scope": "individual",
+        "points": 100
+      }
     }
 
     into:
@@ -62,4 +62,7 @@ export class AchievementService {
   public normalise(achievement) {
     return achievement.Achievement;
   }
+
+  // @TODO: park this calculator here as a reminder to unify all the calculations and display them correctly
+  // public calculator() {}
 }
