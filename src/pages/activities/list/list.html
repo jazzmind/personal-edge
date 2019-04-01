@@ -95,10 +95,10 @@
       ></rainbow-icons>
 
       <p col-2 class="assessment-score" data-content-piece>
-        <button block *ngIf="!show_score[i]" >
+        <button block *ngIf="!show_score[i]">
           <i class="fa fa-clock-o" aria-hidden="true"></i>
         </button>
-        <ion-badge *ngIf="show_score[i]"
+        <ion-badge *ngIf="show_score[i] && activity.Activity.name != 'Newbie'"
           [ngClass]="{
             'best-grade-color': averageScore[i] >= 3.5,
             'better-grade-color': (averageScore[i] >= 2 && averageScore[i] < 3.5),
@@ -106,12 +106,14 @@
           }">
           {{ averageScore[i] }}
         </ion-badge>
+        <ion-badge *ngIf="show_score[i] && activity.Activity.name == 'Newbie'"
+          class="best-grade-color">
+          <ion-icon name="checkmark"></ion-icon>
+        </ion-badge>
       </p>
     </div>
 
-    <div
-      *ngIf="activity.Activity.is_locked == true"
-      class="locked">
+    <div *ngIf="activity.Activity.is_locked == true" class="locked">
       <i class="fa fa-lock" aria-hidden="true"></i>
       <span (click)="goToPopup(activity.Activity.unlock_id)" class="line-break" data-content-name>
         {{ activity.Activity.name }}
