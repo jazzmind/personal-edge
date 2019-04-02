@@ -457,7 +457,7 @@ export class ActivitiesListPage {
       }
       // if index = 6, just assign full score
       if (activityIndexes[j] == 6) {
-        averageScore[activityIndexes[j]] = 5;
+        averageScore[activityIndexes[j]] = 4;
       }
 
       if (activityIndexes[j] <= 5) { // add up together about each acitity average score
