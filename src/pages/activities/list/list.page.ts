@@ -473,6 +473,15 @@ export class ActivitiesListPage {
     // check if every activity has a score
     if (!show_score.includes(false)) {
       this.show_badge = true;
+    }
+
+    // 2019_04_02: we only allow request after user obtained scores 2.5 and above
+    const thirdTicks = [];
+    this.changeColor.forEach(ticks => {
+      thirdTicks.push(ticks[2]); // extract 3rd tick (boolean)
+    });
+
+    if (!thirdTicks.includes(false) && this.totalAverageScore >= 2.5) {
       this.portfolio_request = true;
     }
 

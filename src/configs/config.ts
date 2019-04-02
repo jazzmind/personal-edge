@@ -11,7 +11,7 @@ const milestones = {
    [353, 354, 351, 352], // cross-cultural team player
    [357, 358, 355, 356], // digital citizen
    [326, 326, 326, 326], // newbie
- ],
+  ],
   2535: [
     [628, 650, 626, 627], // creative thinker
     [625, 623, 652, 624], // confident communicator
@@ -101,7 +101,8 @@ const HardcodeDataList = () => {
 
     // this is the AssessmentId and ContextId of the post-program survey, used as the "application" for a the final transcript
     // the transcript button will not link to the final transcript page until this is done
-    this.hardcode_assessment_id = 138;
+    // this.hardcode_assessment_id = 138;
+    this.hardcode_assessment_id = 3683;
     this.hardcode_context_id = 109;
 
     // Activity ID is the activity id of Ethical Leader; if this is present on the screen then
@@ -151,7 +152,8 @@ const HardcodeDataList = () => {
       [353, 354, 351, 352],
       [357, 358, 355, 356]
     ];
-    this.hardcode_assessment_id = 2064;
+    // this.hardcode_assessment_id = 2064;
+    this.hardcode_assessment_id = 3683;
     this.hardcode_context_id = 2487;
     this.hardcode_activity_id = 7655;
     this.hardcodeAssessmentIds = [2066, 2067, 2068, 2069, 2070, 2071, 2050];
