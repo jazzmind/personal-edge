@@ -3,8 +3,6 @@ import { ModalController, NavParams, NavController, AlertController } from 'ioni
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { default as Configure } from '../../../configs/config';
-// pipes
-import { TruncatePipe } from '../../../pipes/truncate.pipe';
 // pages
 import { ActivityAchievementModalPage } from './activity-achievement.modal.page';
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
