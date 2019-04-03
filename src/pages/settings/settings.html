@@ -5,7 +5,7 @@
   <ion-list no-lines data-track-name="setting">
     <ion-item class="profile-info">
       <ion-avatar class="profile-image" item-start>
-        <img [src]="user.image">
+        <img [src]="user.image || 'https://www.gravatar.com/avatar/'">
         <p class="upload-icon" (click)="upload($event)"><ion-icon ios="ios-camera" md="md-camera"></ion-icon></p>
       </ion-avatar>
       <h2 *ngIf="getUserName()">{{ getUserName() }}</h2>
