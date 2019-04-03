@@ -25,4 +25,38 @@
     content: "Hidden";
     font-weight: bold;
   }
+  .profile-info {
+    .profile-image {
+      min-height: 100px;
+      img {
+        width: 80px; 
+        height: 80px;
+        object-fit: cover;
+      }
+      .upload-icon {
+        cursor: pointer;
+        position: absolute; 
+        top: 60px;
+        left: 70px;
+        border-radius: 50%; 
+        overflow: hidden; 
+        width: 32px; 
+        height: 32px; 
+        text-align: center; 
+        background-color: #00b5ac;
+        color: white;
+        ion-icon {
+          font-size: 24px;
+          margin-top: 10%;
+        }
+      }
+    }
+    h2 {
+      font-size: 20px;
+    }
+    p {
+      font-size: 12px;
+      color: #8089B2;
+    }
+  }
 }
