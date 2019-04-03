@@ -11,7 +11,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { loadingMessages, errMessages } from '../../../app/messages';
+import { errMessages } from '../../../app/messages';
 import { default as Configure } from '../../../configs/config';
 // services
 import { ActivityService } from '../../../services/activity.service';
@@ -44,20 +44,19 @@ import { WindowRef } from '../../../shared/window';
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage {
-  public initilized_varible(){
+  public initilized_varible() {
     this.bookedEventsCount = 0;
     this.characterCurrentExperience = 0;
     this.currentPercentage = 0;
     this.activityIDs = [];
-    this.activityIndexArray = [];
-    this.filteredActivityIDs = [];
-    this.findSubmissions = [[], [], [], [], [], [],[]];
+    this.completedActivityIndexes = [];
+    this.completedActivityIds = [];
     this.tickedIDsArray = [[], [], [], [], [], [],[]];
-    this.AverageScore = [0, 0, 0, 0, 0, 0, 4];
+    this.averageScore = [0, 0, 0, 0, 0, 0, 4];
     this.userExperiencePoint = 0;
     this.eachActivityScores = [];
     this.totalAverageScore = 0;
-    this.findDataStatus = [];
+    this.submissionStatus = null;
   }
   public hardcode_assessment_id: any = Configure.hardcode_assessment_id;
   public hardcode_context_id: any = Configure.hardcode_context_id;
@@ -65,14 +64,13 @@ export class ActivitiesListPage {
   public activityIndex: any = 0;
   public activities: any = [];
   public activityIDs: any = [];
-  public activityIndexArray: any = [];
-  public filteredActivityIDs: any = [];
-  public AverageScore: any = [];
+  public completedActivityIndexes: any = [];
+  public completedActivityIds: any = [];
+  public averageScore: any = [];
   public totalAverageScore: any = 0;
   public eachActivityScores: any = [];
   public finalAverageScoreShow: any = '0';
-  public findSubmissions: any = [];
-  public button_show: boolean = true;
+  public show_badge: boolean = true;
   public portfolio_request: boolean = false;
   public view_portfolio: boolean = false;
   public bookedEventsCount: number = 0;
@@ -83,7 +81,7 @@ export class ActivitiesListPage {
   public maxPoints: number = 0;
   public currentPercentage: any = '0';
   public filteredSubmissions: any = [];
-  public findDataStatus: any = [];
+  public submissionStatus: string = null;
   public characterData: any = [];
   public submissionData: any = [];
   public sameFontSize: boolean = false;
@@ -107,7 +105,7 @@ export class ActivitiesListPage {
     available: []
   };
   public achievementListIDs: any = Configure.achievementListIDs;
-  public show_score_act: any = [
+  public show_score: any = [
     false,false,false,false,false,false,false
   ];
   public getUserAchievementData: any = [];
@@ -123,6 +121,7 @@ export class ActivitiesListPage {
   public tickedIDsArray: any = [];
   public userAchievementsIDs: any = [];
   public checkUserPointer: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public activityService: ActivityService,
@@ -149,11 +148,13 @@ export class ActivitiesListPage {
       this.viewPortfolioLink = `${this.portfolio_domain}/1/test@test.com`;
     }
   }
-  ionViewWillEnter(){
+
+  ionViewWillEnter() {
     // reset data to 0 when page reloaded before got new data
     this.initilized_varible();
     this.loadingDashboard();
   }
+
   ionViewDidEnter() {
     // Open new items modal when submitted no-need-review answer.
     // @NOTE getLocal() return boolean data as string
@@ -163,18 +164,22 @@ export class ActivitiesListPage {
       });
     }
   }
+
   refreshPage() {
     this.initilized_varible();
     this.loadingDashboard();
   }
+
   openEvent() {
     // Move to event page
     this.navCtrl.parent.select(1); // go to event tab page
   }
+
   openLeaderboard() {
     // Move to leaderboard page
     this.navCtrl.parent.select(2); // go to leaderboard tab page
   }
+
   openPortfolio() {
     // Move to portfolio page
     if (this.view_portfolio) {
@@ -190,6 +195,7 @@ export class ActivitiesListPage {
       }
     }
   }
+
   openNewItemsModal(params: any = {}) {
     let modal = this.modalCtrl.create(NewItemsPage, params);
     modal.present();
@@ -197,9 +203,6 @@ export class ActivitiesListPage {
 
   // display user achievemnt statistics score points
   async loadingDashboard() {
-    let loadingData = await this.loadingCtrl.create({
-      content: 'Loading ..'
-    });
     let loadingFailed = await this.toastCtrl.create({
       message: this.activitiesLoadingErr,
       duration: 4000,
@@ -209,28 +212,27 @@ export class ActivitiesListPage {
     this.activityService.getList().subscribe(results => {
       // get activities data
       this.activities = results;
-      if (this.activities.length == 0){
+      if (this.activities.length == 0) {
         this.returnError = true;
       }
 
-      if (this.activities.length == 1 && document.cookie == ""){
+      if (this.activities.length == 1 && document.cookie == "") {
         document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
         this.navCtrl.push(InstructionPage);
       }
 
-      if (this.activities.length == 1){
-        this.achievementListIDs = Configure.newbieOrderedIDs
-      } else {
-        this.achievementListIDs = Configure.achievementListIDs;
+      const milestoneId = this.cacheService.getLocalObject('milestone_id');
+      this.achievementListIDs = Configure.achievementsByMilestone[milestoneId] || this.achievementListIDs;
+      if (this.activities.length == 1) {
+        this.achievementListIDs = Configure.newbieOrderedIDs;
       }
-      _.forEach(this.activities, ((element, index) => {
-        this.activityIndex = index + 1;
-        let indeObj = {indexID: this.activityIndex};
-        this.activities[index].Activity = _.extend({}, this.activities[index].Activity, indeObj);
-        this.activityIDs.push(this.activities[index].Activity.id);
+
+      // extract activity ids
+      _.forEach(this.activities, ((act, index) => {
+        this.activities[index].Activity.indexID = index + 1;
+        this.activityIDs.push(act.Activity.id);
       }));
 
-      // this.activityIDs = this.activityIDs.toString();
       let gameId = this.cacheService.getLocalObject('game_id');
       let getCharacter = this.gameService.getCharacters(gameId);
       let getSubmission = this.submissionService.getSubmissionsData();
@@ -243,58 +245,62 @@ export class ActivitiesListPage {
         getUserAchievemnt,
         getUserEvents
       ]).subscribe(results => { // save API request results as a single integrated object
-        // Now only support 1 character in a game
-        this.characterData = results[1].Characters[0];
+        this.submissionData = results[0];
+        this.characterData = results[1].Characters[0]; // Now only support 1 character in a game
+        this.getUserAchievementData = results[2];
+        this.eventsData = results[3];
+
         this.cacheService.setLocalObject('character', this.characterData);
         this.cacheService.setLocal('character_id', this.characterData.id);
+
         // display user experience points
         this.showUserExperience(this.characterData.experience_points);
         // achievement list data handling
-        this.getUserAchievementData = results[2];
-        _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
-          this.userAchievementsIDs[index] = ele.id;
+        _.forEach(this.getUserAchievementData.Achievement, (achievement, index) => {
+          this.userAchievementsIDs[index] = achievement.id;
         });
 
-        if (this.userAchievementsIDs && this.achievementListIDs) {
-          // find ahievement ID whether inside achievemnt list or not
-          this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
+        // render ticks for each acheivements
+        if (this.userAchievementsIDs) {
+          // find if awarded achievement ID whether inside hardcoded achievemnt list
+          this.changeColor = this.isTicked(this.userAchievementsIDs);
         }
 
-        // find all 4 boxes are ticked index value inside changeColor array
-        _.forEach(this.changeColor, (ele, index) => {
-          let findTrueIndex: any = _.uniq(ele, 'true');
-          if(findTrueIndex[0] == true && findTrueIndex.length == 1){
-            this.activityIndexArray.push(index);
+        // find activity with 4 boxes ticked from changeColor array (result: this.completedActivityIndexes)
+        _.forEach(this.changeColor, (activityIds, index) => {
+          let completedAndMatched: any = _.uniqBy(activityIds, 'true'); // find any available `true`
+          if (completedAndMatched[0] == true && completedAndMatched.length == 1) {
+            this.completedActivityIndexes.push(index);
           }
         });
 
         // submission data handling
-        let findPostProgramAssessmentSubmission: any = [];
-        this.submissionData = results[0];
-        _.forEach(this.submissionData, (element, index) => {
-          if(element.Assessment.id == this.hardcode_assessment_id){ // hardcode for post program assessment_id
-            this.findDataStatus = element.AssessmentSubmission.status;
+        _.forEach(this.submissionData, submission => {
+          if (submission.Assessment.id == this.hardcode_assessment_id) { // hardcode for post program assessment_id
+            this.submissionStatus = submission.AssessmentSubmission.status;
           }
         });
 
-        if (this.findDataStatus != "done"){
+        if (this.submissionStatus != "done") {
           this.view_portfolio = false;
         } else {
           this.view_portfolio = true;
         }
 
-        // match founded array index to activityIDs array and find each of activity IDs
-        for(let index = 0, len = this.activityIndexArray.length; index < len; index++) {
-          this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
-        };
+        // find matching array index from activityIDs array and find each of activity IDs
+        for (let index = 0, len = this.completedActivityIndexes.length; index < len; index++) {
+          this.completedActivityIds.push(this.activityIDs[this.completedActivityIndexes[index]]);
+        }
 
         // find submission based on founded activity IDs
-        this.displayAverageScore(this.filteredActivityIDs,
+        this.displayAverageScore(
+          this.completedActivityIds,
           this.submissionData,
-          this.findSubmissions,
-          this.show_score_act,
-          this.activityIndexArray,
-          this.AverageScore);
+          this.show_score,
+          this.completedActivityIndexes,
+          this.averageScore
+        );
+
         // get items API call
         this.gameService.getItems({
           character_id: this.characterData.id
@@ -309,10 +315,9 @@ export class ActivitiesListPage {
             console.log("Items Data error: ", err);
           }
         );
-        this.eventsData = results[3];
-        if (this.eventsData){
+        if (this.eventsData) {
           _.forEach(this.eventsData, (element, index) => {
-            if(this.eventsData[index].isBooked == true && moment().isBefore(moment(this.eventsData[index].end))){
+            if (this.eventsData[index].isBooked == true && moment().isBefore(moment(this.eventsData[index].end))) {
               this.bookedEventsCount++;
             }
           });
@@ -326,8 +331,9 @@ export class ActivitiesListPage {
         loadingFailed.present();
     });
   }
+
   // redirect to activity detail page
-  goToDetail(activity: any){
+  goToDetail(activity: any) {
     this.navCtrl.push(ActivitiesViewPage, {
       achievements: this.achievements,
       activity: activity,
@@ -338,20 +344,20 @@ export class ActivitiesListPage {
       portfolioView: this.view_portfolio
     });
   }
+
   // view the disabled activity popup
-  goToPopup(unlock_id: any){
+  goToPopup(unlock_id: any) {
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});
     disabledActivityPopup.present();
   }
+
   // link to certain pages
   whatsThis() {
     let popover = this.popoverCtrl.create(PopoverTextPage);
     popover.present();
   }
-  requestPortfolio(){ // request protfolio link action sheet box display functionality
-    let processLoading = this.loadingCtrl.create({
-      content: 'loading ..'
-    });
+
+  requestPortfolio() { // request protfolio link action sheet box display functionality
     let requestPortfolioPopup = this.actionSheetCtrl.create({
       title: `Please note, that once you have requested the digital portfolio your grade can not be changed by doing more submissions. It will be final.`,
       buttons:[
@@ -387,77 +393,104 @@ export class ActivitiesListPage {
     });
     requestPortfolioPopup.present();
   }
-  showUserExperience(experience_points){
+
+  showUserExperience(experience_points) {
     this.userExperiencePoint = experience_points;
-    if(this.userExperiencePoint >= 10000){
+    if (this.userExperiencePoint >= 10000) {
       this.sameFontSize = true;
-    }else {
+    } else {
       this.sameFontSize = false;
     }
     this.characterCurrentExperience = experience_points;
-    if(experience_points >= 100000){
+    if (experience_points >= 100000) {
       this.characterCurrentExperience = (experience_points/1000).toFixed(1)+'K';
     }
-    if(experience_points >= 1000000){
+    if (experience_points >= 1000000) {
       this.characterCurrentExperience = (experience_points/1000000).toFixed(1)+'M';
     }
-    if(experience_points == 0) {
+    if (experience_points == 0) {
       this.characterCurrentExperience = '0';
     }
   }
-  isTicked(userAchievementIDs, hardcodedAchievements){
+
+  isTicked(userAchievementIDs) {
     let tick = this.changeColor;
-    for(let i = 0; i < 7; i++){
-      for(let j = 0; j < 4; j++){
-        if(userAchievementIDs.includes(hardcodedAchievements[i][j])){
+    for (let i = 0; i < 7; i++) { // we have 7 activities
+      for (let j = 0; j < 4; j++) { // we have 4 ticks
+        if (userAchievementIDs.includes(this.achievementListIDs[i][j])) {
           tick[i][j] = true;
-        }else {
+        } else {
           tick[i][j] = false;
         }
       }
     }
     return tick;
   }
-  displayAverageScore(filteredActivityIDs, submissionData, findSubmissions, show_score_act, activityIndexArray, AverageScore){
-    for(let j = 0; j < filteredActivityIDs.length; j++){
-      for(let i = 0; i < submissionData.length; i++){
-        if(submissionData[i].AssessmentSubmission.activity_id == filteredActivityIDs[j] && submissionData[i].AssessmentSubmission.status == 'published'){
-          findSubmissions[j].push(parseFloat(submissionData[i].AssessmentSubmission.moderated_score));
+
+  displayAverageScore(completedActivityIds, submissionData, show_score, activityIndexes, averageScore) {
+    let scoresBySubmission = {
+      0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6:[]
+    };
+
+    for (let j = 0; j < completedActivityIds.length; j++) {
+      // extract score from reviewed subsmission
+      for (let i = 0; i < submissionData.length; i++) {
+        const submission = submissionData[i].AssessmentSubmission;
+        if (submission.activity_id == completedActivityIds[j] && submission.status == 'published') {
+          scoresBySubmission[j].push(parseFloat(submission.moderated_score));
         }
       }
-      findSubmissions[j].sort();
-      findSubmissions[j].reverse();
-      show_score_act[activityIndexArray[j]] = true;
-      if(findSubmissions[j].length > 1){
-        AverageScore[activityIndexArray[j]] = (findSubmissions[j][0]+findSubmissions[j][1])*2;
-      }else if(findSubmissions[j].length == 1) {
-        AverageScore[activityIndexArray[j]] = findSubmissions[j][0] * 4;
+
+      scoresBySubmission[j].reverse();
+      show_score[activityIndexes[j]] = true;
+
+      if (scoresBySubmission[j].length > 1) { // only first 2 highest reviews are counted
+        // old calculation,
+        // averageScore[activityIndexes[j]] = (scoresBySubmission[j][0] + scoresBySubmission[j][1]) * 2;
+
+        // new calculation:
+        // - pick the highest one instead of average
+        // - Moderated_score comes in the form of pointer (0.0 - 0.5 - 1.0) as percentage
+        averageScore[activityIndexes[j]] = Math.max(...scoresBySubmission[j]) * 4;
+      } else if (scoresBySubmission[j].length == 1) {
+        averageScore[activityIndexes[j]] = scoresBySubmission[j][0] * 4;
       }
-      if(activityIndexArray[j] == 6){
-        AverageScore[activityIndexArray[j]] = 4;
+      // if index = 6, just assign full score
+      if (activityIndexes[j] == 6) {
+        averageScore[activityIndexes[j]] = 4;
       }
-      if(activityIndexArray[j] <= 5){ // add up together about each acitity average score
-        this.totalAverageScore += AverageScore[activityIndexArray[j]];
+
+      if (activityIndexes[j] <= 5) { // add up together about each acitity average score
+        this.totalAverageScore += averageScore[activityIndexes[j]];
       }
     }
+
     this.totalAverageScore = this.totalAverageScore/6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
-    //check if all activity's score has been displayed
-    if(show_score_act.includes(false)){
-      this.button_show = true;
-    }else {
-      this.button_show = false;
+
+    this.show_badge = false;
+    this.portfolio_request = false;
+    // check if every activity has a score
+    if (!show_score.includes(false)) {
+      this.show_badge = true;
     }
-    if(this.button_show == false){
+
+    // 2019_04_02: we only allow request after user obtained scores 2.5 and above
+    const thirdTicks = [];
+    this.changeColor.forEach(ticks => {
+      thirdTicks.push(ticks[2]); // extract 3rd tick (boolean)
+    });
+
+    if (!thirdTicks.includes(false) && this.totalAverageScore >= 2.5) {
       this.portfolio_request = true;
-    }else {
-      this.portfolio_request = false;
     }
-    _.forEach(show_score_act, (ele, index=6) => {
-      if(ele == false){
+
+    // prepare scores for each activity for Detailed view (ActivitiesViewPage)
+    _.forEach(show_score, (ele, index=6) => {
+      if (ele == false) {
         this.eachActivityScores[index] = -1;
-      }else {
-        this.eachActivityScores[index] = AverageScore[index];
+      } else {
+        this.eachActivityScores[index] = averageScore[index];
       }
       this.eachActivityScores.push(this.eachActivityScores[index]);
     });
