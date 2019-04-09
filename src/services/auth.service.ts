@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
 import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+
+export interface ProfileData {
+  image:string
+}
 @Injectable()
 export class AuthService {
   private appkey: any = this.request.getAppkey();
@@ -87,4 +91,11 @@ export class AuthService {
   isAuthenticated() {
     return true;
   }
+
+  editUserProfile(profiledata: ProfileData) {
+    return this.request.post('api/v2/user/account/edit', profiledata, {
+      'Content-Type': 'application/json'
+    });
+  }
+
 }
