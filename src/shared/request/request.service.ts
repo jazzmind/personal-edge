@@ -158,6 +158,7 @@ export class RequestService {
     'Content-Type': 'application/x-www-form-urlencoded'
   }) {
     let options = new RequestOptions({ headers: this.appendHeader(header) });
+    data.queryEncoder = new CustomQueryEncoder();
     return this.http.post(this.prefixUrl + endPoint, data, options)
       .map(this.extractData)
       .catch(this.handleError);
