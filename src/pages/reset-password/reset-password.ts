@@ -31,7 +31,7 @@ export class ResetPasswordPage implements OnInit {
   private windowHeight: number = window.innerHeight / 3;
   private isLandscaped: boolean = false;
   public password: string;
-  public verify_password: string;
+  public verify_password: string = null;
   private verifySuccess: boolean = null;
   private resetPwdFormGroup: any;
   private verifyPwd: boolean = false;
@@ -99,12 +99,10 @@ export class ResetPasswordPage implements OnInit {
       .subscribe(data => {
         loading.dismiss();
         this.verifySuccess = true;
-        console.log("valueTrue: " + this.verifySuccess);
       },
       err => {
         loading.dismiss();
         this.verifySuccess = false;
-        console.log("valueFalse: " + this.verifySuccess);
         setTimeout(() => {
           this.navCtrl.push(LoginPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
@@ -215,13 +213,13 @@ export class ResetPasswordPage implements OnInit {
   }
   // check password minmimum length
   checkMinLength(){
-    return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
   // check password mismacth issue
   verifyPwdKeyUp() {
-    return this.verifyPwd = true;
-  }
-  pwdMatchCheck() {
-    return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
+    this.verifyPwd = true;
+    this.isPwdMatch = (this.password != this.verify_password) ? true : false;
+    if (this.password && this.verify_password) {
+      this.minLengthCheck = (this.password.length < 8 || this.verify_password.length < 8) ? true : false;
+    }
   }
 }
