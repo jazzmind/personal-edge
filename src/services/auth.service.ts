@@ -63,9 +63,8 @@ export class AuthService {
     let urlSearchParams = new URLSearchParams([
       `key=${key}`,
       `email=${email}`
-    ].join('&'), new CustomQueryEncoder());
-    return this.http.post(this.AUTH_ENDPOINT+'verify_reset_password', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    ].join('&'));
+    return this.request.post('api/auths.json?action=verify_reset_password', urlSearchParams);
   }
   resetUserPassword(key, email, password, verify_password) {
     let options = new RequestOptions({headers: this.headerData()});
