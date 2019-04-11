@@ -66,17 +66,17 @@ export class AuthService {
     ].join('&'));
     return this.request.post('api/auths.json?action=verify_reset_password', urlSearchParams);
   }
+
   resetUserPassword(key, email, password, verify_password) {
-    let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams([
       `key=${key}`,
       `email=${email}`,
       `password=${password}`,
       `verify_password=${verify_password}`
     ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'reset_password', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.request.post('api/auths.json?action=reset_password', urlSearchParams);
   }
+
   magicLinkLogin(auth_token){
     let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams();
