@@ -1,8 +1,26 @@
 import { Injectable, Optional } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
+import { Http, Response, Headers, RequestOptions, RequestOptionsArgs, URLSearchParams, QueryEncoder } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CacheService } from '../../shared/cache/cache.service';
+
+export class CustomQueryEncoder implements QueryEncoder {
+  encodeKey(k: string): string {
+    return encodeURIComponent(k);
+  }
+
+  encodeValue(v: string): string {
+    return encodeURIComponent(v);
+  }
+
+  decodeKey(k: string): string {
+    return decodeURIComponent(k);
+  }
+
+  decodeValue(v: string): string {
+    return decodeURIComponent(v);
+  }
+}
 
 // Definition configure for API request
 // This ONLY definition of class, any changed of value will no effect.

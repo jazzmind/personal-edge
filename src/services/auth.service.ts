@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RequestService } from '../shared/request/request.service';
+import { RequestService, CustomQueryEncoder } from '../shared/request/request.service';
 import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 
 export interface ProfileData {
@@ -63,7 +63,7 @@ export class AuthService {
     let urlSearchParams = new URLSearchParams([
       `key=${key}`,
       `email=${email}`
-    ].join('&'));
+    ].join('&'), new CustomQueryEncoder());
     return this.http.post(this.AUTH_ENDPOINT+'verify_reset_password', urlSearchParams.toString(), options)
                     .map(res => res.json());
   }
