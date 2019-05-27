@@ -59,8 +59,8 @@ export class ActivitiesListPage {
     this.totalAverageScore = 0;
     this.submissionStatus = null;
   }
-  public hardcode_assessment_id: any = Configure.hardcode_assessment_id;
-  public hardcode_context_id: any = Configure.hardcode_context_id;
+  public hardcodeEndAssessmentId: any = Configure.hardcodeEndAssessmentId;
+  public hardcodeEndAssessmentContextId: any = Configure.hardcodeEndAssessmentContextId;
   public portfolio_domain: any = Configure.portfolio_domain;
   public activityIndex: any = 0;
   public activities: any = [];
@@ -107,7 +107,7 @@ export class ActivitiesListPage {
     available: []
   };
   public achievementListIDs: any = Configure.achievementListIDs;
-  public newbieOrderedIDs: any = Configure.newbieOrderedIDs;
+  public newbieOrderedIDs: any = Configure.achievementListNewbieIDs;
   public show_score: any = [
     false,false,false,false,false,false,false
   ];
@@ -167,8 +167,8 @@ export class ActivitiesListPage {
     if (this.config.achievementListIDs) {
       console.log(this.config.achievementListIDs);
       this.achievementListIDs = this.config.achievementListIDs;
-      this.hardcode_assessment_id = this.config.hardcode_assessment_id;
-      this.hardcode_context_id = this.config.hardcode_context_id;
+      this.hardcodeEndAssessmentId = this.config.hardcodeEndAssessmentId;
+      this.hardcodeEndAssessmentContextId = this.config.hardcodeEndAssessmentContextId;
       this.newbieOrderedIDs = this.config.achievementListNewbieIDs;
     }
   }
@@ -300,7 +300,7 @@ export class ActivitiesListPage {
 
         // submission data handling
         _.forEach(this.submissionData, submission => {
-          if (submission.Assessment.id == this.hardcode_assessment_id) { // hardcode for post program assessment_id
+          if (submission.Assessment.id == this.hardcodeEndAssessmentId) { // hardcode for post program assessment_id
             this.submissionStatus = submission.AssessmentSubmission.status;
           }
         });
@@ -397,14 +397,14 @@ export class ActivitiesListPage {
             let refs = {
               References: [{
                 Assessment: {
-                  id: this.hardcode_assessment_id,
+                  id: this.hardcodeEndAssessmentId,
                   name: "Final questionnaire"
                 },
-                context_id: this.hardcode_context_id // hardcode for context_id
+                context_id: this.hardcodeEndAssessmentContextId // hardcode for context_id
               }],
               assessment: {
-                id: this.hardcode_assessment_id,
-                context_id: this.hardcode_context_id // hardcode for context_id
+                id: this.hardcodeEndAssessmentId,
+                context_id: this.hardcodeEndAssessmentContextId // hardcode for context_id
               }
             };
 

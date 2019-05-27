@@ -18,9 +18,9 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
-  public hardcode_activity_id: any = Configure.hardcode_activity_id;
-  public hardcodeAssessmentIds: any = Configure.hardcodeAssessmentIds;
-  public hardcodeQuestionIDs: any = Configure.hardcodeQuestionIDs;
+  public hardcodeActivityId: any = Configure.hardcodeActivityId;
+  public hardcodeSkillAssessmentIds: any = Configure.hardcodeSkillAssessmentIds;
+  public hardcodeQuestionIds: any = Configure.hardcodeQuestionIds;
   public logo_act1 = "./assets/img/badges/badge7.svg";
   public activityIDsArray: any = [];
   public submissionTitles: any = [];
@@ -85,10 +85,10 @@ export class ActivitiesViewPage {
     this.portfolioView = this.navParams.get('portfolioView');
     this.config = JSON.parse(this.cache.getLocal('config'));
     console.log(this.config);
-    if (this.config.hardcodeAssessmentIds) {
-      this.hardcodeAssessmentIds = this.config.hardcodeAssessmentIds;
-      this.hardcodeQuestionIDs = this.config.hardcodeQuestionIDs;
-      this.hardcode_activity_id = this.config.hardcode_activity_id;
+    if (this.config.hardcodeSkillAssessmentIds) {
+      this.hardcodeSkillAssessmentIds = this.config.hardcodeSkillAssessmentIds;
+      this.hardcodeQuestionIds = this.config.hardcodeQuestionIds;
+      this.hardcodeActivityId = this.config.hardcodeActivityId;
     }
     
     if (this.config.primaryColor) {
@@ -134,7 +134,7 @@ export class ActivitiesViewPage {
       this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
     }
     // <Activity ID> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
-    if (this.activityIDsArray.includes(this.hardcode_activity_id)){
+    if (this.activityIDsArray.includes(this.hardcodeActivityId)){
       this.logo_act1 = "./assets/img/badges/badge1.svg"; // if <Activity ID> exist, show career logo for the first activity, otherwise, show product logo for the first activity.
     }
     // all achievements data
@@ -337,12 +337,12 @@ export class ActivitiesViewPage {
   }
   getSubmissionTitle(Submissions){ // get user named assessment submission title
     let assessment_question_id: any = 0;
-    let hardcodeAssessmentIds = Configure.hardcodeAssessmentIds;
-    let hardcodeQuestionIDs = Configure.hardcodeQuestionIDs;
+    let hardcodeSkillAssessmentIds = Configure.hardcodeSkillAssessmentIds;
+    let hardcodeQuestionIds = Configure.hardcodeQuestionIds;
     if(Submissions[0]){
-      for(let i = 0; i < hardcodeAssessmentIds.length; i++){
-        if(Submissions[0].assessment_id === hardcodeAssessmentIds[i]){
-          assessment_question_id = hardcodeQuestionIDs[i];
+      for(let i = 0; i < hardcodeSkillAssessmentIds.length; i++){
+        if(Submissions[0].assessment_id === hardcodeSkillAssessmentIds[i]){
+          assessment_question_id = hardcodeQuestionIds[i];
         }
       }
       _.forEach(Submissions, (element, index) => {
