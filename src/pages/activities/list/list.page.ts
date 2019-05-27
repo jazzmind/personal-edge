@@ -150,10 +150,13 @@ export class ActivitiesListPage {
     if (this.email && this.program_id) {
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = this.cacheService.getLocalObject('email');
-      this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
     } else {
-      this.viewPortfolioLink = `${this.portfolio_domain}/1/test@test.com`;
+      this.program_id = 1;
+      this.email = 'test+portfolio@practera.com';
     }
+    // replace @ and + characters in email addr
+    this.email = encodeURIComponent(this.email);
+    this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
     this.config = JSON.parse(this.cacheService.getLocal('config'));
     if (this.config.backgroundImageUrl) {
       this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl+ ')');
