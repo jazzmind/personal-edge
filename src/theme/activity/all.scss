@@ -91,14 +91,15 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          color: color($colors, white);
           .best-grade-color {
-            color: color($colors, palette-one, contrast);
+            background-color: color($colors, palette-one, contrast);
           }
           .better-grade-color {
-           color: color($colors, primary-button, base);
+            background-color: color($colors, primary-button, base);
           }
           .worse-grade-color {
-            color: color($colors, badge-bg, base);
+            background-color: color($colors, badge-bg, base);
           }
           ion-badge {
             font-size: 14pt;
