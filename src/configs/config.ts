@@ -31,7 +31,7 @@ const achievementListIDs = [ // for handling activities ticks data display order
   [365, 406, 363, 364], // digital citizen
   [341, 341, 341, 341], // newbie
 ];
-const newbieOrderedIDs = [ // for handling initialized newbie assessment data display
+const achievementListNewbieIDs = [ // for handling initialized newbie assessment data display
   [341, 341, 341, 341],
   [355, 402, 353, 354],
   [351, 404, 349, 350],
@@ -91,7 +91,7 @@ const HardcodeDataList = () => {
     ];*/
 
     // this version puts the newbie achievement first so that the "tutorial mode" can show the newbie first.
-    this.newbieOrderedIDs = [
+    this.achievementListNewbieIDs = [
         [ 108, 108, 108, 108 ],
         [ 117, 139, 115, 116 ],
         [ 114, 141, 112, 113 ],
@@ -128,7 +128,7 @@ const HardcodeDataList = () => {
       [365, 406, 363, 364],
       [341, 341, 341, 341]
     ];
-    this.newbieOrderedIDs = [
+    this.achievementListNewbieIDs = [
       [341, 341, 341, 341],
       [355, 402, 353, 354],
       [351, 404, 349, 350],
@@ -154,7 +154,7 @@ const HardcodeDataList = () => {
       [365, 406, 363, 364],
       [341, 341, 341, 341]
     ];
-    this.newbieOrderedIDs = [
+    this.achievementListNewbieIDs = [
       [341, 341, 341, 341],
       [355, 402, 353, 354],
       [351, 404, 349, 350],
@@ -193,7 +193,7 @@ const HardcodeDataList = () => {
     ];
 
     // this version puts the newbie achievement first so that the "tutorial mode" can show the newbie first.
-    this.newbieOrderedIDs = [
+    this.achievementListNewbieIDs = [
         [ 3431, 3431, 3431, 3431 ], // starter
         [ 3443, 3465, 3441, 3442 ], // service oriented
         [ 3449, 3467, 3447, 3448 ], // collaborative
@@ -233,7 +233,7 @@ const HardcodeDataList = () => {
         [357, 358, 355, 356],
         [326, 326, 326, 326]
       ];
-      this.newbieOrderedIDs = [
+      this.achievementListNewbieIDs = [
         [326, 326, 326, 326],
         [349, 350, 347, 348],
         [345, 346, 343, 344],
@@ -256,7 +256,7 @@ const HardcodeDataList = () => {
     prefixUrl: this.prefixUrl,
     appKey: this.appKey,
     achievementListIDs: this.achievementListIDs,
-    newbieOrderedIDs: this.newbieOrderedIDs,
+    achievementListNewbieIDs: this.achievementListNewbieIDs,
     hardcodeEndAssessmentId: this.hardcodeEndAssessmentId,
     hardcodeEndAssessmentContextId: this.hardcodeEndAssessmentContextId,
     hardcodeActivityId: this.hardcodeActivityId,

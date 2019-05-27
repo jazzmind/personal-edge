@@ -107,7 +107,7 @@ export class ActivitiesListPage {
     available: []
   };
   public achievementListIDs: any = Configure.achievementListIDs;
-  public newbieOrderedIDs: any = Configure.achievementListNewbieIDs;
+  public achievementListNewbieIDs: any = Configure.achievementListNewbieIDs;
   public show_score: any = [
     false,false,false,false,false,false,false
   ];
@@ -169,7 +169,7 @@ export class ActivitiesListPage {
       this.achievementListIDs = this.config.achievementListIDs;
       this.hardcodeEndAssessmentId = this.config.hardcodeEndAssessmentId;
       this.hardcodeEndAssessmentContextId = this.config.hardcodeEndAssessmentContextId;
-      this.newbieOrderedIDs = this.config.achievementListNewbieIDs;
+      this.achievementListNewbieIDs = this.config.achievementListNewbieIDs;
     }
   }
 
@@ -248,7 +248,7 @@ export class ActivitiesListPage {
       const milestoneId = this.cacheService.getLocalObject('milestone_id');
       this.achievementListIDs = Configure.achievementsByMilestone[milestoneId] || this.achievementListIDs;
       if (this.activities.length == 1) {
-        this.achievementListIDs = Configure.newbieOrderedIDs;
+        this.achievementListIDs = Configure.achievementListNewbieIDs;
       }
 
       // extract activity ids
