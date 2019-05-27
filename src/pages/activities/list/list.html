@@ -33,8 +33,9 @@
               <p class="title">{{ 'ACTIVITY.GRADE' | translate }}</p>
               <p [style.height.px]="47.31" class="number user-grade">
                 <ion-badge *ngIf="show_badge" [ngClass]="{
-                  'best-grade-color': totalAverageScore >= 3.5,
-                  'better-grade-color': (totalAverageScore < 3.5 && totalAverageScore >= 2), 'worse-grade-color': totalAverageScore < 2
+                  'best-grade-color': finalAverageScoreShow >= 3.5,
+                  'better-grade-color': (finalAverageScoreShow < 3.5 && finalAverageScoreShow >= 2), 
+                  'worse-grade-color': finalAverageScoreShow < 2
                 }">
                   {{ finalAverageScoreShow }}
                 </ion-badge>
@@ -98,7 +99,7 @@
         <button block *ngIf="!show_score[i]">
           <i class="fa fa-clock-o" aria-hidden="true"></i>
         </button>
-        <ion-badge *ngIf="show_score[i] && activity.Activity.name != 'Newbie'"
+        <ion-badge *ngIf="show_score[i] && activity.Activity.name != 'Starter'"
           [ngClass]="{
             'best-grade-color': averageScore[i] >= 3.5,
             'better-grade-color': (averageScore[i] >= 2 && averageScore[i] < 3.5),
@@ -106,7 +107,7 @@
           }">
           {{ averageScore[i] }}
         </ion-badge>
-        <ion-badge *ngIf="show_score[i] && activity.Activity.name == 'Newbie'"
+        <ion-badge *ngIf="show_score[i] && activity.Activity.name == 'Starter'"
           class="best-grade-color">
           <ion-icon name="checkmark"></ion-icon>
         </ion-badge>
