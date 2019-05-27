@@ -54,8 +54,12 @@
     <ion-row class="medal-ticks">
       <ion-item col-10>
         <span *ngFor="let tick of newTickArray; let i = index;" class="each-tick tick-color-{{ activityIndex }}">
-          <i class="fa" (click)="achievementPopup(i)"
-            [ngClass]="{'fa-check-circle-o icon-color-5': tick, 'fa-circle-thin tick-color-default': !tick }"
+          <i class="fa"
+            (click)="achievementPopup(i)"
+            [ngClass]="{
+              'fa-check-circle-o icon-color-5': tick,
+              'fa-circle-thin tick-color-default': !tick
+            }"
             aria-hidden="true">
           </i>
         </span>
@@ -67,9 +71,17 @@
           <button *ngIf="eachScore == -1">
               <i class="fa fa-clock-o" aria-hidden="true"></i>
             </button>
-          <ion-badge *ngIf="eachScore > -1"
-          [ngClass]="{'best-grade-color': eachScore >= 3.5, 'better-grade-color': (eachScore < 3.5 && eachScore >= 2), 'worse-grade-color': eachScore < 2 }">
+          <ion-badge *ngIf="eachScore > -1 && activity.name != 'Starter'"
+          [ngClass]="{
+            'best-grade-color': eachScore >= 3.5, 
+            'better-grade-color': (eachScore < 3.5 && eachScore >= 2), 
+            'worse-grade-color': eachScore < 2 
+          }">
           {{ eachScore }}
+        </ion-badge>
+        <ion-badge *ngIf="eachScore > -1 && activity.name == 'Starter'"
+          class="best-grade-color">
+          <ion-icon name="checkmark"></ion-icon>
         </ion-badge>
       </ion-item>
     </ion-row>
@@ -91,6 +103,8 @@
       <ion-spinner>Loading submissions...</ion-spinner>
     </ion-item>
     <ion-item class="submissions-information" *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
+
+      <!-- done -->
       <ion-row *ngIf='!submissionTitles[i].published'>
         <ion-item class="submission-title" col-10>
           <h2 *ngIf='!submissionTitles[i].inprogress && submissionTitles[i].moderated_assessment'>Waiting for Review</h2>
@@ -102,11 +116,23 @@
           <button block class="pendingbutton" *ngIf="submission.status !== 'done'">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
           </button>
-          <ion-badge *ngIf="submission.status === 'done'" [ngClass]="{'best-grade-color': eachScore >= 3.5, 'better-grade-color': (eachScore < 3.5 && eachScore >= 2), 'worse-grade-color': eachScore < 2 }">
-            4
+          <ion-badge
+            *ngIf="submission.status === 'done' && activity.name != 'Newbie'"
+            [ngClass]="{
+              'best-grade-color': eachScore >= 3.5,
+              'better-grade-color': (eachScore < 3.5 && eachScore >= 2),
+              'worse-grade-color': eachScore < 2
+            }">4
+          </ion-badge>
+          <ion-badge
+            *ngIf="submission.status === 'done' && activity.name == 'Newbie'"
+            class="best-grade-color">
+            <ion-icon class="newbie" name="checkmark"></ion-icon>
           </ion-badge>
         </ion-item>
       </ion-row>
+
+      <!-- published -->
       <ion-row *ngIf='submissionTitles[i].published'>
         <ion-item class="submission-title" col-10>
           <h2 *ngIf="submissionTitle[i]">{{ submissionTitle[i] | truncate: 50 }}</h2>
@@ -114,7 +140,11 @@
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-item>
         <ion-item class="note" col-2>
-          <ion-badge [ngClass]="{'best-grade-color': submissionTitles[i].result_score >= 3.5, 'better-grade-color': (submissionTitles[i].result_score < 3.5 && submissionTitles[i].result_score >= 2), 'worse-grade-color': submissionTitles[i].result_score < 2 }">
+          <ion-badge [ngClass]="{
+            'best-grade-color': submissionTitles[i].result_score >= 3.5,
+            'better-grade-color': (submissionTitles[i].result_score < 3.5 && submissionTitles[i].result_score >= 2),
+            'worse-grade-color': submissionTitles[i].result_score < 2
+          }">
             {{ submissionTitles[i].result_score }}
           </ion-badge>
         </ion-item>

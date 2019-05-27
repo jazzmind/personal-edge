@@ -3,8 +3,6 @@ import { ModalController, NavParams, NavController, AlertController } from 'ioni
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { default as Configure } from '../../../configs/config';
-// pipes
-import { TruncatePipe } from '../../../pipes/truncate.pipe';
 // pages
 import { ActivityAchievementModalPage } from './activity-achievement.modal.page';
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
@@ -116,7 +114,12 @@ export class ActivitiesViewPage {
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
+
+    // indexID relayed from ActivitiesListPage
+    // purpose: to match current activity with the other navParams values (reuse same result of identical calculations logic)
     this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
+
+    // --- BEGINNING match navParams from ActivitiesListPage --
     this.activityIDsArray = this.navParams.get('activityIDs');
     this.tickArray = this.navParams.get('tickArray');
     this.newTickArray = this.tickArray[this.activityIndex-1];

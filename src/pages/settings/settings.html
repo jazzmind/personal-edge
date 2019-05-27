@@ -3,9 +3,14 @@
 </ion-header>
 <ion-content class="settings" padding="true" data-track-content>
   <ion-list no-lines data-track-name="setting">
-    <ion-list-header>
-      {{ 'SETTINGS.PROFILE' | translate }} <span *ngIf="getUserEmail()">({{ getUserEmail() }})</span>
-    </ion-list-header>
+    <ion-item class="profile-info">
+      <ion-avatar class="profile-image" item-start>
+        <img [src]="user.image || 'https://www.gravatar.com/avatar/'">
+        <p class="upload-icon" (click)="upload($event)"><ion-icon ios="ios-camera" md="md-camera"></ion-icon></p>
+      </ion-avatar>
+      <h2 *ngIf="getUserName()">{{ getUserName() }}</h2>
+      <p *ngIf="getUserEmail()">{{ getUserEmail() }}</p>
+    </ion-item>
     <ion-item [ngClass]="{'item-hidden':(hideMe), 'item-visible':(!hideMe)}">
       <!-- <ion-label *ngIf="!hideMe" text-wrap>Hide my name on leaderboard</ion-label>
       <ion-label *ngIf="hideMe" text-wrap>Show my name on leaderboard</ion-label> -->
