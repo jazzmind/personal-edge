@@ -41,7 +41,7 @@ export class RequestService {
   constructor (
     @Optional() config: RequestServiceConfig,
     private http: Http,
-    private cacheService: CacheService
+    private cacheService: CacheService,
   ) {
     // Inject appKey and prefixUrl when RequestServiceConfig loaded
     if (config) {
@@ -84,6 +84,16 @@ export class RequestService {
       let errorBody = error.json();
       currentError.frontendCode = errorBody.data || errorBody.error;
     }
+
+    // log the user out if jwt expired
+    if ((error.error && error.error.message) && error.error.message === 'Session expired' || error.error.message === 'Expired apikey') {
+      // force user logout
+      this.cacheService.clear().then(() => {
+        console.log('error::', error);
+        console.log('currentError::', currentError);
+      });
+    }
+
     return Observable.throw(currentError);
   }
 
