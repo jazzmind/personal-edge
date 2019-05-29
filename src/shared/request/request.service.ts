@@ -86,12 +86,10 @@ export class RequestService {
     }
 
     // log the user out if jwt expired
-    if ((error.error && error.error.message) && error.error.message === 'Session expired' || error.error.message === 'Expired apikey') {
+    if (error.status === 401 && currentError.message && (currentError.message === 'Session expired' || currentError.message === 'Expired apikey')) {
       // force user logout
-      this.cacheService.clear().then(() => {
-        console.log('error::', error);
-        console.log('currentError::', currentError);
-      });
+      localStorage.clear();
+      window.location.replace('/');
     }
 
     return Observable.throw(currentError);
