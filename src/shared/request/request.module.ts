@@ -18,9 +18,8 @@ import { CacheService } from '../../shared/cache/cache.service';
     {
       provide: TokenInterceptor,
       useFactory:
-        (backend: XHRBackend, defaultOptions: RequestOptions) => {
-        return new TokenInterceptor(backend, defaultOptions);
-      },
+        (backend: XHRBackend, defaultOptions: RequestOptions) => new TokenInterceptor(backend, defaultOptions),
+      deps: [XHRBackend, RequestOptions]
     }
     // { provide: RequestOptions, useClass: CustomRequestOption }
   ]
