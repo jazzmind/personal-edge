@@ -4,15 +4,24 @@ import {
   SkipSelf,
   Optional
 } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 import { CommonModule} from '@angular/common';
 import '../rxjs-operators';
 import { RequestServiceConfig, RequestService } from './request.service';
+import { TokenInterceptor } from './token.interceptor';
+import { CacheService } from '../../shared/cache/cache.service';
 
 @NgModule({
   imports: [HttpModule, CommonModule, /* spare a space for appcache module*/],
   providers: [
     RequestService,
+    {
+      provide: TokenInterceptor,
+      useFactory:
+        (backend: XHRBackend, defaultOptions: RequestOptions) => {
+        return new TokenInterceptor(backend, defaultOptions);
+      },
+    }
     // { provide: RequestOptions, useClass: CustomRequestOption }
   ]
 })

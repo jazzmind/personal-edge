@@ -56,13 +56,13 @@ const HardcodeDataList = () => {
   if (devEndpoints.includes(window.location.hostname)) {
     // function for app to access hardcoded data
     // this is the URL prefix for all api requests
-    this.prefixUrl = 'https://stage-test.practera.com/';
+    this.prefixUrl = 'https://sandbox.practera.com/';
 
     // this is the AppKey from the experience admin screen
     this.appKey = appKey;
 
     // This is the base URL for the student to access their portfolio
-    this.portfolio_domain = `https://stage-test.practera.com/portfolio`;
+    this.portfolio_domain = `https://sandbox.practera.com/portfolio`;
 
     // these are achievement IDs for the achievements earned when skills are submitted and pass review
     // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
