@@ -117,8 +117,8 @@ const HardcodeDataList = () => {
 
   } else if (!liveEndpoints.includes(window.location.hostname)) {
      // if not live server, then, go to sandbox hardcode list and pre-config data
-    this.prefixUrl = 'https://stage-test.practera.com/';
-    this.portfolio_domain = `https://stage-test.practera.com/${portfolio_domain}`;
+    this.prefixUrl = 'https://sandbox.practera.com/';
+    this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
     // this.prefixUrl = 'https://sandbox.practera.com/';
     // this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
 
