@@ -74,22 +74,22 @@ export class RequestService {
     let errorFrom = {
         api: 'SERVER_ERROR',
       },
-      currentError: any = error.json();
-    if (typeof error !== 'object') {
-      throw 'Unable to process API respond!';
-    }
-    if (error.status === 0) { // client unrecoverable error encountered
-      currentError.frontendCode = errorFrom.api;
-    } else {
-      let errorBody = error.json();
-      currentError.frontendCode = errorBody.data || errorBody.error;
-    }
+      currentError: any = error.json ? error.json() : error;
 
-    // log the user out if jwt expired
-    if (error.status === 401 && currentError.message && (currentError.message === 'Session expired' || currentError.message === 'Expired apikey')) {
-      // force user logout
-      localStorage.clear();
-      window.location.replace('/');
+    if (error.status) {
+      if (error.status === 0) { // client unrecoverable error encountered
+        currentError.frontendCode = errorFrom.api;
+      } else {
+        let errorBody = error.json();
+        currentError.frontendCode = errorBody.data || errorBody.error;
+      }
+
+      // log the user out if jwt expired
+      if (error.status === 401 && currentError.message && (currentError.message === 'Session expired' || currentError.message === 'Expired apikey')) {
+        // force user logout
+        localStorage.clear();
+        window.location.replace('/');
+      }
     }
 
     return Observable.throw(currentError);
@@ -187,6 +187,11 @@ export class RequestService {
   // Extract response data and convert it to JSON
   extractData(res: Response) {
     let body = res.json();
+
+    // update to latest token
+    if (body && body.apikey) {
+      localStorage.apikey = JSON.stringify(body.apikey);
+    }
     return body.data || {};
   }
 }
