@@ -123,8 +123,8 @@ export class CacheService {
     this.localStorage.removeItem(key);
   }
 
-  public clearLocal(cb): any {
-    return cb(this.localStorage.clear());
+  public clearLocal(): Promise<any> {
+    return this.storage.clear();
   }
 
   /**

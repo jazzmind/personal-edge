@@ -1,5 +1,7 @@
 import { Component, ViewChild, OnInit, NgZone } from '@angular/core';
 import { Platform, NavController, AlertController, ToastController, Events } from 'ionic-angular';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+
 // services
 import { CacheService } from '../shared/cache/cache.service';
 import { AuthService } from '../services/auth.service';
@@ -53,7 +55,7 @@ export class MyApp implements OnInit {
     private cache: CacheService,
     private eventsListener: Events,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
   ) {
     eventsListener.subscribe('toaster', data => {
       let toast = toastCtrl.create({
@@ -61,6 +63,7 @@ export class MyApp implements OnInit {
         duration: 3000
       });
     });
+    console.log('nav::', this.nav);
     /*if (!platform.is('ios')) {
       win.nativeWindow.onbeforeunload = (e) => {
         e.preventDefault();
@@ -132,7 +135,7 @@ export class MyApp implements OnInit {
         navParams[singleURLParam[0]] = singleURLParam[1];
       });
     }
-
+console.log('this.nav::', this.nav);
     if (page) {
       this.nav.setRoot(page, navParams);
     } else {
