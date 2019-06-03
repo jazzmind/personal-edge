@@ -53,6 +53,7 @@ export class AuthService {
       'Content-Type': 'application/x-www-form-urlencoded',
     });
   }
+
   forgotPassword(email){
     let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams();
@@ -60,6 +61,7 @@ export class AuthService {
     return this.http.post(this.AUTH_ENDPOINT+'forgot_password', urlSearchParams.toString(), options)
                     .map(res => res.json());
   }
+
   verifyUserKeyEmail(key, email){
     let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams([
@@ -86,6 +88,7 @@ export class AuthService {
     return this.http.post(this.prefixUrl+'api/auths.json?', urlSearchParams.toString(), options)
                     .map(res => res.json());
   }
+
   getUser() {
     return this.request.get('api/users.json');
   }

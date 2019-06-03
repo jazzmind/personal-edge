@@ -144,7 +144,7 @@ export class RegisterPage implements OnInit {
 
               // get milestone data after registration and login
               self.milestoneService.getMilestones()
-                .subscribe( data => {
+                .subscribe(data => {
                   loading.dismiss().then(() => {
                     this.milestone_id = data[0].id;
                     self.cacheService.setLocalObject('milestone_id', data[0].id);
