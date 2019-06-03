@@ -96,17 +96,6 @@ export class RegisterPage implements OnInit {
     let self = this;
     self.submitted = true;
 
-    function onRegError(err) {
-      this.logError(err);
-
-      if (err.frontendErrorCode === 'SERVER_ERROR') {
-        throw 'API endpoint error';
-      }
-
-      this.logError(err);
-      self.submitted = false;
-    }
-
     function onFinally() {
       //@TODO: log something maybe
       // self.navCtrl.push(TabsPage);
@@ -185,7 +174,16 @@ export class RegisterPage implements OnInit {
                 });
               }
             );
-        }, onRegError, onFinally);
+        }, err => {
+          loading.dismiss().then(() => {
+            if (err.frontendErrorCode === 'SERVER_ERROR') {
+              throw 'API endpoint error';
+            } else {
+              this.logError(err);
+            }
+            self.submitted = false;
+          });
+        }, onFinally);
       });
     }
   }
@@ -209,6 +207,12 @@ export class RegisterPage implements OnInit {
           message = this.registeredErrMessage;
         break;
       }
+
+      return this.notificationService.alert({
+        title: 'Registration Failed',
+        message,
+        buttons: ['Close'],
+      });
     } else {
       return this.notificationService.alert({
         title: 'Error Message',
