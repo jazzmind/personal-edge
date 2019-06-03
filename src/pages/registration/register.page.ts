@@ -198,7 +198,8 @@ export class RegisterPage implements OnInit {
       });
     }
   }
-  logError(err){
+
+  logError(err) {
     return this.alertCtrl.create({
       title: 'Error Message',
       message: err,

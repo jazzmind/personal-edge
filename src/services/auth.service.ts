@@ -48,8 +48,9 @@ export class AuthService {
       `data[User][email]=${email}`,
       `data[User][password]=${password}`
     ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'authentication', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.request.post('api/auths.json?action=authentication', urlSearchParams, {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
   }
   forgotPassword(email){
     let options = new RequestOptions({headers: this.headerData()});
