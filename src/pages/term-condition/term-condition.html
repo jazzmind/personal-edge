@@ -7,16 +7,16 @@
   <ion-list>
     <term-content></term-content>
   </ion-list>
-  <ion-list *ngIf="accessMethod() == true">
+  <ion-list *ngIf="accessMethod()">
     <ion-item>
      <ion-label>{{ 'TERMCONDITIONS.AGREE' | translate }}</ion-label>
      <ion-checkbox data-track-piece="agree to t&c" [(ngModel)]="agreed" (change)="toggleAgree()" value="Agree"></ion-checkbox>
    </ion-item>
   </ion-list>
-  <ion-list class="register-next" *ngIf="accessMethod() == true">
+  <ion-list class="register-next" *ngIf="accessMethod()">
     <button stable block disabled [disabled]="!agreed" (click)="agree(user)">{{ 'TERMCONDITIONS.NEXT' | translate }}</button>
   </ion-list>
-  <ion-list *ngIf="accessMethod() != true">
+  <ion-list *ngIf="accessMethod() == false">
     <button class="general-circle-btn"
       ion-button
       block

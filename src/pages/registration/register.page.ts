@@ -95,32 +95,13 @@ export class RegisterPage implements OnInit {
   onSubmit(form: NgForm):void {
     let self = this;
     self.submitted = true;
-    function onRegError(err) {
-      if (err.frontendErrorCode === 'SERVER_ERROR') {
-        throw 'API endpoint error';
-      }
-      let message = `${this.registrationErrMessage} ${supportEmail}`;
-      if (err && err.data && err.data.msg) {
-        switch (err.data.msg) {
-          case 'No password':
-            message = this.noPasswordErrMessage;
-          break;
-          case 'User already registered':
-            message = this.registeredErrMessage;
-          break;
-          default:
-            message = `${this.registrationErrMessage} ${supportEmail}`;
-          break;
-        }
-      }
-      self.displayAlert(message).present();
-      self.submitted = false;
-    }
+
     function onFinally() {
       //@TODO: log something maybe
       // self.navCtrl.push(TabsPage);
       console.log('Final step - log something here');
     }
+
     if (this.user.password !== this.user.verify_password) {
       this.notificationService.alert({
         title: 'Incorrect Password',
@@ -141,7 +122,6 @@ export class RegisterPage implements OnInit {
           password: this.regForm.get('password').value
         }).subscribe(regRespond => {
           //@TODO: set user data
-          regRespond = regRespond.data;
           this.cacheService.setLocalObject('apikey', regRespond.apikey);
           this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
           this.cacheService.setLocal('gotNewItems', false);
@@ -194,18 +174,54 @@ export class RegisterPage implements OnInit {
                 });
               }
             );
-        }, onRegError, onFinally);
+        }, err => {
+          loading.dismiss().then(() => {
+            if (err.frontendErrorCode === 'SERVER_ERROR') {
+              throw 'API endpoint error';
+            } else {
+              this.logError(err);
+            }
+            self.submitted = false;
+          });
+        }, onFinally);
       });
     }
   }
 
   logError(err) {
-    return this.alertCtrl.create({
-      title: 'Error Message',
-      message: err,
-      buttons: ['Close']
-    });
+    const data = err.data;
+
+    if (err.status === 'unauthorized' && (data && data.type === 'password_compromised')) {
+      return this.notificationService.alert({
+        title: 'Weak Password',
+        message: `We’ve checked this password against a global database of insecure passwords and your new password was on it, please try with other password. <br>You can learn more about how we check that <a href="https://haveibeenpwned.com/Passwords">database</a>.`,
+        buttons: [ 'Close' ]
+      });
+    } else if (err && data && data.msg) {
+      let message = `${this.registrationErrMessage} ${supportEmail}`;
+      switch (data.msg) {
+        case 'No password':
+          message = this.noPasswordErrMessage;
+        break;
+        case 'User already registered':
+          message = this.registeredErrMessage;
+        break;
+      }
+
+      return this.notificationService.alert({
+        title: 'Registration Failed',
+        message,
+        buttons: ['Close'],
+      });
+    } else {
+      return this.notificationService.alert({
+        title: 'Error Message',
+        message: err,
+        buttons: ['Close']
+      });
+    }
   }
+
   setRegistrationData(data) {
     let cacheProcesses = [];
     _.forEach(data, (datum, key) => {
