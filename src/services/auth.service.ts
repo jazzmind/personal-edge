@@ -32,18 +32,19 @@ export class AuthService {
     return this.http.post(this.AUTH_ENDPOINT+'verify_registration', urlSearchParams.toString(), options)
                     .map(res => res.json());
   }
+
   register(data) {
-    let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams([
       `password=${data.password}`,
       `user_id=${data.user_id}`,
       `key=${data.key || 'thisissamplekey'}`
     ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'registration', urlSearchParams.toString(), options)
-    .map(res => res.json());
+    return this.request.post('api/auths.json?action=registration', urlSearchParams, {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
   }
+
   loginAuth(email, password) {
-    let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams([
       `data[User][email]=${email}`,
       `data[User][password]=${password}`
