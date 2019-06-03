@@ -14,6 +14,7 @@ import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
+import { NotificationService } from '../../shared/notification/notification.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
@@ -51,7 +52,8 @@ export class LoginPage {
     private config: RequestServiceConfig,
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private notificationService: NotificationService,
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -160,7 +162,20 @@ export class LoginPage {
               this.cacheService.setLocal('isAuthenticated', true);
             }, err => {
               loading.dismiss().then(() => {
-                this.logError(err);
+
+                const data = err.data;
+                if (err.status === 'unauthorized' && (data && data.type === 'password_compromised')) {
+                  this.notificationService.alert({
+                    title: 'Weak Password',
+                    message: `We’ve checked this password against a global database of insecure passwords and your password was on it. <br>We have sent you an email with a link to reset your password. <br>You can learn more about how we check that <a href="https://haveibeenpwned.com/Passwords">database</a>`,
+                    buttons: [
+                      'Close'
+                    ]
+                  });
+                } else {
+                  this.logError(err);
+                }
+
                 this.cacheService.removeLocal('isAuthenticated');
                 this.cacheService.write('isAuthenticated', false);
               });
