@@ -144,6 +144,10 @@ export class RegisterPage implements OnInit {
           regRespond = regRespond.data;
           this.cacheService.setLocalObject('apikey', regRespond.apikey);
           this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
+          if (regRespond.Experience.config) {
+            this.cacheService.setLocalObject('config', regRespond.Experience.config);            
+          }
+
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)

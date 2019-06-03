@@ -60,7 +60,9 @@ export class MagicLinkPage {
         this.cacheService.setLocalObject('apikey', data.apikey);
         this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
         this.cacheService.setLocalObject('teams', data.Teams);
-        this.cacheService.setLocalObject('config', data.Experience.config); 
+        if (data.Experience.config) {
+          this.cacheService.setLocalObject('config', data.Experience.config);            
+        }
 
         Observable.forkJoin([
           // get game_id data after login
