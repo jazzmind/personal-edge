@@ -15,8 +15,8 @@ export class GameService {
    * Get games
    * @param {object} options
    */
-  public getGames(options = {}) {
-    return this.request.get('api/games', options);
+  public getGames() {
+    return this.request.get('api/games');
   }
 
   /**

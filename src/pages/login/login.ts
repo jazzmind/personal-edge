@@ -144,8 +144,8 @@ export class LoginPage {
                   .subscribe(
                     data => {
                       loading.dismiss().then(() => {
-                        this.milestone_id = data.data[0].id;
-                        self.cacheService.setLocalObject('milestone_id', data.data[0].id);
+                        this.milestone_id = data[0].id;
+                        self.cacheService.setLocalObject('milestone_id', data[0].id);
                         this.navCtrl.setRoot(TabsPage).then(() => {
                           this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                           window.history.replaceState({}, '', window.location.origin);
