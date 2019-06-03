@@ -127,46 +127,37 @@ export class RegisterPage implements OnInit {
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)
-            .subscribe(
-              data => {
-                // get game_id data after login
-                this.gameService.getGames()
-                    .subscribe(
-                      data => {
-                        _.map(data, (element) => {
-                          this.cacheService.setLocal('game_id', element[0].id);
-                        });
-                      },
-                      err => {
-                        this.logError(err);
-                      }
-                    );
-                // get user data after registration and login
-                self.authService.getUser()
-                    .subscribe(
-                      data => {
-                        console.log(data);
-                      },
-                      err => {
-                        this.logError(err);
-                      }
-                    );
-                // get milestone data after registration and login
-                self.milestoneService.getMilestones()
-                    .subscribe( data => {
-                      loading.dismiss().then(() => {
-                        this.milestone_id = data.data[0].id;
-                        self.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                        self.navCtrl.push(TabsPage).then(() => {
-                          window.history.replaceState({}, '', window.location.origin);
-                        });
-                      });
-                    },
-                    err => {
-                      loading.dismiss().then(() => {
-                        this.logError(err);
-                      });
+            .subscribe(data => {
+              this.cacheService.setLocalObject('apikey', data.apikey);
+
+              // get game_id data after login
+              this.gameService.getGames().subscribe(data => {
+                _.map(data, (element) => {
+                  this.cacheService.setLocal('game_id', element[0].id);
+                });
+              }, err => {
+                this.logError(err);
+              });
+
+              // get user data after registration and login
+              self.authService.getUser().subscribe(data => console.log(data), this.logError);
+
+              // get milestone data after registration and login
+              self.milestoneService.getMilestones()
+                .subscribe( data => {
+                  loading.dismiss().then(() => {
+                    this.milestone_id = data[0].id;
+                    self.cacheService.setLocalObject('milestone_id', data[0].id);
+                    self.navCtrl.push(TabsPage).then(() => {
+                      window.history.replaceState({}, '', window.location.origin);
                     });
+                  });
+                },
+                err => {
+                  loading.dismiss().then(() => {
+                    this.logError(err);
+                  });
+                });
               },
               err => {
                 loading.dismiss().then(() => {
@@ -197,9 +188,9 @@ export class RegisterPage implements OnInit {
         message: `We’ve checked this password against a global database of insecure passwords and your new password was on it, please try with other password. <br>You can learn more about how we check that <a href="https://haveibeenpwned.com/Passwords">database</a>.`,
         buttons: [ 'Close' ]
       });
-    } else if (err && data && data.msg) {
+    } else if (err || data) {
       let message = `${this.registrationErrMessage} ${supportEmail}`;
-      switch (data.msg) {
+      switch ((data || err).msg) {
         case 'No password':
           message = this.noPasswordErrMessage;
         break;
@@ -216,7 +207,7 @@ export class RegisterPage implements OnInit {
     } else {
       return this.notificationService.alert({
         title: 'Error Message',
-        message: err,
+        message: JSON.stringify(err),
         buttons: ['Close']
       });
     }
