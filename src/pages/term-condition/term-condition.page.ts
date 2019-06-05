@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, AlertController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../shared/notification/notification.service';
@@ -29,10 +29,15 @@ export class TermConditionPage {
     private notificationService: NotificationService,
     public translationService: TranslationService,
   ) {}
-  private accessMethod(){
-    console.log(window.location);
-    return (window.location.href.indexOf('?do=') > -1) ? this.checkAccessMethod = true : this.checkAccessMethod = false
+
+  // @NOTE: this is a reused page for existing app and for registration purpose
+  // function below
+  // @name accessMethod
+  // @drscription check if current action is navigation from previous authorized page, by checking if the word "registration" available in URL
+  private accessMethod() {
+    return (window.location.href.indexOf('registration') > -1) ? true : false;
   }
+
   private displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',

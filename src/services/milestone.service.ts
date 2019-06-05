@@ -3,6 +3,7 @@ import { Http, Headers, URLSearchParams } from '@angular/http';
 import { RequestService } from '../shared/request/request.service';
 import * as _ from 'lodash';
 import { CacheService } from '../shared/cache/cache.service';
+
 @Injectable()
 export class MilestoneService {
   milestones: any = {};
@@ -29,12 +30,7 @@ export class MilestoneService {
     return this.request.get('api/milestones.json', {search: params});
   }
 
-  getMilestones(){
-    let headers = new Headers();
-    headers.append('appkey', this.appkey);
-    headers.append('apikey', this.cacheService.getLocalObject('apikey'));
-    headers.append('timelineID', this.cacheService.getLocalObject('timelineID'));
-    return this.http.get(this.prefixUrl+'api/milestones.json', { headers: headers })
-               .map(res => res.json());
+  getMilestones() {
+    return this.request.get('api/milestones.json');
   }
 }
