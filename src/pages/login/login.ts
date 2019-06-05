@@ -226,7 +226,7 @@ export class LoginPage {
    */
   logError(error) {
     const alert = this.alertCtrl.create({
-      title: 'Login Failed ..',
+      title: 'Login Failed ...',
       message: this.invalidLoginMessage,
       buttons: ['Close']
     });

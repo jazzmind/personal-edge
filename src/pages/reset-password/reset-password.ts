@@ -213,7 +213,7 @@ export class ResetPasswordPage implements OnInit {
       });
     } else {
       return this.notificationService.alert({
-        title: 'Login Failed ..',
+        title: 'Login Failed ...',
         message: this.resetPasswordLoginFailedMessage,
         buttons: [ 'Close' ]
       });
