@@ -14,6 +14,7 @@ import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
+import { NotificationService } from '../../shared/notification/notification.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
@@ -51,7 +52,8 @@ export class LoginPage {
     private config: RequestServiceConfig,
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private notificationService: NotificationService,
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -83,17 +85,14 @@ export class LoginPage {
         // This part is calling post_auth() API from backend
         this.authService.loginAuth(this.email, this.password)
             .subscribe(data => {
-
-              data = data.data;
               // this.getLogInData(data);
               self.cacheService.setLocalObject('apikey', data.apikey);
-
-              // saved timeline id for later
-              const thisTimeline = data.Timelines[0];
-
               if (data.Experience.config) {
                 self.cacheService.setLocalObject('config', data.Experience.config);            
               }
+
+              // saved timeline id for later
+              const thisTimeline = data.Timelines[0];
 
               // if no timeline available (throw error)
               if (!thisTimeline) {
@@ -148,8 +147,8 @@ export class LoginPage {
                   .subscribe(
                     data => {
                       loading.dismiss().then(() => {
-                        this.milestone_id = data.data[0].id;
-                        self.cacheService.setLocalObject('milestone_id', data.data[0].id);
+                        this.milestone_id = data[0].id;
+                        self.cacheService.setLocalObject('milestone_id', data[0].id);
                         this.navCtrl.setRoot(TabsPage).then(() => {
                           this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                           window.history.replaceState({}, '', window.location.origin);
@@ -164,7 +163,20 @@ export class LoginPage {
               this.cacheService.setLocal('isAuthenticated', true);
             }, err => {
               loading.dismiss().then(() => {
-                this.logError(err);
+
+                const data = err.data;
+                if (err.status === 'unauthorized' && (data && data.type === 'password_compromised')) {
+                  this.notificationService.alert({
+                    title: 'Weak Password',
+                    message: `We’ve checked this password against a global database of insecure passwords and your password was on it. <br>We have sent you an email with a link to reset your password. <br>You can learn more about how we check that <a href="https://haveibeenpwned.com/Passwords">database</a>`,
+                    buttons: [
+                      'Close'
+                    ]
+                  });
+                } else {
+                  this.logError(err);
+                }
+
                 this.cacheService.removeLocal('isAuthenticated');
                 this.cacheService.write('isAuthenticated', false);
               });
