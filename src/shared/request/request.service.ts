@@ -1,8 +1,26 @@
 import { Injectable, Optional } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
+import { Http, Response, Headers, RequestOptions, RequestOptionsArgs, URLSearchParams, QueryEncoder } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CacheService } from '../../shared/cache/cache.service';
+
+export class CustomQueryEncoder implements QueryEncoder {
+  encodeKey(k: string): string {
+    return encodeURIComponent(k);
+  }
+
+  encodeValue(v: string): string {
+    return encodeURIComponent(v);
+  }
+
+  decodeKey(k: string): string {
+    return decodeURIComponent(k);
+  }
+
+  decodeValue(v: string): string {
+    return decodeURIComponent(v);
+  }
+}
 
 // Definition configure for API request
 // This ONLY definition of class, any changed of value will no effect.
@@ -23,7 +41,7 @@ export class RequestService {
   constructor (
     @Optional() config: RequestServiceConfig,
     private http: Http,
-    private cacheService: CacheService
+    private cacheService: CacheService,
   ) {
     // Inject appKey and prefixUrl when RequestServiceConfig loaded
     if (config) {
@@ -56,16 +74,24 @@ export class RequestService {
     let errorFrom = {
         api: 'SERVER_ERROR',
       },
-      currentError: any = error.json();
-    if (typeof error !== 'object') {
-      throw 'Unable to process API respond!';
+      currentError: any = error.json ? error.json() : error;
+
+    if (error.status) {
+      if (error.status === 0) { // client unrecoverable error encountered
+        currentError.frontendCode = errorFrom.api;
+      } else {
+        let errorBody = error.json();
+        currentError.frontendCode = errorBody.data || errorBody.error;
+      }
+
+      // log the user out if jwt expired
+      if (error.status === 401 && currentError.message && (currentError.message === 'Session expired' || currentError.message === 'Expired apikey')) {
+        // force user logout
+        localStorage.clear();
+        window.location.replace('/');
+      }
     }
-    if (error.status === 0) { // client unrecoverable error encountered
-      currentError.frontendCode = errorFrom.api;
-    } else {
-      let errorBody = error.json();
-      currentError.frontendCode = errorBody.data || errorBody.error;
-    }
+
     return Observable.throw(currentError);
   }
 
@@ -140,6 +166,7 @@ export class RequestService {
     'Content-Type': 'application/x-www-form-urlencoded'
   }) {
     let options = new RequestOptions({ headers: this.appendHeader(header) });
+    data.queryEncoder = new CustomQueryEncoder();
     return this.http.post(this.prefixUrl + endPoint, data, options)
       .map(this.extractData)
       .catch(this.handleError);
@@ -160,6 +187,11 @@ export class RequestService {
   // Extract response data and convert it to JSON
   extractData(res: Response) {
     let body = res.json();
+
+    // update to latest token
+    if (body && body.apikey) {
+      localStorage.apikey = JSON.stringify(body.apikey);
+    }
     return body.data || {};
   }
 }

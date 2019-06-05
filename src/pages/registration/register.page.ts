@@ -95,32 +95,13 @@ export class RegisterPage implements OnInit {
   onSubmit(form: NgForm):void {
     let self = this;
     self.submitted = true;
-    function onRegError(err) {
-      if (err.frontendErrorCode === 'SERVER_ERROR') {
-        throw 'API endpoint error';
-      }
-      let message = `${this.registrationErrMessage} ${supportEmail}`;
-      if (err && err.data && err.data.msg) {
-        switch (err.data.msg) {
-          case 'No password':
-            message = this.noPasswordErrMessage;
-          break;
-          case 'User already registered':
-            message = this.registeredErrMessage;
-          break;
-          default:
-            message = `${this.registrationErrMessage} ${supportEmail}`;
-          break;
-        }
-      }
-      self.displayAlert(message).present();
-      self.submitted = false;
-    }
+
     function onFinally() {
       //@TODO: log something maybe
       // self.navCtrl.push(TabsPage);
       console.log('Final step - log something here');
     }
+
     if (this.user.password !== this.user.verify_password) {
       this.notificationService.alert({
         title: 'Incorrect Password',
@@ -141,52 +122,42 @@ export class RegisterPage implements OnInit {
           password: this.regForm.get('password').value
         }).subscribe(regRespond => {
           //@TODO: set user data
-          regRespond = regRespond.data;
           this.cacheService.setLocalObject('apikey', regRespond.apikey);
           this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)
-            .subscribe(
-              data => {
-                // get game_id data after login
-                this.gameService.getGames()
-                    .subscribe(
-                      data => {
-                        _.map(data, (element) => {
-                          this.cacheService.setLocal('game_id', element[0].id);
-                        });
-                      },
-                      err => {
-                        this.logError(err);
-                      }
-                    );
-                // get user data after registration and login
-                self.authService.getUser()
-                    .subscribe(
-                      data => {
-                        console.log(data);
-                      },
-                      err => {
-                        this.logError(err);
-                      }
-                    );
-                // get milestone data after registration and login
-                self.milestoneService.getMilestones()
-                    .subscribe( data => {
-                      loading.dismiss().then(() => {
-                        this.milestone_id = data.data[0].id;
-                        self.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                        self.navCtrl.push(TabsPage).then(() => {
-                          window.history.replaceState({}, '', window.location.origin);
-                        });
-                      });
-                    },
-                    err => {
-                      loading.dismiss().then(() => {
-                        this.logError(err);
-                      });
+            .subscribe(data => {
+              this.cacheService.setLocalObject('apikey', data.apikey);
+
+              // get game_id data after login
+              this.gameService.getGames().subscribe(data => {
+                _.map(data, (element) => {
+                  this.cacheService.setLocal('game_id', element[0].id);
+                });
+              }, err => {
+                this.logError(err);
+              });
+
+              // get user data after registration and login
+              self.authService.getUser().subscribe(data => console.log(data), this.logError);
+
+              // get milestone data after registration and login
+              self.milestoneService.getMilestones()
+                .subscribe(data => {
+                  loading.dismiss().then(() => {
+                    this.milestone_id = data[0].id;
+                    self.cacheService.setLocalObject('milestone_id', data[0].id);
+                    self.navCtrl.push(TabsPage).then(() => {
+                      window.history.replaceState({}, '', window.location.origin);
                     });
+                  });
+                },
+                err => {
+                  loading.dismiss().then(() => {
+                    this.logError(err);
+                  });
+                });
               },
               err => {
                 loading.dismiss().then(() => {
@@ -194,17 +165,54 @@ export class RegisterPage implements OnInit {
                 });
               }
             );
-        }, onRegError, onFinally);
+        }, err => {
+          loading.dismiss().then(() => {
+            if (err.frontendErrorCode === 'SERVER_ERROR') {
+              throw 'API endpoint error';
+            } else {
+              this.logError(err);
+            }
+            self.submitted = false;
+          });
+        }, onFinally);
       });
     }
   }
-  logError(err){
-    return this.alertCtrl.create({
-      title: 'Error Message',
-      message: err,
-      buttons: ['Close']
-    });
+
+  logError(err) {
+    const data = err.data;
+
+    if (err.status === 'unauthorized' && (data && data.type === 'password_compromised')) {
+      return this.notificationService.alert({
+        title: 'Weak Password',
+        message: `We’ve checked this password against a global database of insecure passwords and your new password was on it, please try with other password. <br>You can learn more about how we check that <a href="https://haveibeenpwned.com/Passwords">database</a>.`,
+        buttons: [ 'Close' ]
+      });
+    } else if (err || data) {
+      let message = `${this.registrationErrMessage} ${supportEmail}`;
+      switch ((data || err).msg) {
+        case 'No password':
+          message = this.noPasswordErrMessage;
+        break;
+        case 'User already registered':
+          message = this.registeredErrMessage;
+        break;
+      }
+
+      return this.notificationService.alert({
+        title: 'Registration Failed',
+        message,
+        buttons: ['Close'],
+      });
+    } else {
+      return this.notificationService.alert({
+        title: 'Error Message',
+        message: JSON.stringify(err),
+        buttons: ['Close']
+      });
+    }
   }
+
   setRegistrationData(data) {
     let cacheProcesses = [];
     _.forEach(data, (datum, key) => {
