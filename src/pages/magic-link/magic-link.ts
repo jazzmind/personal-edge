@@ -91,8 +91,8 @@ export class MagicLinkPage {
             this.cacheService.setLocalObject('project_id', userData.User.project_id);
 
             // milestone
-            this.milestone_id = milestone.data[0].id;
-            this.cacheService.setLocalObject('milestone_id', milestone.data[0].id);
+            this.milestone_id = milestone[0].id;
+            this.cacheService.setLocalObject('milestone_id', milestone[0].id);
             this.navCtrl.setRoot(TabsPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
             });

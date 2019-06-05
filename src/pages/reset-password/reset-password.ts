@@ -21,6 +21,7 @@ import { FormValidator } from '../../validators/formValidator';
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
 import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpassword-model';
+
 @Component({
   selector: 'page-reset-password',
   templateUrl: 'reset-password.html'
@@ -55,13 +56,16 @@ export class ResetPasswordPage implements OnInit {
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
     private gameService: GameService,
-    public translationService: TranslationService) {
-      // validation for both password values: required & minlength is 8
-      this.resetPwdFormGroup = formBuilder.group({
-          password: ['', [Validators.minLength(8), Validators.required]],
-          verify_password: ['', [Validators.minLength(8), Validators.required]],
-      })
-    }
+    public translationService: TranslationService,
+    private notificationService: NotificationService
+  ) {
+    // validation for both password values: required & minlength is 8
+    this.resetPwdFormGroup = formBuilder.group({
+        password: ['', [Validators.minLength(8), Validators.required]],
+        verify_password: ['', [Validators.minLength(8), Validators.required]],
+    })
+  }
+
   /**
    * Detect user device type (mobile or desktop) on initial page load
    * Purpose: Initially page loaded, this peice code will detect user screen
@@ -71,11 +75,12 @@ export class ResetPasswordPage implements OnInit {
              user screen is mobile device or desktop device. If device is mobile
              device, ngOnInit() will disable landscape mode for mobile device
   */
-  ngOnInit() {
-  }
+  ngOnInit() {}
+
   ionViewWillEnter() {
     this.verifyKeyEmail();
   }
+
   /**
    * to verify user is whether typed or clicked the email link
    * Purpose: if user is typed the email link key and email, user is not allowed
@@ -91,26 +96,25 @@ export class ResetPasswordPage implements OnInit {
         email = decodeURIComponent(this.navParams.get('email'));
         this.keyVal = key;
         this.emailVal = email;
+
     const loading = this.loadingCtrl.create({
       content: this.verifyUserMessage
     });
+
     loading.present();
-    this.authService.verifyUserKeyEmail(key, email)
-      .subscribe(data => {
-        loading.dismiss();
-        this.verifySuccess = true;
-        console.log("valueTrue: " + this.verifySuccess);
-      },
-      err => {
-        loading.dismiss();
-        this.verifySuccess = false;
-        console.log("valueFalse: " + this.verifySuccess);
-        setTimeout(() => {
-          this.navCtrl.push(LoginPage).then(() => {
-              window.history.replaceState({}, '', window.location.origin);
-            });
-        }, 5000);
-      });
+
+    this.authService.verifyUserKeyEmail(key, email).subscribe(data => {
+      loading.dismiss();
+      this.verifySuccess = true;
+    }, err => {
+      loading.dismiss();
+      this.verifySuccess = false;
+      setTimeout(() => {
+        this.navCtrl.push(LoginPage).then(() => {
+            window.history.replaceState({}, '', window.location.origin);
+          });
+      }, 5000);
+    });
   }
   /**
    * to update password in db
@@ -145,9 +149,7 @@ export class ResetPasswordPage implements OnInit {
               this.gameService.getGames()
                   .subscribe(
                     data => {
-                      console.log("game data: ", data);
                       _.map(data, (element) => {
-                        console.log("game id: ", element[0].id);
                         this.cacheService.setLocal('game_id', element[0].id);
                       });
                     },
@@ -156,40 +158,30 @@ export class ResetPasswordPage implements OnInit {
                     }
                   );
               // get milestone data after login
-              this.authService.getUser()
-                  .subscribe(
-                    data => {
-                      this.cacheService.setLocalObject('name', data.User.name);
-                      this.cacheService.setLocalObject('email', data.User.email);
-                      this.cacheService.setLocalObject('program_id', data.User.program_id);
-                      this.cacheService.setLocalObject('project_id', data.User.project_id);
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  );
+              this.authService.getUser().subscribe(data => {
+                this.cacheService.setLocalObject('name', data.User.name);
+                this.cacheService.setLocalObject('email', data.User.email);
+                this.cacheService.setLocalObject('program_id', data.User.program_id);
+                this.cacheService.setLocalObject('project_id', data.User.project_id);
+              }, err => console.log);
+
               // get milestone data after login
-              this.milestoneService.getMilestones()
-                  .subscribe(
-                    data => {
-                      loading.dismiss().then(() => {
-                        console.log(data.data[0].id);
-                        this.milestone_id = data.data[0].id;
-                        this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                        console.log("milestone id: " + data.data[0].id);
-                        loading.dismiss();
-                        this.navCtrl.setRoot(TabsPage).then(() => {
-                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                          window.history.replaceState({}, '', window.location.origin);
-                        });
-                      });
-                    },
-                    err => {
-                      loading.dismiss().then(() => {
-                        console.log(err);
-                      });
-                    }
-                  )
+              this.milestoneService.getMilestones().subscribe(data => {
+                loading.dismiss().then(() => {
+                  this.milestone_id = data[0].id;
+                  this.cacheService.setLocalObject('milestone_id', data[0].id);
+                  loading.dismiss();
+                  this.navCtrl.setRoot(TabsPage).then(() => {
+                    this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                    window.history.replaceState({}, '', window.location.origin);
+                  });
+                });
+              }, err => {
+                loading.dismiss().then(() => {
+                  console.log(err);
+                });
+              });
+
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             },

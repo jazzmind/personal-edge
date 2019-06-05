@@ -9,7 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
@@ -27,6 +27,7 @@ export class ForgetPasswordPage {
   private sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
   private sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
   private sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
+
   constructor(
     private navCtrl: NavController,
     private viewCtrl: ViewController,
@@ -37,12 +38,14 @@ export class ForgetPasswordPage {
     private authService: AuthService,
     private toastCtrl: ToastController,
     private formBuilder: FormBuilder) {
-      this.forgotPwdFormGroup = formBuilder.group({
-        email: ['', [FormValidator.isValidEmail, Validators.required]]
-      });
-    }
+    this.forgotPwdFormGroup = formBuilder.group({
+      email: ['', [FormValidator.isValidEmail, Validators.required]]
+    });
+  }
+
   ionViewDidLoad() {}
-  userForgotPassword(){
+
+  userForgotPassword() {
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
       content: this.sendingEmailLoadingMessage
@@ -54,29 +57,28 @@ export class ForgetPasswordPage {
       // This part is calling post_forget_password() API from backend
       this.authService.forgotPassword(this.email)
       .subscribe(data => {
-          loading.dismiss().then(() => {
-            defaultMsg = data.msg || defaultMsg;
-            const successSMS = this.toastCtrl.create({
-              message: defaultMsg,
-              duration: 5000
-            });
-            successSMS.present();
+        loading.dismiss().then(() => {
+          defaultMsg = data.msg || defaultMsg;
+          const successSMS = this.toastCtrl.create({
+            message: defaultMsg,
+            duration: 5000
           });
-        },
-        error => {
-          loading.dismiss().then(() => {
-            defaultMsg = error.msg || defaultMsg;
-            const errorSMS = this.toastCtrl.create({
-              message: defaultMsg,
-              duration: 5000
-            });
-            errorSMS.present();
+          successSMS.present();
+        });
+      }, error => {
+        loading.dismiss().then(() => {
+          defaultMsg = error.msg || defaultMsg;
+          const errorSMS = this.toastCtrl.create({
+            message: defaultMsg,
+            duration: 5000
           });
-        }
-    );
+          errorSMS.present();
+        });
+      });
     });
   }
-  backButton(){
+
+  backButton() {
     this.navCtrl.setRoot(LoginPage); // go back
     // history.back();
     // this.viewCtrl.dismiss();
