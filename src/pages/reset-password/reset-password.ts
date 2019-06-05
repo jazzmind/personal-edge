@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
+import { NotificationService } from '../../shared/notification/notification.service';
 import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { ResponsiveService } from '../../services/responsive.service';
@@ -32,7 +33,7 @@ export class ResetPasswordPage implements OnInit {
   private windowHeight: number = window.innerHeight / 3;
   private isLandscaped: boolean = false;
   public password: string;
-  public verify_password: string;
+  public verify_password: string = null;
   private verifySuccess: boolean = null;
   private resetPwdFormGroup: any;
   private verifyPwd: boolean = false;
@@ -46,6 +47,7 @@ export class ResetPasswordPage implements OnInit {
   private resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
   private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
   private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
     private alertCtrl: AlertController,
@@ -91,7 +93,7 @@ export class ResetPasswordPage implements OnInit {
    * @return if user clicked email link, return reset password page, otherwise,
              return error hint screen
   */
-  verifyKeyEmail(){
+  verifyKeyEmail() {
     let key = this.navParams.get('key'),
         email = decodeURIComponent(this.navParams.get('email'));
         this.keyVal = key;
@@ -136,14 +138,13 @@ export class ResetPasswordPage implements OnInit {
         // this.navCtrl.push(LoginPage);
         this.authService.loginAuth(email, this.password)
             .subscribe(data => {
-              data = data.data;
               this.cacheService.setLocalObject('apikey', data.apikey);
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
               if (data.Experience.config) {
                 this.cacheService.setLocalObject('config', data.Experience.config);            
               }
-      
+
               this.cacheService.setLocal('gotNewItems', false);
               // get game_id data after login
               this.gameService.getGames()
@@ -187,7 +188,7 @@ export class ResetPasswordPage implements OnInit {
             },
             err => {
               loading.dismiss().then(() => {
-                this.loginError(err);
+                this.resetPasswordError(err);
                 this.cacheService.removeLocal('isAuthenticated');
                 this.cacheService.write('isAuthenticated', false);
               });
@@ -195,29 +196,39 @@ export class ResetPasswordPage implements OnInit {
       },
       err => {
         loading.dismiss().then(() => {
-          console.log(err);
+          return this.resetPasswordError(err);
         });
       });
     });
   }
+
   // after password set, auto login error alertbox
-  loginError(error) {
-    const alertLogin = this.alertCtrl.create({
-      title: 'Login Failed ..',
-      message: this.resetPasswordLoginFailedMessage,
-      buttons: ['Close']
-    });
-    alertLogin.present();
+  resetPasswordError(error) {
+    const data = error.data;
+    if (error.status === 'unauthorized' && (data && data.type === 'password_compromised')) {
+      return this.notificationService.alert({
+        title: 'Weak Password',
+        message: `We’ve checked this password against a global database of insecure passwords and your new password was on it, please try with other password. <br>You can learn more about how we check that <a href="https://haveibeenpwned.com/Passwords">database</a>`,
+        buttons: [ 'Close' ]
+      });
+    } else {
+      return this.notificationService.alert({
+        title: 'Login Failed ..',
+        message: this.resetPasswordLoginFailedMessage,
+        buttons: [ 'Close' ]
+      });
+    }
   }
+
   // check password minmimum length
-  checkMinLength(){
-    return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
-  }
+  checkMinLength(){}
+
   // check password mismacth issue
   verifyPwdKeyUp() {
-    return this.verifyPwd = true;
-  }
-  pwdMatchCheck() {
-    return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
+    this.verifyPwd = true;
+    this.isPwdMatch = (this.password != this.verify_password) ? true : false;
+    if (this.password && this.verify_password) {
+      this.minLengthCheck = (this.password.length < 8 || this.verify_password.length < 8) ? true : false;
+    }
   }
 }
