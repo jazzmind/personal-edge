@@ -163,7 +163,7 @@ export class LoginPage {
               this.cacheService.setLocal('isAuthenticated', true);
             }, err => {
               loading.dismiss().then(() => {
-
+                console.log(err);
                 const data = err.data;
                 if (err.status === 'unauthorized' && (data && data.type === 'password_compromised')) {
                   this.notificationService.alert({
