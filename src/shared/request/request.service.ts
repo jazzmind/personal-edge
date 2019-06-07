@@ -85,7 +85,7 @@ export class RequestService {
       }
 
       // log the user out if jwt expired
-      if (error.status === 401 && currentError.message && (currentError.message === 'Session expired' || currentError.message === 'Expired apikey')) {
+      if (error.status === 401 && currentError.message && (currentError.message === 'Invalid apikey' || currentError.message === 'Expired apikey')) {
         // force user logout
         localStorage.clear();
         window.location.replace('/');
