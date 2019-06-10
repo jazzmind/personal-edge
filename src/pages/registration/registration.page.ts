@@ -4,7 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { RequestService } from '../../shared/request/request.service';
@@ -52,6 +52,7 @@ export class RegistrationPage implements OnInit {
     });
     alert.present();
   }
+
   ngOnInit() {
     // check if email and activation_code are provided in the url/params
     if (!decodeURIComponent(this.params.get('email')) || !this.params.get('key')) {
@@ -83,6 +84,7 @@ export class RegistrationPage implements OnInit {
       });
     }
   }
+
   ionViewDidEnter(): void {
     this.authService.getTerms().subscribe(res => {
       this.term = res.terms_description;
@@ -90,6 +92,7 @@ export class RegistrationPage implements OnInit {
     });
     this.params.get('test');
   }
+
   ionViewDidLoad(): void {
     let category = [];
     /*if (document.URL.indexOf("?") !== -1) {
