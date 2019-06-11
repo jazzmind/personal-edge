@@ -92,15 +92,10 @@ export class RegisterPage implements OnInit {
       buttons: ['Close']
     });
   }
+
   onSubmit(form: NgForm):void {
     let self = this;
     self.submitted = true;
-
-    function onFinally() {
-      //@TODO: log something maybe
-      // self.navCtrl.push(TabsPage);
-      console.log('Final step - log something here');
-    }
 
     if (this.user.password !== this.user.verify_password) {
       this.notificationService.alert({
@@ -124,13 +119,14 @@ export class RegisterPage implements OnInit {
           //@TODO: set user data
           this.cacheService.setLocalObject('apikey', regRespond.apikey);
           this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
-          if (regRespond.Experience.config) {
-            this.cacheService.setLocalObject('config', regRespond.Experience.config);            
+
+          if (regRespond.Experience && regRespond.Experience.config) {
+            this.cacheService.setLocalObject('config', regRespond.Experience.config);
           }
+
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
-          this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)
-            .subscribe(data => {
+          this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value).subscribe(data => {
               this.cacheService.setLocalObject('apikey', data.apikey);
 
               // get game_id data after login
@@ -138,36 +134,31 @@ export class RegisterPage implements OnInit {
                 _.map(data, (element) => {
                   this.cacheService.setLocal('game_id', element[0].id);
                 });
-              }, err => {
-                this.logError(err);
-              });
+              }, this.logError);
 
               // get user data after registration and login
               self.authService.getUser().subscribe(data => console.log(data), this.logError);
 
               // get milestone data after registration and login
-              self.milestoneService.getMilestones()
-                .subscribe(data => {
-                  loading.dismiss().then(() => {
-                    this.milestone_id = data[0].id;
-                    self.cacheService.setLocalObject('milestone_id', data[0].id);
-                    self.navCtrl.push(TabsPage).then(() => {
-                      window.history.replaceState({}, '', window.location.origin);
-                    });
-                  });
-                },
-                err => {
-                  loading.dismiss().then(() => {
-                    this.logError(err);
+              self.milestoneService.getMilestones().subscribe(data => {
+                loading.dismiss().then(() => {
+                  this.milestone_id = data[0].id;
+                  self.cacheService.setLocalObject('milestone_id', data[0].id);
+                  self.navCtrl.push(TabsPage).then(() => {
+                    window.history.replaceState({}, '', window.location.origin);
                   });
                 });
-              },
-              err => {
+              }, err => {
                 loading.dismiss().then(() => {
                   this.logError(err);
                 });
-              }
-            );
+              });
+
+          }, err => {
+            loading.dismiss().then(() => {
+              this.logError(err);
+            });
+          });
         }, err => {
           loading.dismiss().then(() => {
             if (err.frontendErrorCode === 'SERVER_ERROR') {
@@ -177,7 +168,7 @@ export class RegisterPage implements OnInit {
             }
             self.submitted = false;
           });
-        }, onFinally);
+        });
       });
     }
   }
