@@ -38,6 +38,7 @@ import { ResponsiveService } from '../services/responsive.service';
 import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
+import { VersionCheckService } from '../services/versionCheck.service';
 import { WindowRef } from '../shared/window';
 
 // components
@@ -328,6 +329,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },
     { provide: TeamService, useClass: TeamService },
+    VersionCheckService,
     WindowRef,
     GroupEmitterService,
     GameService,
