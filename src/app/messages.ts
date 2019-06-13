@@ -1,4 +1,4 @@
-export const confirmMessages = {
+const confirmMessages = {
   Assessments: {
     DiscardChanges: {
       "discard": "Are you sure you want to discard all changes?"
@@ -8,7 +8,7 @@ export const confirmMessages = {
     }
   }
 }
-export const errMessages = {
+const errMessages = {
   Activities: {
     activities: {
       "empty": "Whoops... no activity has been setup ..."
@@ -95,12 +95,12 @@ export const errMessages = {
     }
   }
 }
-export const generalVariableMessages = {
+const generalVariableMessages = {
   helpMail: {
     "email": "personaledge@rmit.edu.vn"
   }
 }
-export const loadingMessages = {
+const loadingMessages = {
   Login: {
     "login": "Logging in ..."
   },
@@ -126,4 +126,12 @@ export const loadingMessages = {
   VerifyUser: {
     "verify": "Verifying user identity ..."
   }
+}
+
+
+export {
+  confirmMessages,
+  errMessages,
+  generalVariableMessages,
+  loadingMessages,
 }

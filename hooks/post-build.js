@@ -31,8 +31,8 @@ function getChecksum(str) {
 // readDir(path.join(__dirname, '../www/build/'))
 readFile(mainFilepath, 'utf8')
   .then(data => {
-    let mainHash = getChecksum(data);
-    console.log(`Writing version and hash to ${versionFilePath}`);
+    mainHash = getChecksum(data);
+    console.log(`Writing version and hash ${mainHash} to ${versionFilePath}`);
 
     // write current version and hash into the version.json file
     return writeFile(versionFilePath, `{"version": "${appVersion}", "hash": "${mainHash}"}`);
@@ -42,7 +42,7 @@ readFile(mainFilepath, 'utf8')
     // replace hash placeholder in our main.js file so the code knows it's current hash
     return readFile(mainFilepath, 'utf8');
   }).then(mainFileData => {
-    const replacedFile = mainFileData.replace('{{POST_BUILD_ENTERS_HASH_HERE}}', mainHash);
+    const replacedFile = mainFileData.replace(/{{POST_BUILD_ENTERS_HASH_HERE}}/g, mainHash);
     return writeFile(mainFilepath, replacedFile);
   }).catch(err => {
     console.log('Error with post build:', err);
