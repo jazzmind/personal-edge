@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
+const crypto = require('crypto');
 
 // get application version from package.json
 const appVersion = require('../package.json').version;
@@ -14,48 +15,35 @@ console.log('\nRunning post-build tasks');
 
 // our version.json will be in the dist folder
 const versionFilePath = path.join(__dirname + '/../www/version.json');
+const distFilePath = path.join(__dirname + '/../www/build/');
 
+// RegExp to find main.js (ionic 4, no hash required)
 let mainHash = '';
-let mainBundleFile = '';
+const mainFile = 'main.js';
+const mainFilepath = path.join(distFilePath, mainFile);
 
-// RegExp to find main.bundle.js, even if it doesn't include a hash in it's name (dev build)
-let mainBundleRegexp = /^main.?([a-z0-9]*)?(\.bundle)?.js$/;
+// get checksum from a string
+function getChecksum(str) {
+  return crypto.createHash('sha1').update(str, 'utf8').digest('hex');
+}
 
 // read the dist folder files and find the one we're looking for
-readDir(path.join(__dirname, '../www/'))
-  .then(files => {
-    console.log(files);
-    mainBundleFile = files.find(f => mainBundleRegexp.test(f));
-
-    if (mainBundleFile) {
-      let matchHash = mainBundleFile.match(mainBundleRegexp);
-
-      // if it has a hash in it's name, mark it down
-      if (matchHash.length > 1 && !!matchHash[1]) {
-        mainHash = matchHash[1];
-      }
-    }
-
+// readDir(path.join(__dirname, '../www/build/'))
+readFile(mainFilepath, 'utf8')
+  .then(data => {
+    let mainHash = getChecksum(data);
     console.log(`Writing version and hash to ${versionFilePath}`);
 
     // write current version and hash into the version.json file
-    const src = `{"version": "${appVersion}", "hash": "${mainHash}"}`;
-    return writeFile(versionFilePath, src);
+    return writeFile(versionFilePath, `{"version": "${appVersion}", "hash": "${mainHash}"}`);
   }).then(() => {
-    // main bundle file not found, dev build?
-    if (!mainBundleFile) {
-      return;
-    }
-
-    console.log(`Replacing hash in the ${mainBundleFile}`);
+    console.log(`Replacing hash in the ${mainFilepath}`);
 
     // replace hash placeholder in our main.js file so the code knows it's current hash
-    const mainFilepath = path.join(__dirname, '../www/', mainBundleFile);
-    return readFile(mainFilepath, 'utf8')
-      .then(mainFileData => {
-        const replacedFile = mainFileData.replace('{{POST_BUILD_ENTERS_HASH_HERE}}', mainHash);
-        return writeFile(mainFilepath, replacedFile);
-      });
+    return readFile(mainFilepath, 'utf8');
+  }).then(mainFileData => {
+    const replacedFile = mainFileData.replace('{{POST_BUILD_ENTERS_HASH_HERE}}', mainHash);
+    return writeFile(mainFilepath, replacedFile);
   }).catch(err => {
     console.log('Error with post build:', err);
   });
