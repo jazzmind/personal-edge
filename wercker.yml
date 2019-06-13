@@ -6,7 +6,9 @@ build:
       - script:
         name: run ionic build
         code: npm run ionic:build --prod --release
-        
+      - commands:
+        - npm run generate-version
+
 deploy:
     steps:
         # Execute the s3sync deploy step, a step provided by wercker
