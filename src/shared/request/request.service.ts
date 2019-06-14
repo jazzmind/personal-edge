@@ -62,7 +62,7 @@ export class RequestService {
    * Return current appKey
    * @param {String} appKey
    */
-  public getAppkey(){
+  public getAppkey() {
     return this.appkey;
   }
 
@@ -112,7 +112,7 @@ export class RequestService {
     // Inject timelineID from cached
     let timelineId = this.cacheService.getCached('timelineID') ||
       this.cacheService.getLocalObject('timelineID');
-    if (timelineId) {
+    if (!_.isEmpty(timelineId)) {
       headers.set('timelineID', timelineId);
     }
 
@@ -126,10 +126,11 @@ export class RequestService {
   // Set API request options
   setOptions(options) {
     let result = new RequestOptions({ headers: this.appendHeader() });
-    let timelineId = this.cacheService.getLocalObject('timelineID');
+    let timelineId =  this.cacheService.getCached('timelineID') ||
+      this.cacheService.getLocalObject('timelineID');
 
     let params = new URLSearchParams();
-    if (timelineId) {
+    if (!_.isEmpty(timelineId)) {
       params.set('timelineID', timelineId);
     }
 
@@ -143,6 +144,15 @@ export class RequestService {
     return result;
   }
 
+  private getEndpointUrl(endpoint) {
+    let endpointUrl = this.prefixUrl + endpoint;
+    if (endpoint.includes('https://') || endpoint.includes('http://')) {
+      endpointUrl = endpoint;
+    }
+
+    return endpointUrl;
+  }
+
   /**
    * Send GET request to server
    * @param {String} endPoint
@@ -151,7 +161,7 @@ export class RequestService {
   get(endPoint: string = '', options?: any) {
     let opt = this.setOptions(options);
 
-    return this.http.get(this.prefixUrl + endPoint, opt)
+    return this.http.get(this.getEndpointUrl(endPoint), opt)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -192,6 +202,16 @@ export class RequestService {
     if (body && body.apikey) {
       localStorage.apikey = JSON.stringify(body.apikey);
     }
-    return body.data || {};
+
+    if (body && body.data) {
+      return body.data;
+    }
+
+    // added to accommodate reading from version.json file
+    if (body && body !== null && body.data === undefined) {
+      return body;
+    }
+
+    return {};
   }
 }

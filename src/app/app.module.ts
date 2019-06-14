@@ -22,6 +22,7 @@ import { LinkyModule } from 'angular-linky';
 import { PiwikModule } from '../shared/piwik/piwik.module';
 
 // services
+import { RequestModule } from '../shared/request/request.module';
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
@@ -33,11 +34,11 @@ import { GroupEmitterService } from '../components/questions/group-emitter.servi
 import { LevelService } from '../services/level.service';
 import { MilestoneService } from '../services/milestone.service';
 import { NotificationService } from '../shared/notification/notification.service';
-import { RequestModule } from '../shared/request/request.module';
 import { ResponsiveService } from '../services/responsive.service';
 import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
+import { VersionCheckService } from '../services/versionCheck.service';
 import { WindowRef } from '../shared/window';
 
 // components
@@ -328,6 +329,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },
     { provide: TeamService, useClass: TeamService },
+    VersionCheckService,
     WindowRef,
     GroupEmitterService,
     GameService,
