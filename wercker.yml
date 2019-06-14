@@ -6,6 +6,8 @@ build:
       - script:
         name: run ionic build
         code: npm run ionic:build --prod --release
+      - script:
+        name: generate version.json
         code: npm run generate-version
 
 deploy:
