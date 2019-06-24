@@ -15,12 +15,14 @@ console.log('\nRunning post-build tasks');
 
 // our version.json will be in the dist folder
 const versionFilePath = path.join(__dirname + '/../www/version.json');
-const distFilePath = path.join(__dirname + '/../www/build/');
+const distFilePath = path.join(__dirname + '/../www/');
 
 // RegExp to find main.js (ionic 4, no hash required)
 let mainHash = '';
 const mainFile = 'main.js';
-const mainFilepath = path.join(distFilePath, mainFile);
+const mainFilepath = path.join(distFilePath, 'build/', mainFile);
+const indexFile = 'index.html';
+const indexFilePath = path.join(distFilePath, indexFile);
 
 // get checksum from a string
 function getChecksum(str) {
@@ -44,6 +46,15 @@ readFile(mainFilepath, 'utf8')
   }).then(mainFileData => {
     const replacedFile = mainFileData.replace(/{{POST_BUILD_ENTERS_HASH_HERE}}/g, mainHash);
     return writeFile(mainFilepath, replacedFile);
-  }).catch(err => {
+  })
+  .then(() => {
+    console.log(`Replacing hash in the ${indexFilePath}`);
+    return readFile(indexFilePath, 'utf8')
+  })
+  .then(indexFileData => {
+    const replacedFile = indexFileData.replace(/{{TIMESTAMP}}/g, mainHash);
+    return writeFile(indexFilePath, replacedFile);
+  })
+  .catch(err => {
     console.log('Error with post build:', err);
   });
