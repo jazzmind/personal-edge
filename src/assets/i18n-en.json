@@ -40,7 +40,7 @@
   "LOGIN": {
     "HEADER": "Welcome to Practera",
     "PAGETITLE": "Login",
-    "PASSWORDFORGOT": "Forget Your Password?"
+    "PASSWORDFORGOT": "Problems logging in?"
   },
   "REGISTRATION": {
     "HEADER": "Great - you are almost there! Just one more thing...",
