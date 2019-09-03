@@ -1,4 +1,4 @@
-export const confirmMessages = {
+const confirmMessages = {
   Assessments: {
     DiscardChanges: {
       "discard": "Are you sure you want to discard all changes?"
@@ -8,16 +8,16 @@ export const confirmMessages = {
     }
   }
 }
-export const errMessages = {
+const errMessages = {
   Activities: {
     activities: {
-      "empty": "Whoops... no activity has been setup ..."
+      "empty": "Whoops... no activity has been setup..."
     },
     achievements: {
-      "empty": "Whoops... no achievement has been setup ..."
+      "empty": "Whoops... no achievement has been setup..."
     },
     assessments: {
-      "empty": "Whoops... no assessment has been setup ..."
+      "empty": "Whoops... no assessment has been setup..."
     }
   },
   DirectLink: {
@@ -31,7 +31,7 @@ export const errMessages = {
       "cancel": "Whoops, we could not cancel your booking for this event, please try again later."
     },
     events: {
-      "empty": "Whoops... no event has been setup ..."
+      "empty": "Whoops... no event has been setup..."
     },
     filter: {
       "empty": "There are no scheduled events available. Please check back later.",
@@ -44,7 +44,7 @@ export const errMessages = {
       "load": "Whoops, a connection error occurred. Please try again later."
     },
     empty: {
-      "empty": "Whoops... no data has been setup ..."
+      "empty": "Whoops... no data has been setup..."
     }
   },
   Login: {
@@ -95,23 +95,23 @@ export const errMessages = {
     }
   }
 }
-export const generalVariableMessages = {
+const generalVariableMessages = {
   helpMail: {
     "email": "personaledge@rmit.edu.vn"
   }
 }
-export const loadingMessages = {
+const loadingMessages = {
   Login: {
-    "login": "Logging in ..."
+    "login": "Logging in..."
   },
   LoadingSpinner: {
-    "loading": "Loading ..."
+    "loading": "Loading..."
   },
   Logout: {
     "logout": "See you next time"
   },
   SendingEmail: {
-    "send": "Sending email to us ..."
+    "send": "Sending email to us..."
   },
   SentMessage: { // the reason why this message has been divided into two parts, because of we have a variable (${this.email}) in the middle of message
     "partOne": "We have sent an email to",
@@ -124,6 +124,14 @@ export const loadingMessages = {
     "successResetPassword": "Password has been changed successfully. Logging in now."
   },
   VerifyUser: {
-    "verify": "Verifying user identity ..."
+    "verify": "Verifying user identity..."
   }
+}
+
+
+export {
+  confirmMessages,
+  errMessages,
+  generalVariableMessages,
+  loadingMessages,
 }

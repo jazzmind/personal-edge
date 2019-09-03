@@ -12,7 +12,8 @@
     "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
-    "test": "./node_modules/karma/bin/karma start ./test-config/karma.conf.js"
+    "test": "./node_modules/karma/bin/karma start ./test-config/karma.conf.js",
+    "generate-version": "node ./hooks/post-build.js"
   },
   "repository": {
     "type": "git",
@@ -52,6 +53,7 @@
     "@types/node": "^7.0.13",
     "angular2-template-loader": "^0.6.2",
     "connect": "^3.6.0",
+    "crypto": "^1.0.1",
     "del": "2.2.0",
     "html-loader": "^0.4.5",
     "ionic": "3.20.0",

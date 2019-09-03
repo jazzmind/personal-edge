@@ -4,6 +4,8 @@ import { Platform, NavController, AlertController, ToastController, Events } fro
 // services
 import { CacheService } from '../shared/cache/cache.service';
 import { AuthService } from '../services/auth.service';
+import { VersionCheckService } from '../services/versionCheck.service';
+
 // pages
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
@@ -55,6 +57,7 @@ export class MyApp implements OnInit {
     private eventsListener: Events,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
+    private versionCheckService: VersionCheckService
   ) {
     eventsListener.subscribe('toaster', data => {
       let toast = toastCtrl.create({
@@ -144,5 +147,7 @@ export class MyApp implements OnInit {
         this.nav.setRoot(LoginPage, navParams);
       }
     }
+
+    this.versionCheckService.initiateVersionCheck();
   }
 }
