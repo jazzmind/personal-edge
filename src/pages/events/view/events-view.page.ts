@@ -73,7 +73,7 @@ export class EventsViewPage {
     if (this.config.eventLogo) {
       this.eventLogo = this.config.eventLogo;
     }
-    if (this.config.eventLogoRecommed) {
+    if (this.config.eventLogoRecommend) {
       this.eventLogoRecommend = this.config.eventLogoRecommend;
     }
   }
