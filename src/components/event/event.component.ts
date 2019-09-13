@@ -7,11 +7,19 @@ import * as moment from 'moment';
 
 @Component({
   selector: 'event',
-  templateUrl: 'event.html'
+  templateUrl: 'event.html',
+  host: {
+    event: '[event]',
+  }
 })
 export class EventComponent {
   @Input() event: any;
-  
+
+  constructor(
+    public navCtrl: NavController,
+    private eventService: EventService
+  ) { }
+
   // Check event has been booked
   isBookedEvent(event) {
     return (event.isBooked === true && moment().isBefore(moment.utc(event.end).local()));
@@ -21,10 +29,6 @@ export class EventComponent {
   isAttendedEvent(event) {
     return (event.isBooked === true && moment().isAfter(moment.utc(event.end).local()));
   }
-  constructor(
-    public navCtrl: NavController,
-    private eventService: EventService
-  ) {}
 
   download() {
     this.eventService.downloadAttachment(this.event);

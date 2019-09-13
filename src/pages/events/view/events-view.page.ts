@@ -51,7 +51,7 @@ export class EventsViewPage {
   public submissions: Array<any> = [];
   public isReadonly: boolean = false;
   public config: any = {};
- 
+
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -299,5 +299,9 @@ export class EventsViewPage {
       ]
     });
     cancelBooking.present();
+  }
+
+  test(event) {
+    console.log(event);
   }
 }

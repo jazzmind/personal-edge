@@ -115,6 +115,7 @@ import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 import { OrderByPipe } from '../pipes/OrderBy';
 // directives
 import { CardHeightDirective } from '../components/event/card-height.directive';
+import { ImgDirective } from '../components/event/img.directive';
 // configs
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
@@ -134,6 +135,7 @@ export function HttpLoaderFactory(http: Http) {
     AssessmentsPage,
     CutWithoutDotPipe,
     CardHeightDirective,
+    ImgDirective,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
