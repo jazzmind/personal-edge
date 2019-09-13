@@ -300,8 +300,4 @@ export class EventsViewPage {
     });
     cancelBooking.present();
   }
-
-  test(event) {
-    console.log(event);
-  }
 }
