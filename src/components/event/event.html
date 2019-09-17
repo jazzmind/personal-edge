@@ -19,9 +19,10 @@
       <p class="lighter">{{ event.location }}</p>
       <p class="lighter">{{ event.activity.name }}</p>
     </ion-col>
+
     <ion-col col-6 class="event-logo">
-      <img *ngIf="event.isOriginal" src="assets/img/static/pe-logo-name.png" />
-      <img *ngIf="!event.isOriginal" src="assets/img/static/pe-logo-recommended.png" />
+      <img *ngIf="event.isOriginal && eventLogo" [src]="eventLogo" />
+      <img *ngIf="!event.isOriginal && eventLogoRecommend" [src]="eventLogoRecommend" />
     </ion-col>
   </ion-row>
 </ion-card>
