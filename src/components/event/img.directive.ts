@@ -13,6 +13,5 @@ export class ImgDirective {
 
   handleError() {
     this.src = '';
-    console.log(this);
   }
 }
