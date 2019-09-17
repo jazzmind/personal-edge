@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EventService } from '../../services/event.service';
 import { CardHeightDirective } from './card-height.directive';
@@ -12,13 +12,20 @@ import * as moment from 'moment';
     event: '[event]',
   }
 })
-export class EventComponent {
+export class EventComponent implements OnInit {
   @Input() event: any;
+  @Input() eventLogo: string;
+  @Input() eventLogoRecommend: string;
 
   constructor(
     public navCtrl: NavController,
     private eventService: EventService
   ) { }
+
+  ngOnInit() {
+    this.eventLogo = this.event.eventLogo;
+    this.eventLogoRecommend = this.event.eventLogoRecommend;
+  }
 
   // Check event has been booked
   isBookedEvent(event) {
