@@ -15,6 +15,6 @@ export class ImgDirective {
   // - broken link
   // - bad image
   handleError() {
-    this.src = '/assets/img/static/tada.svg';
+    this.src = '';
   }
 }
