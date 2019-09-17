@@ -1,4 +1,4 @@
-# RMIT Personal Edge App
+# Global Skills Passport App
 based on Practera SDK
 Overview
 

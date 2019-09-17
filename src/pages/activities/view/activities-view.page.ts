@@ -12,14 +12,17 @@ import { AchievementService } from '../../../services/achievement.service';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
 import { CacheService } from '../../../shared/cache/cache.service';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
-  public hardcode_activity_id: any = Configure.hardcode_activity_id;
+  public hardcodeActivityId: any = Configure.hardcodeActivityId;
+  public hardcodeSkillAssessmentIds: any = Configure.hardcodeSkillAssessmentIds;
+  public hardcodeQuestionIds: any = Configure.hardcodeQuestionIds;
   public logo_act1 = "./assets/img/badges/badge7.svg";
-  public activityIDsArrary: any = [];
+  public activityIDsArray: any = [];
   public submissionTitles: any = [];
   public submissionTitle: any = [];
   public newSubmissionTitle: any = [];
@@ -38,7 +41,7 @@ export class ActivitiesViewPage {
   public assessments: any = {};
   public submissions: Array<any> = [];
   public eachFinalScore: any = 0;
-  public eachScore: any = 0;
+  public eachScore: any = -2;
   public achievements: any = {
     available: [],
     obtained: {},
@@ -48,7 +51,10 @@ export class ActivitiesViewPage {
     submissions: false
   };
   public isReadonly: boolean = false;
-
+  public config: any = {};
+  public experiencePrimaryColor: SafeStyle = "";
+  public experienceSecondaryColor: SafeStyle = "";
+  
   initialised_eset() {
     this.isReadonly = this.cache.isReadonly();
 
@@ -72,9 +78,25 @@ export class ActivitiesViewPage {
     private activityService: ActivityService,
     private submissionService: SubmissionService,
     private alertCtrl: AlertController,
-    private cache: CacheService
+    private cache: CacheService,
+    public sanitization: DomSanitizer
+ 
   ) {
     this.portfolioView = this.navParams.get('portfolioView');
+    this.config = JSON.parse(this.cache.getLocal('config'));
+    console.log(this.config);
+    if (this.config.hardcodeSkillAssessmentIds) {
+      this.hardcodeSkillAssessmentIds = this.config.hardcodeSkillAssessmentIds;
+      this.hardcodeQuestionIds = this.config.hardcodeQuestionIds;
+      this.hardcodeActivityId = this.config.hardcodeActivityId;
+    }
+    
+    if (this.config.primaryColor) {
+      this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
+    }
+    if (this.config.secondaryColor) {
+      this.experienceSecondaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.secondaryColor);
+    }
   }
   ionViewWillEnter(): void {
     this.initialised_eset();
@@ -98,18 +120,21 @@ export class ActivitiesViewPage {
     this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
 
     // --- BEGINNING match navParams from ActivitiesListPage --
-    this.activityIDsArrary = this.navParams.get('activityIDs');
+    this.activityIDsArray = this.navParams.get('activityIDs');
     this.tickArray = this.navParams.get('tickArray');
     this.newTickArray = this.tickArray[this.activityIndex-1];
     this.ticksLength = this.newTickArray.length;
     this.eachFinalScore = this.navParams.get('eachFinalScore');
-    this.eachScore = this.eachFinalScore[this.activityIndex-1];
+    this.eachScore = this.eachFinalScore.length ? this.eachFinalScore[this.activityIndex-1] : -1;
     this.newTickIDsArray = this.navParams.get('newTickIDsArray');
-    this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
-    // --- ENDING match navParams from ActivitiesListPage --
-
+    if (this.activity.lead_image) {
+      this.activity.backgroundImgUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.activity.lead_image+ ')');   
+    }
+    if (this.newTickIDsArray.length) {
+      this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
+    }
     // <Activity ID> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
-    if (this.activityIDsArrary.includes(this.hardcode_activity_id)){
+    if (this.activityIDsArray.includes(this.hardcodeActivityId)){
       this.logo_act1 = "./assets/img/badges/badge1.svg"; // if <Activity ID> exist, show career logo for the first activity, otherwise, show product logo for the first activity.
     }
     // all achievements data
@@ -312,12 +337,12 @@ export class ActivitiesViewPage {
   }
   getSubmissionTitle(Submissions){ // get user named assessment submission title
     let assessment_question_id: any = 0;
-    let hardcodeAssessmentIds = Configure.hardcodeAssessmentIds;
-    let hardcodeQuestionIDs = Configure.hardcodeQuestionIDs;
+    let hardcodeSkillAssessmentIds = Configure.hardcodeSkillAssessmentIds;
+    let hardcodeQuestionIds = Configure.hardcodeQuestionIds;
     if(Submissions[0]){
-      for(let i = 0; i < hardcodeAssessmentIds.length; i++){
-        if(Submissions[0].assessment_id === hardcodeAssessmentIds[i]){
-          assessment_question_id = hardcodeQuestionIDs[i];
+      for(let i = 0; i < hardcodeSkillAssessmentIds.length; i++){
+        if(Submissions[0].assessment_id === hardcodeSkillAssessmentIds[i]){
+          assessment_question_id = hardcodeQuestionIds[i];
         }
       }
       _.forEach(Submissions, (element, index) => {

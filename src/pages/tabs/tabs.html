@@ -1,4 +1,4 @@
-<ion-tabs selectedIndex="0" color="white" #myTabs scroll="false" no-bounce data-track-content>
+<ion-tabs selectedIndex="0" #myTabs scroll="false" no-bounce data-track-content>
   <ion-tab data-track-piece="dashboard" tabsHideOnSubPages="true" [root]="dashboard" tabTitle=" {{ 'TABS.DASHBOARD' | translate }}" tabIcon="md-list-box"></ion-tab>
   <ion-tab data-track-piece="event" tabsHideOnSubPages="true" [root]="events" tabTitle=" {{ 'TABS.EVENTS' | translate }}" tabIcon="md-calendar"></ion-tab>
   <ion-tab data-track-piece="ranking" tabsHideOnSubPages="true" [root]="ranking" tabTitle=" {{ 'TABS.RANKING' | translate }}" tabIcon="md-trophy"></ion-tab>
@@ -8,6 +8,7 @@
     tabBadge="{{spins}}"
     tabTitle=" {{ 'TABS.SPINNER' | translate }}"
     tabIcon="md-aperture"
+  
     ></ion-tab>
 
   <ion-tab tabsHideOnSubPages="true" [root]="settings" tabTitle=" {{ 'TABS.ACCOUNT' | translate }}" tabIcon="md-person"></ion-tab>

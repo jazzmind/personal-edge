@@ -11,10 +11,9 @@ import {  } from '';
           <button col-2 (click)="closeModal()" class="close" menuClose="right">&times;</button>
         </ion-list-header>
       </ion-row>
-      <p>Your overall grade is determined by the highest grades you earn for each skill.</p>
-      <p>The more submissions you do for each skill, the more chance you have of earning a higher grade.</p>
-      <p>Once you have minimum 2.5 grade for each skill you can apply for that to be your final grade and be issued a “Personal Edge Digital Portfolio”.</p>
-      <p>Please note, that once you have requested the digital portfolio you grade can not be changed by doing more submissions. It will be final.</p>
+      <p>Your overall grade is determined by the highest grade you earn for each skill.</p>
+      <p>Once you have at least a 2.5 grade in every skill you can apply for a “Global Skills Passport Portfolio”.</p>
+      <p>Please note, that once you have requested the portfolio you grade can not be changed by doing more submissions. It will be final.</p>
     </ion-list>
   `
 })

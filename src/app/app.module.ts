@@ -75,7 +75,6 @@ import { ActivitiesViewPage } from '../pages/activities/view/activities-view.pag
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
-import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
 import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
@@ -139,7 +138,6 @@ export function HttpLoaderFactory(http: Http) {
     ImgDirective,
     EventCheckinPage,
     EventComponent,
-    EventsComponent,
     EventsDownloadPage,
     EventsListPage,
     EventsPreviewPage,
@@ -277,7 +275,6 @@ export function HttpLoaderFactory(http: Http) {
     AssessmentsPage,
     EventCheckinPage,
     EventComponent,
-    EventsComponent,
     EventsDownloadPage,
     EventsListPage,
     EventsPreviewPage,

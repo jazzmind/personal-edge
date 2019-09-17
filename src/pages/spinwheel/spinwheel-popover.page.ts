@@ -8,8 +8,8 @@ import { ViewController } from 'ionic-angular';
 
 export class SpinwheelPopOverPage implements OnInit {
   status = {
-    withSpin: 'Start earning points by <strong>swiping</strong> or <strong>tap</strong> to spin',
-    withoutSpin: 'Earn spins by attending an event or completing a submission'
+    withSpin: 'Start earning points by <strong>swiping</strong> or <strong>tapping</strong> to spin',
+    withoutSpin: 'Earn more spins by attending events and completing submissions.'
   };
   statusText: string;
 

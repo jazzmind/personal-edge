@@ -7,6 +7,7 @@ import { RankingsPage } from '../rankings/list/rankings.page';
 import { SettingsPage } from '../settings/settings.page';
 import { SpinwheelPage } from '../spinwheel/spinwheel.page';
 import { TranslationService } from '../../shared/translation/translation.service';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 import * as _ from 'lodash';
 
@@ -25,13 +26,27 @@ export class TabsPage {
   events: any = EventsListPage;
   spinner: any = SpinwheelPage;
   spins: number = null;
+  public experiencePrimaryColor: SafeStyle = "";
+  public experienceSecondaryColor: SafeStyle = "";
+  public config: any = {};
 
   constructor(
     public translationService: TranslationService,
     public eventListener: Events,
-    public cacheService: CacheService
+    public cacheService: CacheService,
+    public sanitization: DomSanitizer
   ) {
     this.traceSpinProgress();
+    this.config = JSON.parse(this.cacheService.getLocal('config'));
+    if (this.config.primaryColor) {
+      // wow... this is a sledgehammer
+      var css = document.createElement('style');
+      css.type = 'text/css';
+      var styles = '.tab-button[aria-selected=true] .tab-button-icon, .tab-button[aria-selected=true] .tab-button-text { color: ' + this.config.primaryColor +  ' !important; }';
+      css.appendChild(document.createTextNode(styles));
+      document.getElementsByTagName("head")[0].appendChild(css);  
+      this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
+    }
   }
 
   traceSpinProgress() {

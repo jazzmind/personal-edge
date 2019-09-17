@@ -41,6 +41,8 @@ export class EventsViewPage {
   public event: any = {};
   public eventTag: string = null;
   public bookingStatus: string = '';
+  public eventLogo: string = "assets/img/static/logo.png";
+  public eventLogoRecommend: string = "assets/img/static/logo-recommended.png";
   public justBooked: boolean = false;
   public booked_text: string = 'Booked';
   public bookEventErrMessage: any = errMessages.Events.bookEvents.book;
@@ -48,6 +50,7 @@ export class EventsViewPage {
   public completedSubmissions: boolean = false;
   public submissions: Array<any> = [];
   public isReadonly: boolean = false;
+  public config: any = {};
 
   constructor(
     private navParams: NavParams,
@@ -65,6 +68,14 @@ export class EventsViewPage {
   ) {
     this.event = navParams.get('event');
     this.eventTag = navParams.get('tag');
+    this.config = JSON.parse(this.cache.getLocal('config'));
+
+    if (this.config.eventLogo) {
+      this.eventLogo = this.config.eventLogo;
+    }
+    if (this.config.eventLogoRecommend) {
+      this.eventLogoRecommend = this.config.eventLogoRecommend;
+    }
   }
 
   /**

@@ -12,7 +12,7 @@
     <div class="title" data-track-name>{{ event.title }}</div>
   </ion-list>
   <div *ngIf="event.isBooked" class="status">
-    <div *ngIf="eventTag" class="tag event-view-tag" color="palette-five">{{ eventTag }}</div>
+    <div *ngIf="eventTag" class="tag event-view-tag" color="palette-neutral">{{ eventTag }}</div>
   </div>
   <ion-list class="details">
     <ion-row>
@@ -23,8 +23,8 @@
         <p class="lighter">{{ event.activity.name }}</p>
       </ion-col>
       <ion-col col-6>
-        <img *ngIf="event.isOriginal" src="assets/img/static/pe-logo-name.png" />
-        <img *ngIf="!event.isOriginal" src="assets/img/static/pe-logo-recommended.png" />
+        <img *ngIf="event.isOriginal && eventLogo" [src]="eventLogo" />
+        <img *ngIf="!event.isOriginal && eventLogoRecommend" [src]="eventLogoRecommend" />
       </ion-col>
     </ion-row>
   </ion-list>

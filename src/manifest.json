@@ -1,6 +1,6 @@
 {
-  "name": "Personal Edge",
-  "short_name": "PE",
+  "name": "Global Skills Passport",
+  "short_name": "passport",
   "start_url": "/index.html",
   "display": "standalone",
   "icons": [{

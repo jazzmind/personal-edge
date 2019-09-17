@@ -1,4 +1,6 @@
 .file-question {
+  background-color: color($colors, background, base);
+
   ion-list {
     margin: 0px;
   }
@@ -6,6 +8,8 @@
   .unuploaded,
   .file-description {
     padding-left: 0px;
+    background-color: color($colors, background, base);
+
   }
   .unuploaded,
   .item-inner {
@@ -13,7 +17,7 @@
   }
   .upload-button {
     background-color: color($colors, primary-button, base);
-    color: color($colors, text, contrast);
+    color: color($colors, white);
   }
 }
 .feedback {
@@ -23,7 +27,9 @@
   }
 }
 .general-textarea {
-  padding: 0px;
+  padding: 5px;
   width: 100%;
-  resize: none;
+  border-radius: 5px;
+  resize: vertical;
+  background-color: color($colors, background, contrast);
 }

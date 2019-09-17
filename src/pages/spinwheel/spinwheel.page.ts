@@ -18,24 +18,34 @@ export class SpinwheelPage implements OnInit {
   // hardcode prizes
   segments = {
     general: [
-      {'fillStyle' : '#d4f3fc', 'text' : '100', 'value' : 100},
+      {
+        'textFontFamily': 'Roboto', 'textFontSize': 26, 'strokeStyle': null, 'lineWidth': 0,
+        'fillStyle' : '#00c4dd', 'text' : '100', 'value' : 100},
     ],
     normal: [
-      {'fillStyle' : '#a9e8fa', 'text' : '200', 'value' : 200},
+    { 'textFontFamily': 'Roboto', 'textFontSize': 26,'strokeStyle': null, 'lineWidth': 0,
+      'fillStyle': '#008ddd', 'text' : '200', 'value' : 200},
     ],
     rare: [
-      {'fillStyle' : '#7dddf8', 'text' : '300', 'value' : 300},
+      {    
+        'textFontFamily'  : 'Roboto','textFontSize': 26,'strokeStyle': null, 'lineWidth': 0, 
+        'fillStyle' : '#a37ff1', 'text' : '300', 'value' : 300},
     ],
     ultimate: [
-      {'fillStyle' : '#52d2f6', 'text' : '400', 'value' : 400}
+      { 'textFontFamily': 'Roboto', 'textFontSize': 26,'strokeStyle': null, 'lineWidth': 0,
+      'fillStyle' : '#713ae9', 'text' : '400', 'value' : 400}
     ]
   };
   config = {
     'canvasId'        : 'spinwheel',
-    'outerRadius'     : 150,
-    'textFontSize'    : 24,
+    'outerRadius'     : 170,
+    'textFontSize'    : 26,
+    'textFontFamily'  : 'Roboto',
     'textOrientation' : 'vertical',
     'textAlignment'   : 'outer',
+    'textFillStyle'   : '#ffffff',
+    'strokeStyle': null, 
+    'lineWidth': 0,
     'numSegments'     : 12,
     'segments'        : this.getSegments(),
     'rotationAngle'   : -15,

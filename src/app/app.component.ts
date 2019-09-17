@@ -89,31 +89,33 @@ export class MyApp implements OnInit {
   // keep desktop (including iPad) devices landscape mode
   test: any;
   onScreenResize(e) {
-    let popoverDOM: any = document.querySelector("ion-popover");
-    let modelDOM: any = document.querySelector("ion-modal");
+    return;
+    // comment out because behaviour wonky
+    // let popoverDOM: any = document.querySelector("ion-popover");
+    // let modelDOM: any = document.querySelector("ion-modal");
 
 
-    if ((e.screen.orientation && e.screen.orientation.angle < 45) ||
-      (this.platform.is('ios') && ((e.innerWidth < 512 && e.innerWidth < e.innerHeight) || e.innerWidth >= 768)) ||
-      this.platform.is('core')
-    ) {
-      this.isPortrait = true;
-      if (popoverDOM){
-        popoverDOM.style.opacity = 1;
-      }
-      if (modelDOM){
-        modelDOM.style.opacity = 1;
-      }
-    } else {
-      this.isPortrait = false;
-      if (popoverDOM){
-        popoverDOM.style.opacity = 0;
-      }
-      if (modelDOM){
-        modelDOM.style.opacity = 0;
-      }
-    }
-    console.log(e.screen.orientation);
+    // if ((e.screen.orientation && e.screen.orientation.angle < 45) ||
+    //   (this.platform.is('ios') && ((e.innerWidth < 512 && e.innerWidth < e.innerHeight) || e.innerWidth >= 768)) ||
+    //   this.platform.is('core')
+    // ) {
+    //   this.isPortrait = true;
+    //   if (popoverDOM){
+    //     popoverDOM.style.opacity = 1;
+    //   }
+    //   if (modelDOM){
+    //     modelDOM.style.opacity = 1;
+    //   }
+    // } else {
+    //   this.isPortrait = false;
+    //   if (popoverDOM){
+    //     popoverDOM.style.opacity = 0;
+    //   }
+    //   if (modelDOM){
+    //     modelDOM.style.opacity = 0;
+    //   }
+    // }
+    // console.log(e.screen.orientation);
   }
 
   ngOnInit() {

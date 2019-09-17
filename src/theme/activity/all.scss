@@ -12,9 +12,11 @@
   }
   p {
     padding: 0 10%;
+    min-width: 200px;
   }
 }
-.activities {
+
+.activities-header {
   .grid {
     padding: 0px !important;
   }
@@ -25,25 +27,29 @@
   }
 
   .score-board {
-    background-color: color($colors, dahsboard-bg, base) !important; // default-theme
+    background-color: color($colors, dashboard-bg, base) !important; // default-theme
+    background-image: url('/assets/img/main/skills-passport-cover@3x.png');
     background-size: cover;
+    max-height: 367px;
+    // background-position-y: -10px;
     text-align: center;
-    .tittle-logo {
+    .title-logo {
       color: #fff;
       font-size: 50px;
       font-weight: bolder;
       text-align: left;
       margin-left: 25%;
-      font-family: 'Museo-500';
+      font-family: 'Roboto';
     }
     ion-row:last-child {
       background-color: color($colors, secondary);
     }
     ion-col:first-child {
-      padding: 6% 0 3%;
+      padding: 0px;
     }
     ion-col:last-child {
-      padding: 3% 0 6%;
+      padding: 0px;
+      margin: 3% 0 6%;
     }
     ion-col {
       .score-inner-box {
@@ -71,29 +77,29 @@
       }
       .dashboard-logo {
         max-width: 80%;
-        height: 86px;
+        height: 130px;
       }
       .dashboard-data {
         max-width: 90%;
         display: flex;
+        border-radius: 10pt;
         list-style: none;
+        @include box_shadow(3);
         color: color($colors, text, base);
         padding: 0px;
         .user-grade {
           display: flex;
           justify-content: center;
           align-items: center;
+          color: color($colors, white);
           .best-grade-color {
             background-color: color($colors, palette-one, contrast);
-            border-radius: 18pt;
           }
           .better-grade-color {
             background-color: color($colors, primary-button, base);
-            border-radius: 18pt;
           }
           .worse-grade-color {
             background-color: color($colors, badge-bg, base);
-            border-radius: 18pt;
           }
           ion-badge {
             font-size: 14pt;
@@ -104,45 +110,54 @@
             font-size: 16pt;
             padding: 3px 15px;
             border-radius: 18px;
-            background-color: color($colors, secondary);
-            .fa-clock-o {
-              color: color($colors, background, contrast);
+            background-color: color($colors, white);
+            .fa-hourglass-o, .fa-clock-o {
+              color: color($colors, text, base);
             }
           }
         }
         li {
-          background-color: color($colors, background, contrast);
-          border: 1px solid color($colors, border, base);
+          background-color: color($colors, white);
+          // border: 1px solid color($colors, border, base);
           p {
             margin: 0px;
           }
           p.title {
-            text-transform: uppercase;
+            padding-top: 5px;
+            //text-transform: uppercase;
+            font-weight: bold;
             color: color($colors, text, base);
           }
           p.number {
             font-size: 22pt;
-            font-weight: 600;
+            font-weight: normal;
             padding: 5pt 0;
+            font-family: $mono-font;
             color: color($colors, palette-five, base);
+            .fa-hourglass-o, .fa-clock-o {
+              padding-top: 11px;
+            }
           }
           p.link, a.link {
-            color: color($colors, text, base);
+            padding: 5px;
+            font-size: 9pt;
+            font-weight: normal;
+            color: color($colors, text, contrast);
             text-decoration: none;
           }
         }
 
         li:nth-child(1) {
-          border-top-left-radius: 5pt;
-          border-bottom-left-radius: 5pt;
+          border-top-left-radius: 10pt;
+          border-bottom-left-radius: 10pt;
         }
         li:nth-child(2) {
           border-left: none;
           border-right: none;
         }
         li:nth-child(3) {
-          border-top-right-radius: 5pt;
-          border-bottom-right-radius: 5pt;
+          border-top-right-radius: 10pt;
+          border-bottom-right-radius: 10pt;
         }
       }
     }
@@ -152,12 +167,21 @@
       }
     }
   }
+}
+
+.activities-content {
+   
+  .grid {
+    padding: 0px !important;
+  }
+
   .activity-list {
     margin-bottom: 0px;
 
     .activity-title {
-      color: color($colors, primary);
-      font-family: 'Museo-500';
+      color: color($colors, text, base);
+      font-family: 'Roboto';
+      padding-left: 10px;
     }
 
     .assessment-score {
@@ -168,10 +192,10 @@
         padding: 2px 9px;
         border-radius: 20px;
         width: 32px;
-        background-color: color($colors, secondary, base);
-        .fa-clock-o {
+        background-color: color($colors, button, disabled);
+        .fa-hourglass-o, .fa-clock-o {
           font-size: 12pt;
-          color: color($colors, background, contrast);
+          color: color($colors, button, disabledtext);
         }
       }
       ion-badge {

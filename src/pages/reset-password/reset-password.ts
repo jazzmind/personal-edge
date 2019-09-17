@@ -141,6 +141,10 @@ export class ResetPasswordPage implements OnInit {
               this.cacheService.setLocalObject('apikey', data.apikey);
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
+              if (data.Experience.config) {
+                this.cacheService.setLocalObject('config', data.Experience.config);            
+              }
+
               this.cacheService.setLocal('gotNewItems', false);
               // get game_id data after login
               this.gameService.getGames()
@@ -209,7 +213,7 @@ export class ResetPasswordPage implements OnInit {
       });
     } else {
       return this.notificationService.alert({
-        title: 'Login Failed ..',
+        title: 'Login Failed ...',
         message: this.resetPasswordLoginFailedMessage,
         buttons: [ 'Close' ]
       });

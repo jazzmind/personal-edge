@@ -2,13 +2,11 @@
   <ion-grid class="default-center-container" data-track-name="login form">
     <ion-row class="main-login-text">
       <ion-col>
+        <h1>Skills Passport</h1>
+        <p>v1.0</p>
         <h3 col-offset-1 col-10 col-offset-1>
-          <img class="main-logo core-logo" src="./assets/img/static/Logo-02.png" />
           <img class="main-logo" src="./assets/img/main/logo01.svg" />
         </h3>
-        <p class="login-welcome-text" col-offset-1 col-10 col-offset-1>
-          Welcome to the Personal Edge App. You can login here to get started
-        </p>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -16,37 +14,43 @@
           <form #loginForm="ngForm"
           [formGroup]="loginFormGroup"
           class="general-form">
-          <ion-list>
-            <ion-item no-lines>
-              <ion-input type="text"
-                [(ngModel)]="email"
-                name="email"
-                placeholder="Email"
-                formControlName="email"
-                #emailFocus></ion-input>
-            </ion-item>
-            <ion-item no-lines>
-              <ion-input type="password"
-                [(ngModel)]="password"
-                name="password"
-                placeholder="Password"
-                formControlName="password"></ion-input>
-            </ion-item>
-          </ion-list>
+            <ion-input class="loginform" type="text"
+              [(ngModel)]="email"
+              name="email"
+              placeholder="Email"
+              formControlName="email"
+              #emailFocus></ion-input>
+            <ion-input class="loginform" type="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Password"
+            formControlName="password"></ion-input>
+
           <button ion-button
             type="submit"
             round
             block
-            class="primary-button"
+            class="secondary-button loginbutton"
             (click)="userLogin()"
             [disabled]="loginForm.invalid">
             {{ 'LOGIN.PAGETITLE' | translate }}
           </button>
           <div class="forget-password-container">
-            <button class="general-circle-btn"
-              (click)="linkToForgetPassword()">
-              {{ 'LOGIN.PASSWORDFORGOT' | translate }}
-            </button>
+            <ion-row>
+              <ion-col>
+                  <button class="left general-circle-btn"
+                  (click)="linkToForgetPassword()">
+                  {{ 'LOGIN.PASSWORDFORGOT' | translate }}
+                  </button>
+              </ion-col>
+              <ion-col>
+                  <button class="right general-circle-btn"
+                  (click)="linkToNewUser()">
+                  {{ 'LOGIN.NEWUSER' | translate }}
+                  </button>
+              </ion-col>
+            </ion-row>
+            
           </div>
         </form>
       </ion-col>

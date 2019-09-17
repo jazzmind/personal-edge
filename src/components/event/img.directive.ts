@@ -11,6 +11,9 @@ import { Directive, Input } from '@angular/core';
 export class ImgDirective {
   @Input() src: string;
 
+  // Handle error when:
+  // - broken link
+  // - bad image
   handleError() {
     this.src = '';
   }

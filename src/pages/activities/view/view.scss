@@ -1,23 +1,42 @@
 .activity-badge-bg-1 {
   background-color: rgba(215, 238, 236, 1);
+  background-image: url(/assets/img/skills/skill-illustration-service-oriented@3x.png);
+  background-size: cover;
+}
+.activity-badge-bg-1.starter {
+  background-color: rgba(215, 238, 236, 1);
+  background-image: url(/assets/img/skills/skill-illustration-starter@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-2 {
   background-color: rgba(253, 214, 153, 0.9);
+  background-image: url(/assets/img/skills/skill-illustration-collaborative@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-3 {
   background-color: rgba(204, 213, 235, 1);
+  background-image: url(/assets/img/skills/skill-illustration-problem-solver@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-4 {
   background-color: rgba(228, 240, 214, 1);
+  background-image: url(/assets/img/skills/skill-illustration-innovative@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-5 {
   background-color: rgba(217, 240, 247, 1);
+  background-image: url(/assets/img/skills/skill-illustration-culturally-conscious@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-6 {
   background-color: rgba(255, 240, 203, 1);
+  background-image: url(/assets/img/skills/skill-illustration-leader@3x.png);
+  background-size: cover;
 }
 .activity-badge-bg-7 {
   background-color: rgba(233, 246, 245, 1);
+  background-image: url(/assets/img/skills/skill-illustration-starter@3x.png);
+  background-size: cover;
 }
 .activity-badge {
   display: flex;
@@ -34,6 +53,7 @@
 }
 
 .activity-detail {
+    background-color: color($colors, background, contrast) !important;
   .pulse-button {
     border: none;
     box-shadow: 0 0 0 0 rgba(255, 203, 5, 0.8);
@@ -65,7 +85,7 @@
     .header-content {
       text-align: center;
       color: $background-color;
-      border-bottom: 1px solid color($colors, background, base);
+      border-bottom: 1px solid color($colors, background, contrast);
       .icon {
         font-size: 10rem;
       }
@@ -77,12 +97,12 @@
   }
   .better-grade-color {
     padding: 0.2em 1em;
-    background-color: color($colors, primary-button, base);
+    background-color: color($colors, primary-button, contrast);
     border-radius: 18pt;
   }
   .worse-grade-color {
     padding: 0.2em 1em;
-    background-color: color($colors, badge-bg, base);
+    background-color: color($colors, badge-bg, contrast);
     border-radius: 18pt;
   }
   .badges {
@@ -122,7 +142,7 @@
     }
     .submissions-information {
       h2, p {
-        font-family: 'Museo-500';
+        font-family: 'Roboto';
       }
       ion-label {
         margin: 6px 0px;
@@ -161,8 +181,8 @@
     border-radius: 20px;
     width: 32px;
     font-size: 1.5rem;
-    color: color($colors, background, contrast);
-    background-color: color($colors, secondary);
+    color: color($colors, button, disabledtext);
+    background-color: color($colors,button, disabled);
   }
   .medals-display {
     margin-bottom: 0px;
@@ -192,8 +212,8 @@
           border-radius: 18px;
         }
         button {
-          background-color: color($colors, secondary);
-          color: color($colors, background, contrast);
+          background-color: color($colors, button, disabled);
+          color: color($colors, button, disabledtext);
         }
       }
     }
