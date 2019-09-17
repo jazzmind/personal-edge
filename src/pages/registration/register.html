@@ -2,31 +2,29 @@
   <ion-grid class="default-center-container" data-track-name="registration form">
     <ion-row class="main-login-text">
       <ion-col>
+        <h1>Skills Passport</h1>
+        <p>v1.0</p>
         <h3 col-offset-1 col-10 col-offset-1>
-          <img class="main-logo core-logo" src="./assets/img/static/Logo-02.png" />
           <img class="main-logo" src="./assets/img/main/logo01.svg" />
         </h3>
         <p class="login-welcome-text" col-offset-1 col-10 col-offset-1>
-          {{ 'REGISTRATION.HEADER' | translate }}
+            {{ 'REGISTRATION.HEADER' | translate }}
         </p>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-10 offset-1>
           <form [formGroup]="regForm" (ngSubmit)="onSubmit(regForm)" class="general-form" [formGroup]="regForm">
-              <ion-list>
-                <ion-item no-lines>
-                  <ion-input type="password" [(ngModel)]="password" placeholder="New Password" formControlName="password"></ion-input>
-                </ion-item>
-                <ion-item no-lines>
-                  <ion-input (keyup)="verifyPwdKeyUp()" type="password" name="verify_password" [(ngModel)]="verify_password" placeholder="Confirm password" formControlName="verify_password"></ion-input>
-                </ion-item>
-              </ion-list>
+
+              <ion-input class="loginform" type="password" [(ngModel)]="password" placeholder="New Password" formControlName="password"></ion-input>
+
+              <ion-input class="loginform" (keyup)="verifyPwdKeyUp()" type="password" name="verify_password" [(ngModel)]="verify_password" placeholder="Confirm password" formControlName="verify_password"></ion-input>
+
               <button type="submit"
                 ion-button
                 round
                 block
-                class="primary-button"
+                class="secondary-button loginbutton"
                 [disabled]="password!=verify_password || regForm.invalid">
                 {{ 'GENERAL.DONE' | translate }}
               </button>

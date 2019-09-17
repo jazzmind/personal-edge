@@ -79,6 +79,7 @@ export class AssessmentsPage {
 
   ionViewWillEnter() {
     let loader = this.loadingCtrl.create();
+    console.log(this.activity);
     loader.present().then(() => {
       this.loadQuestions()
       .then(() => {

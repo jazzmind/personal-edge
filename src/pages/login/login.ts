@@ -87,6 +87,9 @@ export class LoginPage {
             .subscribe(data => {
               // this.getLogInData(data);
               self.cacheService.setLocalObject('apikey', data.apikey);
+              if (data.Experience.config) {
+                self.cacheService.setLocalObject('config', data.Experience.config);            
+              }
 
               // saved timeline id for later
               const thisTimeline = data.Timelines[0];
@@ -160,7 +163,6 @@ export class LoginPage {
               this.cacheService.setLocal('isAuthenticated', true);
             }, err => {
               loading.dismiss().then(() => {
-
                 const data = err.data;
                 if (err.status === 'unauthorized' && (data && data.type === 'password_compromised')) {
                   this.notificationService.alert({
@@ -194,6 +196,7 @@ export class LoginPage {
     cacheProcesses.push(this.cacheService.write('timeline_id', data.Timelines[0].Timeline.id));
     cacheProcesses.push(this.cacheService.write('apikey', data.apikey));
     cacheProcesses.push(this.cacheService.write('timelines', data.Timelines));
+    cacheProcesses.push(this.cacheService.write('experience', data.Experience));
     cacheProcesses.push(this.cacheService.write('teams', data.Teams));
     this.cacheService.setLocal('apikey', data.apikey);
     this.cacheService.setLocal('timeline_id', data.Timelines[0].Timeline.id);
@@ -222,7 +225,7 @@ export class LoginPage {
    */
   logError(error) {
     const alert = this.alertCtrl.create({
-      title: 'Login Failed ..',
+      title: 'Login Failed ...',
       message: this.invalidLoginMessage,
       buttons: ['Close']
     });

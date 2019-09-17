@@ -1,6 +1,8 @@
 assessments-group-page {
   .description > .item-inner {
     border-bottom: none !important;
+    background-color: color($colors, background, base);
+
   }
   .btn-save[disabled] {
     display: none;

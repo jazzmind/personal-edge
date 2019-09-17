@@ -12,14 +12,14 @@
   <ion-grid data-track-name="Event filter">
     <ion-row>
       <ion-col col-12>
-        <ion-segment [(ngModel)]="filter" color="palette-five">
-          <ion-segment-button data-track-piece="Browse" value="browses" (ionSelect)="selected('browses')">
+        <ion-segment [(ngModel)]="filter" color="palette-neutral" >
+          <ion-segment-button data-track-piece="Browse" value="browses" [style.background-color]="browses==true||browses==undefined  ? experiencePrimaryColor : 'transparent' " (ionSelect)="selected('browses'); browses=true;bookings=false;attended=false;">
             {{ 'EVENTS.BROWSE' | translate }}
           </ion-segment-button>
-          <ion-segment-button data-track-piece="my bookings" value="my-bookings" (ionSelect)="selected('my-bookings')">
+          <ion-segment-button data-track-piece="my bookings" value="my-bookings" [style.background-color]="bookings==true  ? experiencePrimaryColor : 'transparent' " (ionSelect)="selected('my-bookings'); bookings=true;browses=false;attended=false;">
             {{ 'EVENTS.MYBOOKINGS' | translate }}
           </ion-segment-button>
-          <ion-segment-button  data-track-piece="attended" value="attended" (ionSelect)="selected('attended')">
+          <ion-segment-button  data-track-piece="attended" value="attended" [style.background-color]="attended==true  ? experiencePrimaryColor : 'transparent' " (ionSelect)="selected('attended'); attended=true;bookings=false;browses=false;">
             {{ 'EVENTS.ATTENDED' | translate }}
           </ion-segment-button>
         </ion-segment>
@@ -42,8 +42,8 @@
     <event *ngFor="let event of events; let i = index" [event]="event" (click)="view(event)" tappable></event>
   </ion-list>
 
-  <ion-fab right bottom #fab data-track-name="fab button">
-    <button data-track-piece="filter location" ion-fab color="palette-five" (click)="setIonFab($event, fab)">
+  <ion-fab *ngIf="hasLocationFilter" right bottom #fab data-track-name="fab button">
+    <button data-track-piece="filter location" ion-fab color="palette-neutral" (click)="setIonFab($event, fab)">
       <p *ngIf="filterLocation">{{ filterLocation }}</p>
       <ion-icon *ngIf="filterLocation === null" name="pin"></ion-icon>
     </button>

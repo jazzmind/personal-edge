@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 import { errMessages } from '../../../app/messages';
 import { default as Configure } from '../../../configs/config';
 // services
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { ActivityService } from '../../../services/activity.service';
 import { AssessmentService } from '../../../services/assessment.service';
 import { AchievementService } from '../../../services/achievement.service';
@@ -58,8 +59,8 @@ export class ActivitiesListPage {
     this.totalAverageScore = 0;
     this.submissionStatus = null;
   }
-  public hardcode_assessment_id: any = Configure.hardcode_assessment_id;
-  public hardcode_context_id: any = Configure.hardcode_context_id;
+  public hardcodeEndAssessmentId: any = Configure.hardcodeEndAssessmentId;
+  public hardcodeEndAssessmentContextId: any = Configure.hardcodeEndAssessmentContextId;
   public portfolio_domain: any = Configure.portfolio_domain;
   public activityIndex: any = 0;
   public activities: any = [];
@@ -94,6 +95,7 @@ export class ActivitiesListPage {
   public eventsListPage = EventsListPage;
   public program_id: any = "1";
   public email: any = "test@test.com";
+  public config: any = {};
   public viewPortfolioLink: any = '';
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
@@ -105,6 +107,7 @@ export class ActivitiesListPage {
     available: []
   };
   public achievementListIDs: any = Configure.achievementListIDs;
+  public achievementListNewbieIDs: any = Configure.achievementListNewbieIDs;
   public show_score: any = [
     false,false,false,false,false,false,false
   ];
@@ -121,7 +124,10 @@ export class ActivitiesListPage {
   public tickedIDsArray: any = [];
   public userAchievementsIDs: any = [];
   public checkUserPointer: boolean = false;
-
+  public experiencePrimaryColor: SafeStyle = "";
+  public experienceSecondaryColor: SafeStyle = "";
+  public experienceBackgroundUrl: SafeStyle = "url(/assets/img/main/skills-generic-cover@3x.png)";
+  public experience: any = {};
   constructor(
     public navCtrl: NavController,
     public activityService: ActivityService,
@@ -138,14 +144,35 @@ export class ActivitiesListPage {
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
     public translationService: TranslationService,
-    public win: WindowRef
+    public win: WindowRef,
+    public sanitization: DomSanitizer
   ) {
     if (this.email && this.program_id) {
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = this.cacheService.getLocalObject('email');
-      this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
     } else {
-      this.viewPortfolioLink = `${this.portfolio_domain}/1/test@test.com`;
+      this.program_id = 1;
+      this.email = 'test+portfolio@practera.com';
+    }
+    // replace @ and + characters in email addr
+    this.email = encodeURIComponent(this.email);
+    this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
+    this.config = JSON.parse(this.cacheService.getLocal('config'));
+    if (this.config.backgroundImageUrl) {
+      this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl+ ')');
+    }
+    if (this.config.primaryColor) {
+      this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
+    }
+    if (this.config.secondaryColor) {
+      this.experienceSecondaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.secondaryColor);
+    }
+    if (this.config.achievementListIDs) {
+      console.log(this.config.achievementListIDs);
+      this.achievementListIDs = this.config.achievementListIDs;
+      this.hardcodeEndAssessmentId = this.config.hardcodeEndAssessmentId;
+      this.hardcodeEndAssessmentContextId = this.config.hardcodeEndAssessmentContextId;
+      this.achievementListNewbieIDs = this.config.achievementListNewbieIDs;
     }
   }
 
@@ -224,7 +251,7 @@ export class ActivitiesListPage {
       const milestoneId = this.cacheService.getLocalObject('milestone_id');
       this.achievementListIDs = Configure.achievementsByMilestone[milestoneId] || this.achievementListIDs;
       if (this.activities.length == 1) {
-        this.achievementListIDs = Configure.newbieOrderedIDs;
+        this.achievementListIDs = Configure.achievementListNewbieIDs;
       }
 
       // extract activity ids
@@ -276,7 +303,7 @@ export class ActivitiesListPage {
 
         // submission data handling
         _.forEach(this.submissionData, submission => {
-          if (submission.Assessment.id == this.hardcode_assessment_id) { // hardcode for post program assessment_id
+          if (submission.Assessment.id == this.hardcodeEndAssessmentId) { // hardcode for post program assessment_id
             this.submissionStatus = submission.AssessmentSubmission.status;
           }
         });
@@ -373,14 +400,14 @@ export class ActivitiesListPage {
             let refs = {
               References: [{
                 Assessment: {
-                  id: this.hardcode_assessment_id,
-                  name: "Personal Edge pre-program questionnaire"
+                  id: this.hardcodeEndAssessmentId,
+                  name: "Final questionnaire"
                 },
-                context_id: this.hardcode_context_id // hardcode for context_id
+                context_id: this.hardcodeEndAssessmentContextId // hardcode for context_id
               }],
               assessment: {
-                id: this.hardcode_assessment_id,
-                context_id: this.hardcode_context_id // hardcode for context_id
+                id: this.hardcodeEndAssessmentId,
+                context_id: this.hardcodeEndAssessmentContextId // hardcode for context_id
               }
             };
 
@@ -494,5 +521,6 @@ export class ActivitiesListPage {
       }
       this.eachActivityScores.push(this.eachActivityScores[index]);
     });
+
   }
 }

@@ -1,4 +1,4 @@
-<ion-header class="activity-detail activity-badge-bg-{{ activityIndex }}" data-track-content>
+<ion-header [ngClass]="(activity.name == 'Starter') ? 'starter' : ''" class="activity-detail activity-badge-bg-{{ activityIndex }}" [style.background-image]="activity.backgroundImgUrl" data-track-content>
   <readonly></readonly>
   <ion-navbar>
     <ion-title data-track-name>{{ activity.name }}</ion-title>
@@ -19,10 +19,13 @@
     </ion-row>
     <ion-row>
       <ion-col col-12 class="activity-badge">
-        <img *ngIf="activityIndex == 1" src="{{ logo_act1 }}" alt="Activity Badge 1"/>
+        <img *ngIf="activityIndex == 1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Activity Badge 1"/>
+        <!-- {{ logo_act1 }} -->
         <img *ngIf="activityIndex > 1"
-          src="./assets/img/badges/badge{{ activityIndex }}.svg"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
           alt="Activity Badge {{ activityIndex }}"/>
+          <!-- srcbadge="./assets/img/badges/badge{{ activityIndex }}.svg" -->
+
       </ion-col>
     </ion-row>
     <ion-row>
@@ -33,6 +36,7 @@
             [ngClass]="(submissions.length > 0 || isReadonly) ? '' : 'pulse-button'"
             (click)="goAssessment()"
             [disabled]="isReadonly"
+            [style.background-color]="experiencePrimaryColor"
             >
             <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
           </button>
@@ -61,22 +65,24 @@
         </span>
       </ion-item>
       <ion-item col-2 class="badge-default">
-        <ion-badge
-          *ngIf="eachScore != -1 && activity.name != 'Newbie'"
+          <button *ngIf="eachScore == -2 || eachScore == undefined">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+          </button>
+          <button *ngIf="eachScore == -1">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+            </button>
+          <ion-badge *ngIf="eachScore > -1 && activity.name != 'Starter'"
           [ngClass]="{
-            'best-grade-color': eachScore >= 3.5,
-            'better-grade-color': (eachScore < 3.5 && eachScore >= 2),
-            'worse-grade-color': eachScore < 2
+            'best-grade-color': eachScore >= 3.5, 
+            'better-grade-color': (eachScore < 3.5 && eachScore >= 2), 
+            'worse-grade-color': eachScore < 2 
           }">
           {{ eachScore }}
         </ion-badge>
-        <ion-badge *ngIf="eachScore != -1 && activity.name == 'Newbie'"
+        <ion-badge *ngIf="eachScore > -1 && activity.name == 'Starter'"
           class="best-grade-color">
           <ion-icon name="checkmark"></ion-icon>
         </ion-badge>
-        <button *ngIf="eachScore == -1">
-          <i class="fa fa-clock-o" aria-hidden="true"></i>
-        </button>
       </ion-item>
     </ion-row>
   </ion-list>

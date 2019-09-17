@@ -130,6 +130,7 @@ ion-fab[center-right] {
   left: 65%;
 }
 
+
 // START ---- Integrate font-awesome into ionic's ion-icon --- //
 @mixin makeIcon($arg, $val) {
   .ion-ios-#{$arg}:before ,
