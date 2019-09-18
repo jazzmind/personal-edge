@@ -51,7 +51,7 @@ export class EventsViewPage {
   public submissions: Array<any> = [];
   public isReadonly: boolean = false;
   public config: any = {};
- 
+
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,

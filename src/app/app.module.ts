@@ -74,7 +74,6 @@ import { ActivitiesViewPage } from '../pages/activities/view/activities-view.pag
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
-import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
 import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
@@ -115,6 +114,7 @@ import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 import { OrderByPipe } from '../pipes/OrderBy';
 // directives
 import { CardHeightDirective } from '../components/event/card-height.directive';
+import { ImgDirective } from '../components/event/img.directive';
 // configs
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
@@ -134,9 +134,9 @@ export function HttpLoaderFactory(http: Http) {
     AssessmentsPage,
     CutWithoutDotPipe,
     CardHeightDirective,
+    ImgDirective,
     EventCheckinPage,
     EventComponent,
-    EventsComponent,
     EventsDownloadPage,
     EventsListPage,
     EventsPreviewPage,
@@ -274,7 +274,6 @@ export function HttpLoaderFactory(http: Http) {
     AssessmentsPage,
     EventCheckinPage,
     EventComponent,
-    EventsComponent,
     EventsDownloadPage,
     EventsListPage,
     EventsPreviewPage,
