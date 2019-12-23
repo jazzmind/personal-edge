@@ -18,9 +18,10 @@
       <ion-label class="opt-label" [ngClass]="{'bold':(!hideMe)}">Visible</ion-label>
       <ion-toggle color="primary" [(ngModel)]="hideMe" (ionChange)="changePrivate()"></ion-toggle>
     </ion-item>
-    <button data-content-piece ion-item (click)="goToTutorial()">
+    <!-- @TODO this is hide because we don't have skill video now. after we got that video we need to show this. -->
+    <!-- <button data-content-piece ion-item (click)="goToTutorial()">
       <ion-icon name="medkit" item-left></ion-icon> {{ 'SETTINGS.TUTORIAL' | translate }}
-    </button>
+    </button> -->
     <button data-content-piece ion-item (click)="goToTermConditions()">
       <ion-icon name="clipboard" item-left></ion-icon> {{ 'SETTINGS.TERMS' | translate }}
     </button>

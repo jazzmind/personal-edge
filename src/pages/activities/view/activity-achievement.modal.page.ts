@@ -28,7 +28,7 @@ import { ViewController, NavParams } from 'ionic-angular';
 })
 export class ActivityAchievementModalPage {
   public achievementData: any = {};
-  public badgeUrl: string = './assets/img/badges/badge7.svg';
+  public badgeUrl: string = './assets/img/main/practera_logo.svg';
   public description: string = "No Description Yet ..";
   public imageResource: string = '';
   constructor(
