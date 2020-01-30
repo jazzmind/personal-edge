@@ -1,6 +1,12 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
+import { NavController,
+  ViewController,
+  AlertController,
+  LoadingController,
+  NavParams,
+  ModalController
+} from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 // services
@@ -14,6 +20,7 @@ import { TranslationService } from '../../shared/translation/translation.service
 import { FormValidator } from '../../validators/formValidator';
 // pages
 import { RegistrationModalPage } from './modal';
+import { TutorialPage } from '../settings/tutorial/tutorial.page';
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
 import * as _ from 'lodash';
@@ -67,6 +74,7 @@ export class RegisterPage implements OnInit {
     private cacheService: CacheService,
     private gameService: GameService,
     private milestoneService: MilestoneService,
+    private modalCtrl: ModalController,
     public translationService: TranslationService) {
     this.verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
     this.successRegistrationLoading = loadingMessages.SuccessRegistration.successRegistration;
@@ -92,6 +100,13 @@ export class RegisterPage implements OnInit {
       buttons: ['Close']
     });
   }
+
+  private popupTutorial() {
+    // this.navCtrl.push(TutorialPage);
+    let tutorialModal = this.modalCtrl.create(TutorialPage);
+    tutorialModal.present();
+  }
+
   onSubmit(form: NgForm):void {
     let self = this;
     self.submitted = true;
@@ -126,8 +141,13 @@ export class RegisterPage implements OnInit {
           this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
-          this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)
-            .subscribe(data => {
+          this.authService.loginAuth(
+            this.cacheService.getLocal('user.email'),
+            this.regForm.get('password').value
+          ).subscribe(data => {
+              this.cacheService.hasBeenAccessed();
+              this.popupTutorial();
+
               this.cacheService.setLocalObject('apikey', data.apikey);
 
               // get game_id data after login
