@@ -23,7 +23,6 @@ import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
-import { TutorialPage } from '../settings/tutorial/tutorial.page';
 
 /* This page is for handling user login process */
 @Component({
