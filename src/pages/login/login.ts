@@ -73,24 +73,12 @@ export class LoginPage {
     }
   }
 
-  private popupTutorial() {
-    // this.navCtrl.push(TutorialPage);
-    let tutorialModal = this.modalCtrl.create(TutorialPage);
-    tutorialModal.present();
-  }
-
   /**
    * user login function to authenticate user with email and password
    */
   async userLogin() {
     let self = this;
-    const hasLoggedInBefore = await this.cacheService.hasBeenAccessed({ verify: true });
-
     this.cacheService.clear().then(async () => {
-      if (hasLoggedInBefore) { // reset cache
-        await this.cacheService.hasBeenAccessed();
-      }
-
       // add loading effect during login process
       const loading = this.loadingCtrl.create({
         dismissOnPageChange: true,
@@ -99,13 +87,7 @@ export class LoginPage {
       loading.present().then(() => {
         // This part is calling post_auth() API from backend
         this.authService.loginAuth(this.email, this.password)
-            .subscribe(async (data) => {
-              if (!await this.cacheService.hasBeenAccessed({ verify: true })) {
-                // show tutorial
-                this.popupTutorial();
-                await this.cacheService.hasBeenAccessed();
-              }
-
+            .subscribe(data => {
               // this.getLogInData(data);
               self.cacheService.setLocalObject('apikey', data.apikey);
 
