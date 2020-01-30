@@ -5,6 +5,9 @@ import { Cache } from '../app/cache';
 
 import * as _ from 'lodash';
 
+// marking ID for accessed record
+const HAS_ACCESSED = 'hasAccessed';
+
 @Injectable()
 export class CacheService {
 
@@ -135,5 +138,12 @@ export class CacheService {
   public isReadonly(): boolean {
     const readonly = this.getLocalObject('enrolmentStatus');
     return (readonly === 'readonly');
+  }
+
+  public hasBeenAccessed(option?): Promise<any> {
+    if (option && option.verify) {
+      return this.storage.get(HAS_ACCESSED);
+    }
+    return this.storage.set(HAS_ACCESSED, true);
   }
 }

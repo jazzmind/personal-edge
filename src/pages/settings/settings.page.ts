@@ -68,7 +68,7 @@ export class SettingsPage {
     }
     // getting user data saved in cashe
     this.user = this.cache.getLocalObject('user');
-    
+
   }
   public getUserEmail() {
     return this.cache.getLocalObject('email') || '';
@@ -125,13 +125,17 @@ export class SettingsPage {
       spinner: 'hide',
       content: this.logoutMessage
     });
-    loader.present().then(() => {
-      this.cache.clear().then(() => {
-        localStorage.clear();
-        window.location.reload(); // the reason of doing this is because of we need to refresh page content instead of API data cache issue occurs
-        loader.dismiss();
-        this.navCtrl.push(LoginPage);
-      });
+    loader.present().then(async () => {
+      const accessedBefore = this.cache.hasBeenAccessed({ verify: true });
+      await this.cache.clear();
+      localStorage.clear();
+      window.location.reload(); // the reason of doing this is because of we need to refresh page content instead of API data cache issue occurs
+      loader.dismiss();
+      this.navCtrl.push(LoginPage);
+      // reset accessed cache
+      if (accessedBefore) {
+        this.cache.hasBeenAccessed();
+      }
     });
   }
 
