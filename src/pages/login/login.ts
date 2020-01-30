@@ -23,6 +23,8 @@ import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+import { TutorialPage } from '../settings/tutorial/tutorial.page';
+
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
@@ -70,12 +72,25 @@ export class LoginPage {
       return false;
     }
   }
+
+  private popupTutorial() {
+    // this.navCtrl.push(TutorialPage);
+    let tutorialModal = this.modalCtrl.create(TutorialPage);
+    tutorialModal.present();
+  }
+
   /**
    * user login function to authenticate user with email and password
    */
-  userLogin() {
+  async userLogin() {
     let self = this;
-    this.cacheService.clear().then(() => {
+    const hasLoggedInBefore = await this.cacheService.hasBeenAccessed({ verify: true });
+
+    this.cacheService.clear().then(async () => {
+      if (hasLoggedInBefore) { // reset cache
+        await this.cacheService.hasBeenAccessed();
+      }
+
       // add loading effect during login process
       const loading = this.loadingCtrl.create({
         dismissOnPageChange: true,
@@ -84,7 +99,13 @@ export class LoginPage {
       loading.present().then(() => {
         // This part is calling post_auth() API from backend
         this.authService.loginAuth(this.email, this.password)
-            .subscribe(data => {
+            .subscribe(async (data) => {
+              if (!await this.cacheService.hasBeenAccessed({ verify: true })) {
+                // show tutorial
+                this.popupTutorial();
+                await this.cacheService.hasBeenAccessed();
+              }
+
               // this.getLogInData(data);
               self.cacheService.setLocalObject('apikey', data.apikey);
 
