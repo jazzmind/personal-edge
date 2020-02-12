@@ -16,7 +16,7 @@ export class GameService {
    * @param {object} options
    */
   public getGames() {
-    return this.request.get('api/games.json');
+    return this.request.get('api/games');
   }
 
   /**
@@ -30,7 +30,7 @@ export class GameService {
         game_id: gameId
       }
     }, options);
-    return this.request.get('api/characters.json', options);
+    return this.request.get('api/characters', options);
   }
 
   /**
@@ -38,7 +38,7 @@ export class GameService {
    * @param {object} data
    */
   public postCharacter(data) {
-    return this.request.post('api/characters.json', data, {
+    return this.request.post('api/characters', data, {
       'Content-Type': 'application/json'
     });
   }
