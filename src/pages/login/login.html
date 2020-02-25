@@ -1,30 +1,34 @@
 <ion-content class="login-module" data-track-content>
-  <ion-grid class="default-center-container" data-track-name="login form">
+  <ion-grid class="default-center-container" no-padding data-track-name="login form">
     <ion-row class="main-login-text">
       <ion-col>
-        <h1>Skills Passport</h1>
-        <p>v1.0</p>
-        <h3 col-offset-1 col-10 col-offset-1>
-          <img class="main-logo" src="./assets/img/main/logo01.svg" />
-        </h3>
+        <div class="div-logo">
+          <img class="main-logo" src="./assets/img/main/logo.svg" width="100%"/>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-10 offset-1>
-          <form #loginForm="ngForm"
+        <form #loginForm="ngForm"
           [formGroup]="loginFormGroup"
           class="general-form">
-            <ion-input class="loginform" type="text"
-              [(ngModel)]="email"
-              name="email"
-              placeholder="Email"
-              formControlName="email"
-              #emailFocus></ion-input>
-            <ion-input class="loginform" type="password"
-            [(ngModel)]="password"
-            name="password"
-            placeholder="Password"
-            formControlName="password"></ion-input>
+          <ion-list>
+            <ion-item>
+              <ion-input type="text"
+                [(ngModel)]="email"
+                name="email"
+                placeholder="Email"
+                formControlName="email"
+                #emailFocus></ion-input>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-input type="password"
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Password"
+                formControlName="password"></ion-input>
+            </ion-item>
+          </ion-list>
 
           <button ion-button
             type="submit"
@@ -35,24 +39,31 @@
             [disabled]="loginForm.invalid">
             {{ 'LOGIN.PAGETITLE' | translate }}
           </button>
+
           <div class="forget-password-container">
             <ion-row>
               <ion-col>
-                  <button class="left general-circle-btn"
-                  (click)="linkToForgetPassword()">
-                  {{ 'LOGIN.PASSWORDFORGOT' | translate }}
-                  </button>
+                <a (click)="linkToForgetPassword()">
+                {{ 'LOGIN.PASSWORDFORGOT' | translate }}
+                </a>
               </ion-col>
-              <ion-col>
-                  <button class="right general-circle-btn"
-                  (click)="linkToNewUser()">
-                  {{ 'LOGIN.NEWUSER' | translate }}
-                  </button>
+              <ion-col *ngIf="false">
+                <button class="right general-circle-btn"
+                (click)="linkToNewUser()">
+                {{ 'LOGIN.NEWUSER' | translate }}
+                </button>
               </ion-col>
             </ion-row>
-            
           </div>
         </form>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div>
+          <a>Powered by</a>
+          <img src="./assets/img/main/logo.svg" height="25" class="powerby-img">
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

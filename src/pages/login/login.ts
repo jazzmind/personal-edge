@@ -26,7 +26,8 @@ import { ForgetPasswordPage } from '../../pages/forget-password/forget-password'
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html'
+  templateUrl: './login.html',
+  styleUrls: ['./login.scss']
 })
 export class LoginPage {
   public email: string;
@@ -88,7 +89,7 @@ export class LoginPage {
               // this.getLogInData(data);
               self.cacheService.setLocalObject('apikey', data.apikey);
               if (data.Experience.config) {
-                self.cacheService.setLocalObject('config', data.Experience.config);            
+                self.cacheService.setLocalObject('config', data.Experience.config);
               }
 
               // saved timeline id for later
