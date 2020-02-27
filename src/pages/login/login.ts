@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavController,
          NavParams,
          LoadingController,
@@ -16,6 +16,7 @@ import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { CacheService } from '../../shared/cache/cache.service';
+import { UtilsService } from '../../shared/utils/utils.service';
 import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
 // directives
@@ -23,13 +24,14 @@ import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+// import {} from '@angular/core';
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   public email: string;
   public password: any;
   public userName: string;
@@ -55,6 +57,8 @@ export class LoginPage {
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
     private notificationService: NotificationService,
+    private utilsService: UtilsService
+
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -71,11 +75,16 @@ export class LoginPage {
       return false;
     }
   }
+
+  ngOnInit() {
+  }
   /**
    * user login function to authenticate user with email and password
    */
   userLogin() {
     let self = this;
+    this.utilsService.changeThemeColor('red');
+
     this.cacheService.clear().then(() => {
       // add loading effect during login process
       const loading = this.loadingCtrl.create({

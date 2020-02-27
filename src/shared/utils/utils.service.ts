@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 const zipMime = [
   'application/x-compressed',
@@ -9,6 +10,26 @@ const zipMime = [
 
 @Injectable()
 export class UtilsService {
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+  ) {
+
+  }
+
+  changeThemeColor(color) {
+    this.document.documentElement.style.setProperty('$primary', color);
+    // this.document.documentElement.style.setProperty('$primary-shade', color);
+    // get the tint version of the color(20% opacity)
+    // this.document.documentElement.style.setProperty('$primary-tint', color + '33');
+    // convert hex color to rgb and update css variable
+    const hex = color.replace('#', '');
+    const red = parseInt(hex.substring(0, 2), 16);
+    const green = parseInt(hex.substring(2, 4), 16);
+    const blue = parseInt(hex.substring(4, 6), 16);
+
+    this.document.documentElement.style.setProperty('$primary-rgb', red + ',' + green + ',' + blue);
+  }
 
   getIcon(mimetype: string) {
     let result: string = '';
