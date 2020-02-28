@@ -33,6 +33,7 @@ const DEFAULT_LOGO = './assets/img/main/logo.svg';
   styleUrls: ['./login.scss']
 })
 export class LoginPage implements OnInit {
+  public styles: object;
   public logoSrc: string;
   public email: string;
   public password: any;
@@ -60,6 +61,7 @@ export class LoginPage implements OnInit {
     private cacheService: CacheService,
     private notificationService: NotificationService,
   ) {
+    this.styles = {};
     this.logoSrc = '';
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -69,9 +71,16 @@ export class LoginPage implements OnInit {
   }
 
   async ngOnInit() {
-    const res = await this.authService.experienceConfig('localhost').toPromise()
-    if (res && res.data && res.data.length > 0 && res.data[0].logo) {
-      this.logoSrc = `https://sandbox.practera.com${res.data[0].logo}`;
+    const res = await this.authService.experienceConfig('localhost').toPromise();
+    if (res && res.data && res.data.length > 0) {
+      const thisExperience = res.data[0];
+      if (thisExperience.logo) {
+        this.logoSrc = `https://sandbox.practera.com${thisExperience.logo}`;
+      }
+
+      if (thisExperience.config && thisExperience.config.theme_color) {
+        this.styles = {color: thisExperience.config.theme_color};
+      }
     } else {
       this.logoSrc = DEFAULT_LOGO;
     }

@@ -120,10 +120,10 @@
     max-width: 256px;
     margin: 16px auto;
     border-radius: 20px;
-    background-color: color($colors, secondary-button, base);
-    &:hover {
-      background-color: color($colors, secondary-button, contrast);
-    }
+    // background-color: color($colors, secondary-button, base);
+    // &:hover {
+      // background-color: color($colors, secondary-button, contrast);
+    // }
   }
   .forgot-password-button {
     font-size: 11pt !important;
