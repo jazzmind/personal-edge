@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavController,
          NavParams,
          LoadingController,
@@ -23,13 +23,17 @@ import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+
+const DEFAULT_LOGO = './assets/img/main/logo.svg';
+
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
+  public logoSrc: string;
   public email: string;
   public password: any;
   public userName: string;
@@ -56,12 +60,23 @@ export class LoginPage {
     private cacheService: CacheService,
     private notificationService: NotificationService,
   ) {
+    this.logoSrc = '';
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
       email: ['', [FormValidator.isValidEmail, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
+
+  async ngOnInit() {
+    const res = await this.authService.experienceConfig('localhost').toPromise()
+    if (res && res.data && res.data.length > 0 && res.data[0].logo) {
+      this.logoSrc = `https://sandbox.practera.com${res.data[0].logo}`;
+    } else {
+      this.logoSrc = DEFAULT_LOGO;
+    }
+  }
+
   ionViewCanLeave(): boolean {
     // user is authorized
     let authorized = true;
@@ -71,6 +86,7 @@ export class LoginPage {
       return false;
     }
   }
+
   /**
    * user login function to authenticate user with email and password
    */
