@@ -1,9 +1,9 @@
-<ion-content class="login-module" data-track-content>
+<ion-content class="login-module" data-track-content [ngStyle]="styles">
   <ion-grid class="default-center-container" no-padding data-track-name="login form">
     <ion-row class="main-login-text">
       <ion-col>
         <div class="div-logo">
-          <img class="main-logo" src="./assets/img/main/logo.svg" width="100%"/>
+          <img class="main-logo" [src]="logoSrc" width="100%"/>
         </div>
       </ion-col>
     </ion-row>
@@ -22,11 +22,14 @@
                 #emailFocus></ion-input>
             </ion-item>
             <ion-item lines="none">
-              <ion-input type="password"
+              <ion-input [type]="showPassword ? 'text' : 'password'"
                 [(ngModel)]="password"
                 name="password"
                 placeholder="Password"
                 formControlName="password"></ion-input>
+              <button class="hideshow" ion-button item-end (click)="showPassword = !showPassword">
+                <ion-icon item-end [name]="showPassword ? 'eye' : 'eye-off'"></ion-icon>
+              </button>
             </ion-item>
           </ion-list>
 

@@ -24,7 +24,9 @@ import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
-// import {} from '@angular/core';
+
+const DEFAULT_LOGO = './assets/img/main/logo.svg';
+
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
@@ -32,6 +34,8 @@ import { ForgetPasswordPage } from '../../pages/forget-password/forget-password'
   styleUrls: ['./login.scss']
 })
 export class LoginPage implements OnInit {
+  public styles: object;
+  public logoSrc: string;
   public email: string;
   public password: any;
   public userName: string;
@@ -60,12 +64,31 @@ export class LoginPage implements OnInit {
     private utilsService: UtilsService
 
   ) {
+    this.styles = {};
+    this.logoSrc = '';
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
       email: ['', [FormValidator.isValidEmail, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
+
+  async ngOnInit() {
+    const res = await this.authService.experienceConfig('localhost').toPromise();
+    if (res && res.data && res.data.length > 0) {
+      const thisExperience = res.data[0];
+      if (thisExperience.logo) {
+        this.logoSrc = `https://sandbox.practera.com${thisExperience.logo}`;
+      }
+
+      if (thisExperience.config && thisExperience.config.theme_color) {
+        this.styles = {color: thisExperience.config.theme_color};
+      }
+    } else {
+      this.logoSrc = DEFAULT_LOGO;
+    }
+  }
+
   ionViewCanLeave(): boolean {
     // user is authorized
     let authorized = true;
@@ -76,8 +99,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-  ngOnInit() {
-  }
   /**
    * user login function to authenticate user with email and password
    */

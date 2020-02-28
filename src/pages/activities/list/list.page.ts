@@ -157,6 +157,8 @@ export class ActivitiesListPage {
     // replace @ and + characters in email addr
     this.email = encodeURIComponent(this.email);
     this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
+
+    // showing custom background-image based on experience url
     this.config = JSON.parse(this.cacheService.getLocal('config'));
     if (this.config.backgroundImageUrl) {
       this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl+ ')');
