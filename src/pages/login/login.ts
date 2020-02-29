@@ -24,6 +24,7 @@ import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+// import { ElementRef } from ''
 
 const DEFAULT_LOGO = './assets/img/main/logo.svg';
 
@@ -82,7 +83,10 @@ export class LoginPage implements OnInit {
       }
 
       if (thisExperience.config && thisExperience.config.theme_color) {
-        this.styles = {color: thisExperience.config.theme_color};
+        this.styles = {
+          color: `${thisExperience.config.theme_color}`,
+          backgroundColor: `${thisExperience.config.theme_color}`,
+        };
       }
     } else {
       this.logoSrc = DEFAULT_LOGO;
