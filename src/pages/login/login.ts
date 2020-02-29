@@ -24,7 +24,7 @@ import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
-// import { ElementRef } from ''
+import { default as Configuration } from '../../configs/config';
 
 const DEFAULT_LOGO = './assets/img/main/logo.svg';
 
@@ -75,11 +75,11 @@ export class LoginPage implements OnInit {
   }
 
   async ngOnInit() {
-    const res = await this.authService.experienceConfig('localhost').toPromise();
+    const res = await this.authService.experienceConfig().toPromise();
     if (res && res.data && res.data.length > 0) {
       const thisExperience = res.data[0];
       if (thisExperience.logo) {
-        this.logoSrc = `https://sandbox.practera.com${thisExperience.logo}`;
+        this.logoSrc = `${Configuration.prefixUrl}${thisExperience.logo}`;
       }
 
       if (thisExperience.config && thisExperience.config.theme_color) {
