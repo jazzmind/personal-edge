@@ -8,7 +8,6 @@ import { NavController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages';
 // services
@@ -25,6 +24,7 @@ import {FormValidator} from '../../validators/formValidator';
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
 import { default as Configuration } from '../../configs/config';
+import * as _ from 'lodash';
 
 const DEFAULT_LOGO = './assets/img/main/logo.svg';
 
@@ -76,6 +76,7 @@ export class LoginPage implements OnInit {
 
   async ngOnInit() {
     const res = await this.authService.experienceConfig().toPromise();
+
     if (res && res.data && res.data.length > 0) {
       const thisExperience = res.data[0];
       if (thisExperience.logo) {
@@ -88,7 +89,9 @@ export class LoginPage implements OnInit {
           backgroundColor: `${thisExperience.config.theme_color}`,
         };
       }
-    } else {
+    }
+
+    if (_.isEmpty(this.logoSrc)) {
       this.logoSrc = DEFAULT_LOGO;
     }
   }
