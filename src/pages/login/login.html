@@ -1,4 +1,4 @@
-<ion-content class="login-module" data-track-content [ngStyle]="styles">
+<ion-content class="login-module" data-track-content>
   <ion-grid class="default-center-container" no-padding data-track-name="login form">
     <ion-row class="main-login-text">
       <ion-col>
@@ -28,7 +28,7 @@
                 placeholder="Password"
                 formControlName="password"></ion-input>
               <button class="hideshow" ion-button item-end (click)="showPassword = !showPassword">
-                <ion-icon item-end [name]="showPassword ? 'eye' : 'eye-off'"></ion-icon>
+                <ion-icon [ngStyle]="{color: styles.color}" item-end [name]="showPassword ? 'eye' : 'eye-off'"></ion-icon>
               </button>
             </ion-item>
           </ion-list>
@@ -39,14 +39,15 @@
             block
             class="secondary-button loginbutton"
             (click)="userLogin()"
-            [disabled]="loginForm.invalid">
+            [disabled]="loginForm.invalid"
+            [ngStyle]="{backgroundColor: styles.backgroundColor}">
             {{ 'LOGIN.PAGETITLE' | translate }}
           </button>
 
           <div class="forget-password-container">
             <ion-row>
               <ion-col>
-                <a (click)="linkToForgetPassword()">
+                <a (click)="linkToForgetPassword()" [ngStyle]="{color: styles.color}">
                 {{ 'LOGIN.PASSWORDFORGOT' | translate }}
                 </a>
               </ion-col>
@@ -64,7 +65,7 @@
     <ion-row>
       <ion-col>
         <div>
-          <a>Powered by</a>
+          <a [ngStyle]="{color: styles.color}">Powered by</a>
           <img src="./assets/img/main/logo.svg" height="25" class="powerby-img">
         </div>
       </ion-col>

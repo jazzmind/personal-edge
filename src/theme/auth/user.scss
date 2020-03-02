@@ -57,7 +57,7 @@
 }
 .login-module {
   font-family: $font-primary;
-  background-color: color($colors, background, login) !important;
+  // background-color: color($colors, background, login) !important;
   background-repeat: no-repeat;
   .scroll-content {
     overflow-y: hidden;

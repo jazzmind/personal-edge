@@ -16,6 +16,7 @@ import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { CacheService } from '../../shared/cache/cache.service';
+import { UtilsService } from '../../shared/utils/utils.service';
 import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
 // directives
@@ -23,6 +24,7 @@ import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+import { default as Configuration } from '../../configs/config';
 
 const DEFAULT_LOGO = './assets/img/main/logo.svg';
 
@@ -60,6 +62,8 @@ export class LoginPage implements OnInit {
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
     private notificationService: NotificationService,
+    private utilsService: UtilsService
+
   ) {
     this.styles = {};
     this.logoSrc = '';
@@ -71,15 +75,18 @@ export class LoginPage implements OnInit {
   }
 
   async ngOnInit() {
-    const res = await this.authService.experienceConfig('localhost').toPromise();
+    const res = await this.authService.experienceConfig().toPromise();
     if (res && res.data && res.data.length > 0) {
       const thisExperience = res.data[0];
       if (thisExperience.logo) {
-        this.logoSrc = `https://sandbox.practera.com${thisExperience.logo}`;
+        this.logoSrc = `${Configuration.prefixUrl}${thisExperience.logo}`;
       }
 
       if (thisExperience.config && thisExperience.config.theme_color) {
-        this.styles = {color: thisExperience.config.theme_color};
+        this.styles = {
+          color: `${thisExperience.config.theme_color}`,
+          backgroundColor: `${thisExperience.config.theme_color}`,
+        };
       }
     } else {
       this.logoSrc = DEFAULT_LOGO;
@@ -101,6 +108,8 @@ export class LoginPage implements OnInit {
    */
   userLogin() {
     let self = this;
+    this.utilsService.changeThemeColor('red');
+
     this.cacheService.clear().then(() => {
       // add loading effect during login process
       const loading = this.loadingCtrl.create({

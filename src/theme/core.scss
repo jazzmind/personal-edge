@@ -13,6 +13,18 @@ $font-secondary: 'Merriweather', Arial, "Helvetica Neue", Helvetica, sans-serif;
 @import url('https://fonts.googleapis.com/css?family=Arvo|Cabin|Zilla+Slab+Highlight');
 $title-font: 'Roboto';
 $mono-font: 'Roboto Mono';
+
+#main-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .content {
   background-color: color($colors, background, base);
 }
