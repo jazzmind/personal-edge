@@ -51,7 +51,7 @@ export class EventsViewPage {
   public submissions: Array<any> = [];
   public isReadonly: boolean = false;
   public config: any = {};
- 
+
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -73,7 +73,7 @@ export class EventsViewPage {
     if (this.config.eventLogo) {
       this.eventLogo = this.config.eventLogo;
     }
-    if (this.config.eventLogoRecommed) {
+    if (this.config.eventLogoRecommend) {
       this.eventLogoRecommend = this.config.eventLogoRecommend;
     }
   }

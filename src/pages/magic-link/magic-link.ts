@@ -21,6 +21,7 @@ import { LoginPage } from '../login/login';
 })
 export class MagicLinkPage {
   private auth_token: string;
+  private token_fail: boolean;
   public milestone_id: string;
   // loading & error messages variables
   private loginLoadingMessage: any = loadingMessages.Login.login;
@@ -42,6 +43,7 @@ export class MagicLinkPage {
   }
 
   ionViewWillEnter() {
+    this.token_fail = false;
     this.magicLinkAccess();
   }
 
@@ -103,6 +105,11 @@ export class MagicLinkPage {
         });
 
       }, async err => {
+        if (this.token_fail == false) {
+          this.token_fail = true;
+          this.auth_token = decodeURIComponent(this.auth_token);
+          return this.magicLinkAccess();
+        }
         const failAlert = this.alertCtrl.create({
           title: 'Magic did NOT happen',
           message: this.misMatchTokenErrMessage,
