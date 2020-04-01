@@ -1,0 +1,11 @@
+:root {
+  --font-weight-regular:400;
+  --font-weight-medium:500;
+}
+
+.headline-6 {
+  font-size: 20px!important;
+  line-height: 24px!important;
+  letter-spacing: .15px!important;
+  font-weight: var(--font-weight-medium) !important;
+}

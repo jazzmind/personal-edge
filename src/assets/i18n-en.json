@@ -31,9 +31,9 @@
     "ALL": "All"
   },
   "FORGOTPASSWORD": {
-    "INPUTTITLE": "Please enter your email address to reset password",
+    "INPUTTITLE": "Enter your email and we'll send you a link that will let you pick a new password.",
     "PAGETITLE": "Forgot Password",
-    "SENDBUTTON": "Send"
+    "SENDEMAILBUTTON": "Send Email"
   },
   "GAME": {
     "PAGETITLE": "Spinner Wheel"
