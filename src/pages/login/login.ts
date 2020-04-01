@@ -81,6 +81,8 @@ export class LoginPage implements OnInit {
       const thisExperience = res.data[0];
       if (thisExperience.logo) {
         this.logoSrc = `${Configuration.prefixUrl}${thisExperience.logo}`;
+
+        await this.cacheService.write('branding.logo', this.logoSrc);
       }
 
       if (thisExperience.config && thisExperience.config.theme_color) {
@@ -88,6 +90,7 @@ export class LoginPage implements OnInit {
           color: `${thisExperience.config.theme_color}`,
           backgroundColor: `${thisExperience.config.theme_color}`,
         };
+        await this.cacheService.write('branding.color', thisExperience.config.theme_color);
       }
     }
 
