@@ -49,6 +49,7 @@ export class ForgetPasswordPage {
 
   async ionViewDidLoad() {
     this.color = await this.cacheService.read('branding.color');
+    console.log(this.color);
   }
 
   userForgotPassword() {
