@@ -78,10 +78,8 @@ export class LoginPage implements OnInit {
   }
 
   async ngOnInit() {
-    console.log('testet');
     const res = await this.authService.experienceConfig().toPromise();
 
-    console.log(res);
     if (res && res.data && res.data.length > 0) {
       const thisExperience = res.data[0];
       if (thisExperience.logo) {
