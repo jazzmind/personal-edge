@@ -12,7 +12,15 @@ export class CustomLogoDirective implements OnChanges {
 
   constructor(public cache: CacheService) {
     if (!this.logo) {
-      this.logo = DEFAULT_IMAGE;
+      this.cache.read('branding.logo').then((res: string) => {
+        if (res) {
+          this.logo = res;
+        } else {
+          this.logo = DEFAULT_IMAGE;
+        }
+      }, () => {
+        this.logo = DEFAULT_IMAGE;
+      });
     }
   }
 
