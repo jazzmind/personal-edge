@@ -17,6 +17,7 @@ import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
 import { MomentModule } from 'angular2-moment';
 import { LinkyModule } from 'angular-linky';
+import { IonicStorageModule } from '@ionic/storage';
 
 // custom modules
 import { PiwikModule } from '../shared/piwik/piwik.module';
@@ -261,7 +262,8 @@ export function HttpLoaderFactory(http: Http) {
           defaultHistory: [ TestPage ]
         }
       ]
-    })
+    }),
+    IonicStorageModule.forRoot(),
   ],
   bootstrap: [
     IonicApp
