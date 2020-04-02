@@ -3,7 +3,7 @@
     <ion-row class="main-login-text">
       <ion-col>
         <div class="div-logo">
-          <img class="main-logo" [src]="logoSrc" width="100%"/>
+          <custom-logo [logo]="logoSrc"></custom-logo>
         </div>
       </ion-col>
     </ion-row>
@@ -37,7 +37,7 @@
             type="submit"
             round
             block
-            class="secondary-button loginbutton"
+            class="secondary-button submitbutton"
             (click)="userLogin()"
             [disabled]="loginForm.invalid"
             [ngStyle]="{backgroundColor: styles.backgroundColor}">
@@ -50,12 +50,6 @@
                 <a (click)="linkToForgetPassword()" [ngStyle]="{color: styles.color}">
                 {{ 'LOGIN.PASSWORDFORGOT' | translate }}
                 </a>
-              </ion-col>
-              <ion-col *ngIf="false">
-                <button class="right general-circle-btn"
-                (click)="linkToNewUser()">
-                {{ 'LOGIN.NEWUSER' | translate }}
-                </button>
               </ion-col>
             </ion-row>
           </div>

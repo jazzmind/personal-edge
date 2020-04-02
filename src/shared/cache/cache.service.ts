@@ -93,6 +93,15 @@ export class CacheService {
     }
   }
 
+  // remove from web DB staroge
+  public remove(key: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.storage.remove(key).then((data: Cache) => {
+        return resolve(true);
+      });
+    });
+  }
+
   public clear(): any {
     return this.storage.clear();
   }

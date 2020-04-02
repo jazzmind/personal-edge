@@ -27,7 +27,7 @@
     "@angular/http": "^4.4.*",
     "@angular/platform-browser": "^4.4.*",
     "@angular/platform-browser-dynamic": "^4.4.*",
-    "@ionic/storage": "2.0.1",
+    "@ionic/storage": "^2.0.1",
     "@ngx-translate/core": "^7.0.0",
     "@ngx-translate/http-loader": "^0.1.0",
     "@types/greensock": "^1.15.32",

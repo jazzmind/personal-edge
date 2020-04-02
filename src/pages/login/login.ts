@@ -35,7 +35,7 @@ const DEFAULT_LOGO = './assets/img/main/logo.svg';
   styleUrls: ['./login.scss']
 })
 export class LoginPage implements OnInit {
-  public styles: object;
+  public styles: {color: string; backgroundColor: string};
   public logoSrc: string;
   public email: string;
   public password: any;
@@ -65,7 +65,10 @@ export class LoginPage implements OnInit {
     private utilsService: UtilsService
 
   ) {
-    this.styles = {};
+    this.styles = {
+      color: '',
+      backgroundColor: '',
+    };
     this.logoSrc = '';
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -81,6 +84,7 @@ export class LoginPage implements OnInit {
       const thisExperience = res.data[0];
       if (thisExperience.logo) {
         this.logoSrc = `${Configuration.prefixUrl}${thisExperience.logo}`;
+        this.cacheService.write('branding.logo', this.logoSrc);
       }
 
       if (thisExperience.config && thisExperience.config.theme_color) {
@@ -88,6 +92,7 @@ export class LoginPage implements OnInit {
           color: `${thisExperience.config.theme_color}`,
           backgroundColor: `${thisExperience.config.theme_color}`,
         };
+        this.cacheService.write('branding.color', this.styles.color);
       }
     }
 
