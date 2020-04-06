@@ -65,7 +65,9 @@
     "TOTALPOINTS": "Points (Total)"
   },
   "RESETPASSWORD": {
-    "PAGETITLE": "Reset Password"
+    "PAGETITLE": "Reset your password",
+    "DESCRIPTION": "Please enter a new password for your account.",
+    "CHANGEPASSWORD": "Change password"
   },
   "SETTINGS": {
     "HELP": "Email Help",
