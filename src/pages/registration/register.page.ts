@@ -32,6 +32,9 @@ export class RegisterPage implements OnInit {
     verify_password: ''
   };
   submitted: boolean = false;
+  email: string;
+  color: string;
+
   private regForm: any;
   private pwdMacthBool: boolean = false;
   private verifyPwd: boolean = false;
@@ -55,6 +58,7 @@ export class RegisterPage implements OnInit {
   private registeredErrMessage: any = null;
   private passwordMismatchMessage: any = null;
   private passwordMinlengthMessage: any = null;
+
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
     public navCtrl: NavController,
@@ -83,8 +87,20 @@ export class RegisterPage implements OnInit {
       verify_password: ['', [Validators.minLength(8), Validators.required]]
     });
   }
+
   ngOnInit() {
+    this.email = this.cacheService.getLocal('user.email');
   }
+
+  ionViewDidEnter() {
+    this.cacheService.read('branding.color').then((res: string) => {
+      this.color = res;
+      if (!this.color) {
+        this.color = this.cacheService.getLocalObject('branding.color');
+      }
+    });
+  }
+
   public displayAlert(message) {
     return this.alertCtrl.create({
       title: 'Error Message',
@@ -216,11 +232,13 @@ export class RegisterPage implements OnInit {
     this.cacheService.setLocal('timelineID', data.Timeline.id);
     return Observable.from(cacheProcesses);
   }
+
   goToLogin() {
     this.cacheService.clear().then(() => {
       this.navCtrl.push(LoginPage);
     });
   }
+
   // check password minmimum length
   checkMinLength(){
     if (!this.password || !this.verify_password) {
@@ -228,10 +246,12 @@ export class RegisterPage implements OnInit {
     }
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
+
   // check password mismacth issue
   verifyPwdKeyUp() {
     return this.verifyPwd = true;
   }
+
   pwdMatchCheck() {
     if (!this.password) {
       return this.isPwdMatch = false;
