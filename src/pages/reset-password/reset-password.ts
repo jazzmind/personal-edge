@@ -84,8 +84,13 @@ export class ResetPasswordPage implements OnInit {
     this.verifyKeyEmail();
   }
 
-  async ionViewDidLoad() {
-    this.color = await this.cacheService.read('branding.color');
+  ionViewDidEnter() {
+    this.obtainColor().then((res: string) => {
+      this.color = res;
+      if (!this.color) {
+        this.color = this.cacheService.getLocalObject('branding.color');
+      }
+    });
   }
 
   /**
@@ -98,7 +103,7 @@ export class ResetPasswordPage implements OnInit {
    * @return if user clicked email link, return reset password page, otherwise,
              return error hint screen
   */
-  verifyKeyEmail() {
+  async verifyKeyEmail() {
     let key = this.navParams.get('key'),
         email = decodeURIComponent(this.navParams.get('email'));
         this.keyVal = key;
@@ -123,6 +128,10 @@ export class ResetPasswordPage implements OnInit {
       }, 5000);
     });
   }
+
+  async obtainColor() {
+    return this.cacheService.read('branding.color');
+  }
   /**
    * to update password in db
    * Purpose: store new password for user
@@ -131,7 +140,7 @@ export class ResetPasswordPage implements OnInit {
              successfully, otherwise, error hint popup to indicate user password
              update failed
   */
-  updatePassword(){
+  updatePassword() {
     let key = this.navParams.get('key'),
         email = decodeURIComponent(this.navParams.get('email'));
     const loading = this.loadingCtrl.create({
