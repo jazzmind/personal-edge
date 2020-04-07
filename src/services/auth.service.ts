@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { RequestService, CustomQueryEncoder } from '../shared/request/request.service';
 import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs';
+
+const APIs = {
+  experience: 'api/v2/plan/experience/list'
+};
 
 export interface ProfileData {
   image:string
@@ -18,6 +23,12 @@ export class AuthService {
   }
   constructor(private request: RequestService,
               private http: Http) {}
+  experienceConfig(domain?): Observable<any> {
+    const location: Location = window.location;
+    let options = new RequestOptions({headers: this.headerData()});
+    return this.http.get(`${this.prefixUrl}${APIs.experience}?domain=${domain || location.host}`, options).map(res => res.json());
+  }
+
   getTerms() {
     let options = new RequestOptions({headers: this.headerData()});
     return this.http.get(this.prefixUrl+'api/registration_details.json', options)

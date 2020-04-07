@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavController,
          NavParams,
          LoadingController,
@@ -8,7 +8,6 @@ import { NavController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages';
 // services
@@ -16,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { CacheService } from '../../shared/cache/cache.service';
+import { UtilsService } from '../../shared/utils/utils.service';
 import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
 // directives
@@ -23,12 +23,20 @@ import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+import { default as Configuration } from '../../configs/config';
+import * as _ from 'lodash';
+
+const DEFAULT_LOGO = './assets/img/main/logo.svg';
+
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html'
+  templateUrl: './login.html',
+  styleUrls: ['./login.scss']
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
+  public styles: {color: string; backgroundColor: string};
+  public logoSrc: string;
   public email: string;
   public password: any;
   public userName: string;
@@ -54,13 +62,48 @@ export class LoginPage {
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
     private notificationService: NotificationService,
+    private utilsService: UtilsService
+
   ) {
+    this.styles = {
+      color: '',
+      backgroundColor: '',
+    };
+    this.logoSrc = '';
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
       email: ['', [FormValidator.isValidEmail, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
+
+  async ngOnInit() {
+    const res = await this.authService.experienceConfig().toPromise();
+
+    if (res && res.data && res.data.length > 0) {
+      const thisExperience = res.data[0];
+
+      if (thisExperience.logo) {
+        this.logoSrc = `${Configuration.prefixUrl}${thisExperience.logo}`;
+        await this.cacheService.write('branding.logo', this.logoSrc);
+        this.cacheService.setLocalObject('branding.logo', this.logoSrc);
+      }
+
+      if (thisExperience.config && thisExperience.config.theme_color) {
+        this.styles = {
+          color: `${thisExperience.config.theme_color}`,
+          backgroundColor: `${thisExperience.config.theme_color}`,
+        };
+        await this.cacheService.write('branding.color', this.styles.color);
+        this.cacheService.setLocalObject('branding.color', this.styles.color);
+      }
+    }
+
+    if (_.isEmpty(this.logoSrc)) {
+      this.logoSrc = DEFAULT_LOGO;
+    }
+  }
+
   ionViewCanLeave(): boolean {
     // user is authorized
     let authorized = true;
@@ -70,11 +113,14 @@ export class LoginPage {
       return false;
     }
   }
+
   /**
    * user login function to authenticate user with email and password
    */
   userLogin() {
     let self = this;
+    this.utilsService.changeThemeColor('red');
+
     this.cacheService.clear().then(() => {
       // add loading effect during login process
       const loading = this.loadingCtrl.create({
@@ -88,7 +134,7 @@ export class LoginPage {
               // this.getLogInData(data);
               self.cacheService.setLocalObject('apikey', data.apikey);
               if (data.Experience.config) {
-                self.cacheService.setLocalObject('config', data.Experience.config);            
+                self.cacheService.setLocalObject('config', data.Experience.config);
               }
 
               // saved timeline id for later
