@@ -53,8 +53,8 @@
     "NEWUSER": "New User?"
   },
   "REGISTRATION": {
-    "HEADER": "Great - you are almost there! Just one more thing...",
-    "PAGETITLE": "Set Password"
+    "PAGETITLE": "Your Login Email Address",
+    "SUBMIT": "Register"
   },
   "RANKING": {
     "DETAIL": "Ranking Details",

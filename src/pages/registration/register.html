@@ -1,51 +1,74 @@
-<ion-content class="login-module" data-track-content>
-  <ion-grid class="default-center-container" data-track-name="registration form">
-    <ion-row class="main-login-text">
-      <ion-col>
-        <h1>Skills Passport</h1>
-        <p>v1.0</p>
-        <h3 col-offset-1 col-10 col-offset-1>
-          <img class="main-logo" src="./assets/img/main/logo01.svg" />
-        </h3>
-        <p class="login-welcome-text" col-offset-1 col-10 col-offset-1>
-            {{ 'REGISTRATION.HEADER' | translate }}
-        </p>
+<ion-content class="login-module forget-password-container" data-track-content>
+  <ion-grid class="center" data-track-name="registration form">
+    <ion-row>
+      <ion-col class="div-logo">
+        <custom-logo></custom-logo>
       </ion-col>
     </ion-row>
+
     <ion-row>
-      <ion-col col-10 offset-1>
-          <form [formGroup]="regForm" (ngSubmit)="onSubmit(regForm)" class="general-form" [formGroup]="regForm">
+      <ion-col class="div-after-logo">
+        <p class="heading-6">
+          {{ 'REGISTRATION.PAGETITLE' | translate }}
+        </p>
+        <p class="body-1">{{ email }}</p>
+      </ion-col>
+    </ion-row>
 
-              <ion-input class="loginform" type="password" [(ngModel)]="password" placeholder="New Password" formControlName="password"></ion-input>
-
-              <ion-input class="loginform" (keyup)="verifyPwdKeyUp()" type="password" name="verify_password" [(ngModel)]="verify_password" placeholder="Confirm password" formControlName="verify_password"></ion-input>
-
-              <button type="submit"
-                ion-button
-                round
-                block
-                class="secondary-button submitbutton"
-                [disabled]="password!=verify_password || regForm.invalid">
-                {{ 'GENERAL.DONE' | translate }}
+    <ion-row>
+      <ion-col>
+        <form [formGroup]="regForm" class="general-form">
+          <ion-list>
+            <ion-item no-lines>
+              <ion-input [type]="showPassword ? 'text' : 'password'"
+                [(ngModel)]="password"
+                placeholder="Set up Practera password*"
+                formControlName="password"></ion-input>
+              <button class="hideshow" ion-button item-end (click)="showPassword = !showPassword">
+                <ion-icon [ngStyle]="{color: color}" item-end [name]="showPassword ? 'eye' : 'eye-off'"></ion-icon>
               </button>
-              <div *ngIf="verifyPwd == true">
-                <div *ngIf="pwdMatchCheck()" class="error-hint">
-                  <small class="text-danger">
-                   {{ passwordMismatchMessage }}
-                  </small>
-                </div>
-                <div *ngIf="checkMinLength() == true" class="error-hint">
-                  <small class="text-danger">
-                   {{ passwordMinlengthMessage }}
-                  </small>
-                </div>
-              </div>
-            </form>
+            </ion-item>
+
+            <ion-item no-lines>
+              <ion-input [type]="showPassword ? 'text' : 'password'"
+                (keyup)="verifyPwdKeyUp()"
+                name="verify_password"
+                [(ngModel)]="verify_password"
+                placeholder="Confirm password*"
+                formControlName="verify_password"></ion-input>
+            </ion-item>
+          </ion-list>
+
+          <button type="submit"
+            ion-button
+            round
+            block
+            class="submitbutton"
+            (click)="onSubmit(regForm)"
+            [disabled]="password!=verify_password || regForm.invalid"
+            [ngStyle]="{backgroundColor: color }">
+            {{ 'REGISTRATION.SUBMIT' | translate }}
+          </button>
+
+          <div *ngIf="verifyPwd == true">
+            <div *ngIf="pwdMatchCheck()" class="error-hint">
+              <small class="text-danger">
+               {{ passwordMismatchMessage }}
+              </small>
+            </div>
+            <div *ngIf="checkMinLength() == true" class="error-hint">
+              <small class="text-danger">
+               {{ passwordMinlengthMessage }}
+              </small>
+            </div>
+          </div>
+        </form>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
- <ion-content class="mode-warn" *ngIf="verifySuccess == false">
+
+<ion-content class="mode-warn" *ngIf="verifySuccess == false">
   <div class="mode-warn-sms">
     <div class="mode-text-container">
       <span>
