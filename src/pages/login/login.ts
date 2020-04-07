@@ -80,9 +80,9 @@ export class LoginPage implements OnInit {
   async ngOnInit() {
     const res = await this.authService.experienceConfig().toPromise();
 
-    // if (res && res.data && res.data.length > 0) {
-      // const thisExperience = res.data[0];
-      const thisExperience = {"name":"Personal Edge Test Experience 1.0","config":{"app":{"name":"ISDK"},"enrolment":{"whitelist_emails":["beenish@test.com"]},"tabs":{"events":{"name":"events","title":"Events","icon":"md-calendar","order":2},"rankings":{"name":"rankings","title":"Rankings","icon":"md-medal","order":3},"settings":{"name":"settings","title":"Settings","icon":"md-person","order":4}},"theme_color":"#5da2ac","card_style":"waves-light.png","review_rating":false,"review_rating_notification":false,"deep_link_in_app":true,"achievement_in_app_mentor":false,"achievement_in_app_participant":true,"due_dates_in_app":false,"truncate_description":true,"cutie":true,"progress_caculation_without_hidden":false},"logo":"/storage/filestores/open/41471.png","background_image":""};
+    if (res && res.data && res.data.length > 0) {
+      const thisExperience = res.data[0];
+
       if (thisExperience.logo) {
         this.logoSrc = `${Configuration.prefixUrl}${thisExperience.logo}`;
         await this.cacheService.write('branding.logo', this.logoSrc);
@@ -97,7 +97,7 @@ export class LoginPage implements OnInit {
         await this.cacheService.write('branding.color', this.styles.color);
         this.cacheService.setLocalObject('branding.color', this.styles.color);
       }
-    // }
+    }
 
     if (_.isEmpty(this.logoSrc)) {
       this.logoSrc = DEFAULT_LOGO;
