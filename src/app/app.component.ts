@@ -13,6 +13,7 @@ import { RegistrationPage } from '../pages/registration/registration.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
+import { RequestService } from '../shared/request/request.service';
 
 import { WindowRef } from '../shared/window';
 
@@ -55,6 +56,7 @@ export class MyApp implements OnInit {
     private eventsListener: Events,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
+    private requestService: RequestService
   ) {
     eventsListener.subscribe('toaster', data => {
       let toast = toastCtrl.create({
@@ -84,7 +86,6 @@ export class MyApp implements OnInit {
   /* Customized Flag Start */
   // when screen size changed, disable mobile landscape mode
   // keep desktop (including iPad) devices landscape mode
-  test: any;
   onScreenResize(e) {
     return;
     // comment out because behaviour wonky
@@ -115,7 +116,7 @@ export class MyApp implements OnInit {
     // console.log(e.screen.orientation);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     let category = [];
     let page;
     let navParams = {};
@@ -146,5 +147,10 @@ export class MyApp implements OnInit {
         this.nav.setRoot(LoginPage, navParams);
       }
     }
+
+    // Set country to determine next step (in this case, determine Filestack's bucket region)
+    this.requestService.getIpLocation();
   }
+
+
 }
