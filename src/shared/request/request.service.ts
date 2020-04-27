@@ -126,6 +126,7 @@ export class RequestService {
   // Set API request options
   setOptions(options) {
     let result = new RequestOptions({ headers: this.appendHeader() });
+
     let timelineId = this.cacheService.getLocalObject('timelineID');
 
     let params = new URLSearchParams();
@@ -194,4 +195,23 @@ export class RequestService {
     }
     return body.data || {};
   }
+
+  /**
+   * Get the user's current location from IP
+   */
+  public getIpLocation() {
+    return this._ipAPI().subscribe(
+      res => {
+        this.cacheService.setCountry(res.country_name);
+      },
+    );
+  }
+
+  // obtain location information from IP API
+  private _ipAPI(): Observable<any> {
+    return this.http.get('https://ipapi.co/json').map(res => {
+      return res.json();
+    });
+  }
+
 }

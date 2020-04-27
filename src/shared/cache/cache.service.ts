@@ -145,4 +145,12 @@ export class CacheService {
     const readonly = this.getLocalObject('enrolmentStatus');
     return (readonly === 'readonly');
   }
+
+  public setCountry(country): void {
+    this.setLocalObject('country', country);
+  }
+
+  public getCountry() {
+    return this.getLocalObject('country');
+  }
 }
