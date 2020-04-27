@@ -116,7 +116,7 @@ export class MyApp implements OnInit {
     // console.log(e.screen.orientation);
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     let category = [];
     let page;
     let navParams = {};
@@ -151,6 +151,4 @@ export class MyApp implements OnInit {
     // Set country to determine next step (in this case, determine Filestack's bucket region)
     this.requestService.getIpLocation();
   }
-
-
 }

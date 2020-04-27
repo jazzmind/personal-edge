@@ -204,7 +204,6 @@ export class RequestService {
       res => {
         this.cacheService.setCountry(res.country_name);
       },
-      err => console.log(err)
     );
   }
 
