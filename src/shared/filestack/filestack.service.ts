@@ -24,7 +24,7 @@ const FILESTACK_CONFIG = {
 const FILESTACK_CONFIG_CN = {
   s3: {
     location: 's3',
-    container: 'practera-kr',
+    container: 'practera-seoul-1',
     region: 'ap-northeast-2',
     paths: {
       any: '/pe/skills/uploads/',
