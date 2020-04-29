@@ -93,6 +93,15 @@ export class CacheService {
     }
   }
 
+  // remove from web DB staroge
+  public remove(key: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.storage.remove(key).then((data: Cache) => {
+        return resolve(true);
+      });
+    });
+  }
+
   public clear(): any {
     return this.storage.clear();
   }
@@ -135,5 +144,13 @@ export class CacheService {
   public isReadonly(): boolean {
     const readonly = this.getLocalObject('enrolmentStatus');
     return (readonly === 'readonly');
+  }
+
+  public setCountry(country): void {
+    this.setLocalObject('country', country);
+  }
+
+  public getCountry() {
+    return this.getLocalObject('country');
   }
 }

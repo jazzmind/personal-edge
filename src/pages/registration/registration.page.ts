@@ -60,6 +60,7 @@ export class RegistrationPage implements OnInit {
     } else {
       let email = decodeURIComponent(this.params.get('email')),
         key = this.params.get('key');
+
       this.authService.verifyRegistration({
         email: email,
         key: key

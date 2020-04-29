@@ -17,6 +17,7 @@ import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
 import { MomentModule } from 'angular2-moment';
 import { LinkyModule } from 'angular-linky';
+import { IonicStorageModule } from '@ionic/storage';
 
 // custom modules
 import { PiwikModule } from '../shared/piwik/piwik.module';
@@ -115,6 +116,8 @@ import { OrderByPipe } from '../pipes/OrderBy';
 // directives
 import { CardHeightDirective } from '../components/event/card-height.directive';
 import { ImgDirective } from '../components/event/img.directive';
+import { CustomLogoDirective } from '../directives/custom-logo/custom-logo.directive';
+
 // configs
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
@@ -135,6 +138,7 @@ export function HttpLoaderFactory(http: Http) {
     CutWithoutDotPipe,
     CardHeightDirective,
     ImgDirective,
+    CustomLogoDirective,
     EventCheckinPage,
     EventComponent,
     EventsDownloadPage,
@@ -258,7 +262,8 @@ export function HttpLoaderFactory(http: Http) {
           defaultHistory: [ TestPage ]
         }
       ]
-    })
+    }),
+    IonicStorageModule.forRoot(),
   ],
   bootstrap: [
     IonicApp

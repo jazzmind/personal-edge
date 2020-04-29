@@ -12,6 +12,7 @@ import { TranslationService } from '../../shared/translation/translation.service
 import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
+import { CacheService } from '../../shared/cache/cache.service';
 // directives
 import {FormValidator} from '../../validators/formValidator';
 // pages
@@ -23,6 +24,8 @@ import { LoginPage } from '../../pages/login/login';
 export class ForgetPasswordPage {
   email: string;
   forgotPwdFormGroup: any;
+  color: any;
+
   // loading & error message variables
   private sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
   private sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
@@ -37,13 +40,19 @@ export class ForgetPasswordPage {
     public translationService: TranslationService,
     private authService: AuthService,
     private toastCtrl: ToastController,
+    private cacheService: CacheService,
     private formBuilder: FormBuilder) {
     this.forgotPwdFormGroup = formBuilder.group({
       email: ['', [FormValidator.isValidEmail, Validators.required]]
     });
   }
 
-  ionViewDidLoad() {}
+  async ionViewDidLoad() {
+    this.color = await this.cacheService.read('branding.color');
+    if (!this.color) {
+      this.color = this.cacheService.getLocalObject('branding.color');
+    }
+  }
 
   userForgotPassword() {
     const loading = this.loadingCtrl.create({

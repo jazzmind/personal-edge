@@ -1,4 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
+import { CacheService } from '../cache/cache.service';
 
 declare var filestack: any;
 
@@ -20,28 +21,48 @@ const FILESTACK_CONFIG = {
   }
 };
 
+const FILESTACK_CONFIG_CN = {
+  s3: {
+    location: 's3',
+    container: 'practera-seoul-1',
+    region: 'ap-northeast-2',
+    paths: {
+      any: '/pe/skills/uploads/',
+      image: '/pe/skills/uploads/',
+      video: '/pe/skills/video/upload/'
+    }
+  }
+};
+
 @Injectable()
 export class FilestackConfig {
   apikey = null;
 }
 
+@Injectable()
 export class FilestackService {
   private filestack: any;
   version: any;
 
-  constructor(@Optional() config: FilestackConfig) {
+  constructor(
+    private cache: CacheService,
+    @Optional() config: FilestackConfig,
+  ) {
     this.filestack = filestack.init(config.apikey);
     this.version = filestack.version;
   }
 
   getS3Config(hash) {
-    const conf = FILESTACK_CONFIG.s3;
+    // Pick the correct config based on geographical location
+    const isInChina = this.cache.getLocalObject('country') === 'China';
+    const conf = (isInChina ? FILESTACK_CONFIG_CN : FILESTACK_CONFIG).s3;
+
     // add user hash to the path
     const path = `${conf.paths.any}${hash}/`;
     return {
-      location: FILESTACK_CONFIG.s3.location,
-      container: FILESTACK_CONFIG.s3.container,
-      region: FILESTACK_CONFIG.s3.region,
+      location: conf.location,
+      container: conf.container,
+      region: conf.region,
       path,
     };
   }

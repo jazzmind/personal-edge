@@ -31,9 +31,9 @@
     "ALL": "All"
   },
   "FORGOTPASSWORD": {
-    "INPUTTITLE": "Please enter your email address to reset password",
+    "INPUTTITLE": "Enter your email and we'll send you a link that will let you pick a new password.",
     "PAGETITLE": "Forgot Password",
-    "SENDBUTTON": "Send"
+    "SENDEMAILBUTTON": "Send Email"
   },
   "GAME": {
     "PAGETITLE": "Spinner Wheel"
@@ -53,8 +53,8 @@
     "NEWUSER": "New User?"
   },
   "REGISTRATION": {
-    "HEADER": "Great - you are almost there! Just one more thing...",
-    "PAGETITLE": "Set Password"
+    "PAGETITLE": "Your Login Email Address",
+    "SUBMIT": "Register"
   },
   "RANKING": {
     "DETAIL": "Ranking Details",
@@ -65,7 +65,9 @@
     "TOTALPOINTS": "Points (Total)"
   },
   "RESETPASSWORD": {
-    "PAGETITLE": "Reset Password"
+    "PAGETITLE": "Reset your password",
+    "DESCRIPTION": "Please enter a new password for your account.",
+    "CHANGEPASSWORD": "Change password"
   },
   "SETTINGS": {
     "HELP": "Email Help",

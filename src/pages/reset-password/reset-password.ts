@@ -47,6 +47,7 @@ export class ResetPasswordPage implements OnInit {
   private resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
   private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
   private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  public color: any;
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
@@ -83,6 +84,15 @@ export class ResetPasswordPage implements OnInit {
     this.verifyKeyEmail();
   }
 
+  ionViewDidEnter() {
+    this.obtainColor().then((res: string) => {
+      this.color = res;
+      if (!this.color) {
+        this.color = this.cacheService.getLocalObject('branding.color');
+      }
+    });
+  }
+
   /**
    * to verify user is whether typed or clicked the email link
    * Purpose: if user is typed the email link key and email, user is not allowed
@@ -93,7 +103,7 @@ export class ResetPasswordPage implements OnInit {
    * @return if user clicked email link, return reset password page, otherwise,
              return error hint screen
   */
-  verifyKeyEmail() {
+  async verifyKeyEmail() {
     let key = this.navParams.get('key'),
         email = decodeURIComponent(this.navParams.get('email'));
         this.keyVal = key;
@@ -118,6 +128,10 @@ export class ResetPasswordPage implements OnInit {
       }, 5000);
     });
   }
+
+  async obtainColor() {
+    return this.cacheService.read('branding.color');
+  }
   /**
    * to update password in db
    * Purpose: store new password for user
@@ -126,7 +140,7 @@ export class ResetPasswordPage implements OnInit {
              successfully, otherwise, error hint popup to indicate user password
              update failed
   */
-  updatePassword(){
+  updatePassword() {
     let key = this.navParams.get('key'),
         email = decodeURIComponent(this.navParams.get('email'));
     const loading = this.loadingCtrl.create({
@@ -142,7 +156,7 @@ export class ResetPasswordPage implements OnInit {
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
               if (data.Experience.config) {
-                this.cacheService.setLocalObject('config', data.Experience.config);            
+                this.cacheService.setLocalObject('config', data.Experience.config);
               }
 
               this.cacheService.setLocal('gotNewItems', false);
@@ -230,5 +244,9 @@ export class ResetPasswordPage implements OnInit {
     if (this.password && this.verify_password) {
       this.minLengthCheck = (this.password.length < 8 || this.verify_password.length < 8) ? true : false;
     }
+  }
+
+  backButton() {
+    this.navCtrl.setRoot(LoginPage);
   }
 }
