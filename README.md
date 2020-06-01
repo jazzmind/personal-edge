@@ -46,6 +46,14 @@ For development environment, here are mandatory utilities.
     ionic serve
     ```
 
+## Configuration Notes
+
+To update webapp with different set of activities, you'll need to also add in extra steps after Backend configuration is done. We have a few hardcoded list of IDs in the webapp, so in order to make them display correctly, you'll need to update the IDs according to the new set of activity IDs obtained from the new configuration (from API response or directly dig them out from direct database access)
+
+File involved: `src/configs/config.ts`
+
+Different set of hardcoded IDs would be used depend on the domain name on the client side/browser.
+
 ## Development Notes
 
 1. Ionic Deeplinking/Routing
