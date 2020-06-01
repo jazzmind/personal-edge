@@ -51,7 +51,7 @@ const portfolio_domain = 'assess/assessments/portfolio'; //for handling digital 
 const HardcodeDataList = () => {
   const peEndpoints = ['pe.practera.com', 'pe.rmit.edu.vn'];
   const xpEndpoints = ['xp.practera.com', 'xp.practera.app'];
-  const skillsEndpoints = ['skills.practera.com', 'skills.practera.app', 'passport.practera.com', 'passport.practera.app'];
+  const skillsEndpoints = ['skills.practera.com', 'skills.practera.app', 'passport.practera.com', 'passport.practera.app', 'launchu.practera.com'];
   const devEndpoints = ['localhost', 'local.practera.com', '127.0.0.1'];
   this.appKey = appKey;
 
