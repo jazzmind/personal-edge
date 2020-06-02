@@ -19,8 +19,6 @@ import { LoginPage } from '../login/login';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 
-const supportEmail = generalVariableMessages.helpMail.email;
-
 @Component({
   selector: 'register',
   templateUrl: 'register.html',
@@ -34,6 +32,8 @@ export class RegisterPage implements OnInit {
   submitted: boolean = false;
   email: string;
   color: string;
+  supportEmail = generalVariableMessages.helpMail.email;
+
 
   private regForm: any;
   private pwdMacthBool: boolean = false;
@@ -199,7 +199,7 @@ export class RegisterPage implements OnInit {
         buttons: [ 'Close' ]
       });
     } else if (err || data) {
-      let message = `${this.registrationErrMessage} ${supportEmail}`;
+      let message = `${this.registrationErrMessage} ${this.supportEmail}`;
       switch ((data || err).msg) {
         case 'No password':
           message = this.noPasswordErrMessage;

@@ -26,8 +26,6 @@ import { ForgetPasswordPage } from '../../pages/forget-password/forget-password'
 import { default as Configuration } from '../../configs/config';
 import * as _ from 'lodash';
 
-const DEFAULT_LOGO = './assets/img/main/logo.svg';
-
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
@@ -35,8 +33,8 @@ const DEFAULT_LOGO = './assets/img/main/logo.svg';
   styleUrls: ['./login.scss']
 })
 export class LoginPage implements OnInit {
-  public styles: {color: string; backgroundColor: string};
   public logoSrc: string;
+  public styles: {color: string; backgroundColor: string};
   public email: string;
   public password: any;
   public userName: string;
@@ -65,11 +63,11 @@ export class LoginPage implements OnInit {
     private utilsService: UtilsService
 
   ) {
+    this.logoSrc = '';
     this.styles = {
       color: '',
       backgroundColor: '',
     };
-    this.logoSrc = '';
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
       email: ['', [FormValidator.isValidEmail, Validators.required]],
@@ -78,29 +76,16 @@ export class LoginPage implements OnInit {
   }
 
   async ngOnInit() {
-    const res = await this.authService.experienceConfig().toPromise();
+    await this.authService.getConfig();
+    if (this.cacheService.getLocal('branding.color')) {
+      const color = this.cacheService.getLocalObject('branding.color');
 
-    if (res && res.data && res.data.length > 0) {
-      const thisExperience = res.data[0];
-
-      if (thisExperience.logo) {
-        this.logoSrc = `${Configuration.prefixUrl}${thisExperience.logo}`;
-        await this.cacheService.write('branding.logo', this.logoSrc);
-        this.cacheService.setLocalObject('branding.logo', this.logoSrc);
-      }
-
-      if (thisExperience.config && thisExperience.config.theme_color) {
+      if (color) {
         this.styles = {
-          color: `${thisExperience.config.theme_color}`,
-          backgroundColor: `${thisExperience.config.theme_color}`,
+          color: `${color}`,
+          backgroundColor: `${color}`,
         };
-        await this.cacheService.write('branding.color', this.styles.color);
-        this.cacheService.setLocalObject('branding.color', this.styles.color);
       }
-    }
-
-    if (_.isEmpty(this.logoSrc)) {
-      this.logoSrc = DEFAULT_LOGO;
     }
   }
 
