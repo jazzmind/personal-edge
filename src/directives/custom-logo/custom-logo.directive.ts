@@ -7,6 +7,7 @@ const DEFAULT_IMAGE = './assets/img/main/logo.svg';
 @Component({
   selector: 'custom-logo',
   templateUrl: './custom-logo.directive.html',
+  styleUrls: ['./custom-logo.directive.scss'],
 })
 export class CustomLogoDirective implements OnChanges, OnInit {
   @Input() logo: string;
