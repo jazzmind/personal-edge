@@ -44,10 +44,5 @@ export class CustomLogoDirective implements OnChanges, OnInit {
     if (changes.logo.currentValue) {
       this.logo = changes.logo.currentValue;
     }
-
-    /*if (!this.logo && this.cacheService.bufferZone && this.cacheService.bufferZone['branding']) {
-      this.branding = this.cacheService.bufferZone['branding'];
-      this.logo = this.branding.logo || DEFAULT_IMAGE;
-    }*/
   }
 }
