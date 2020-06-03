@@ -1,4 +1,4 @@
-import { Injectable, Optional } from '@angular/core';
+import { Injectable, Optional, InjectionToken } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { Cache } from '../app/cache';
@@ -8,11 +8,14 @@ import * as _ from 'lodash';
 @Injectable()
 export class CacheService {
 
-  public localStorage: any;
-  public bufferZone = {}; // temporary cached storage in service
+  private localStorage: any;
+  public bufferZone: {
+    branding?: any;
+    [propName: string]: any;
+  }; // temporary cached storage in service
 
   constructor(
-    public storage: Storage
+    public storage: Storage,
   ) {
     storage.ready().then(() => {
       console.log('Storage loaded.');
@@ -22,10 +25,14 @@ export class CacheService {
     if (!localStorage) {
       throw new Error('Current browser does not support Local Storage');
     }
-    this.localStorage = localStorage;
+    this.localStorage = window.localStorage;
   }
 
   private key = '_app_cache';
+
+  getItem(key) {
+    return this.localStorage.getItem(key);
+  }
 
   set(key, value) {
     return this.storage.set(key, value);
@@ -62,7 +69,7 @@ export class CacheService {
    * @param {string} path - path to read data
    * @return {promise} <data store>
    */
-  read(path: string = '*', strict: boolean = false) {
+  read(path: string = '*', strict: boolean = false): any {
     if (!strict) {
       return new Promise((resolve, reject) => {
         if (!this.bufferZone && path !== '*') {
@@ -116,6 +123,9 @@ export class CacheService {
     this.localStorage[key] = value;
   }
 
+  /**
+   * get cached value through its original form as how it's stored in the localStorage
+   */
   public getLocal(key: string): string {
     return this.localStorage[key] || false;
   }
@@ -124,6 +134,14 @@ export class CacheService {
     this.localStorage[key] = JSON.stringify(value);
   }
 
+  /**
+   * get parsed cached value
+   * eg.
+   *   "{}" become {}
+   *   '"www.test.com"' become "www.test.com"
+   *   "1" become 1
+   *   "false" become false
+   */
   public getLocalObject(key: string): any {
     return JSON.parse(this.localStorage[key] || '{}');
   }

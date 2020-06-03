@@ -14,6 +14,7 @@ import { TestPage } from '../pages/tabs/test.page';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 import { RequestService } from '../shared/request/request.service';
+import { default as Configuration } from '../configs/config';
 
 import { WindowRef } from '../shared/window';
 
@@ -48,15 +49,15 @@ export class MyApp implements OnInit {
   }
 
   constructor(
-    authService: AuthService,
     win: WindowRef,
     zone: NgZone,
+    private authService: AuthService,
     private platform: Platform,
-    private cache: CacheService,
+    private cacheService: CacheService,
     private eventsListener: Events,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private requestService: RequestService
+    private requestService: RequestService,
   ) {
     eventsListener.subscribe('toaster', data => {
       let toast = toastCtrl.create({
@@ -116,10 +117,39 @@ export class MyApp implements OnInit {
     // console.log(e.screen.orientation);
   }
 
-  ngOnInit() {
+  async customConfig() {
+    const res = await this.authService.getConfig();
+
+    if (res) {
+      const branding = {
+        logo: '',
+        color: '',
+      };
+
+      if (res.logo) {
+        branding.logo = res.logo;
+      }
+
+      if (res.color) {
+        branding.logo = res.color;
+      }
+
+      if (!this.cacheService.bufferZone) {
+        this.cacheService.bufferZone = {
+          branding
+        };
+      } else {
+        this.cacheService.bufferZone['branding'] = branding;
+      }
+    }
+  }
+
+  async ngOnInit() {
     let category = [];
     let page;
     let navParams = {};
+
+    await this.customConfig();
 
     if (document.URL.indexOf("?") !== -1) {
       let splitURL = document.URL.split("?");
@@ -141,7 +171,7 @@ export class MyApp implements OnInit {
     if (page) {
       this.nav.setRoot(page, navParams);
     } else {
-      if (this.cache.getLocal('isAuthenticated')) {
+      if (this.cacheService.getLocal('isAuthenticated')) {
         this.nav.setRoot(TabsPage, navParams);
       } else {
         this.nav.setRoot(LoginPage, navParams);
