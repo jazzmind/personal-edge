@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ViewController, LoadingController, NavParams } from 'ionic-angular';
-import {  } from '';
+import { ViewController } from 'ionic-angular';
+
 @Component({
   selector: 'whats-this-popover',
   template: `
@@ -18,13 +18,8 @@ import {  } from '';
   `
 })
 export class PopoverTextPage {
-  constructor(
-    private viewCtrl: ViewController,
-    private navParams: NavParams,
-    private loadingCtrl: LoadingController,
-  ) {
+  constructor(private viewCtrl: ViewController) {}
 
-  }
   ionViewWillEnter(){
 
   }
