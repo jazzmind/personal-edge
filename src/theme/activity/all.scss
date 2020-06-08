@@ -138,11 +138,11 @@
               padding-top: 11px;
             }
           }
-          p.link, a.link {
+          p.link {
             padding: 5px;
             font-size: 9pt;
             font-weight: normal;
-            color: color($colors, text, contrast);
+            color: color($colors, text, dark);
             text-decoration: none;
           }
         }
@@ -170,7 +170,7 @@
 }
 
 .activities-content {
-   
+
   .grid {
     padding: 0px !important;
   }

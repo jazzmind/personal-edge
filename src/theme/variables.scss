@@ -107,7 +107,8 @@ $colors: (
   ),
   text: (
      base: $primary-text,
-     contrast: $secondary-text
+     contrast: $secondary-text,
+     dark: $secondary-text-dark
   ),
   border: (
     base: $border-primary,
