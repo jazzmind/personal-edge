@@ -160,6 +160,7 @@ export class ActivitiesListPage {
 
     // showing custom background-image based on experience url
     this.config = this.cacheService.getLocalObject('config');
+
     if (this.config.backgroundImageUrl) {
       this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl + ')');
     } else {
