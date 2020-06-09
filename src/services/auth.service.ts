@@ -74,14 +74,14 @@ export class AuthService {
     return this.http.get(this.prefixUrl+'api/registration_details.json', options)
                     .map(res => res.json());
   }
+
   verifyRegistration(data) {
     let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams([
       `email=${data.email}`,
       `key=${data.key}`
     ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'verify_registration', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.http.post(this.AUTH_ENDPOINT+'verify_registration', urlSearchParams.toString(), options).map(res => res.json());
   }
 
   register(data) {

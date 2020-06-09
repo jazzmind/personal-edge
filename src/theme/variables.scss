@@ -52,7 +52,7 @@ $secondary-palette-seven: #43c7f4;
 $secondary-palette-eight: $teal;
 $secondary-palette-nine: #E60028;
 
-
+$deep-dark-gray: #505050;
 
 // App Mixin Functions
 @import './theme/mixins';
@@ -107,7 +107,8 @@ $colors: (
   ),
   text: (
      base: $primary-text,
-     contrast: $secondary-text
+     contrast: $secondary-text,
+     dark: $deep-dark-gray
   ),
   border: (
     base: $border-primary,

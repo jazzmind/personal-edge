@@ -1,5 +1,6 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
@@ -71,7 +72,9 @@ export class RegisterPage implements OnInit {
     private cacheService: CacheService,
     private gameService: GameService,
     private milestoneService: MilestoneService,
-    public translationService: TranslationService) {
+    public translationService: TranslationService,
+    private title: Title
+  ) {
     this.verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
     this.successRegistrationLoading = loadingMessages.SuccessRegistration.successRegistration;
     this.passwordMismatchErrMessage = errMessages.Registration.mismatch.mismatch;
@@ -89,6 +92,7 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
+    this.title.setTitle('e-Portfolio');
     this.email = this.cacheService.getLocal('user.email');
   }
 

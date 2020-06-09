@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CacheService } from '../../shared/cache/cache.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { TranslationService } from '../../shared/translation/translation.service';
@@ -33,7 +33,8 @@ export class RegistrationPage implements OnInit {
     public translationService: TranslationService,
     private alertCtrl: AlertController,
     private cache: CacheService,
-    private request: RequestService) {}
+    private request: RequestService,
+    private title: Title) {}
   displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
@@ -54,6 +55,8 @@ export class RegistrationPage implements OnInit {
   }
 
   ngOnInit() {
+    this.title.setTitle('Terms and Conditions');
+
     // check if email and activation_code are provided in the url/params
     if (!decodeURIComponent(this.params.get('email')) || !this.params.get('key')) {
       this.displayError();
