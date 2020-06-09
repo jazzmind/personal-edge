@@ -39,7 +39,7 @@ export class AuthService {
    * @return {Promise}
    */
   async getConfig(domain?): Promise<CustomBranding> {
-    const res = await this.experienceConfig().toPromise();
+    const res = await this.experienceConfig(domain).toPromise();
     let result = {
       logo: '',
       color: ''
