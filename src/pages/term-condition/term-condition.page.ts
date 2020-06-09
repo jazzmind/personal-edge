@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SafeResourceUrl } from '@angular/platform-browser';
+import { SafeResourceUrl, Title } from '@angular/platform-browser';
 import { NavController, AlertController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
@@ -28,6 +28,7 @@ export class TermConditionPage {
     private authService: AuthService,
     private notificationService: NotificationService,
     public translationService: TranslationService,
+    private title: Title
   ) {}
 
   // @NOTE: this is a reused page for existing app and for registration purpose
@@ -52,7 +53,7 @@ export class TermConditionPage {
     this.nav.popToRoot();
   }
   ionViewDidEnter() {
-    console.log(this.user);
+    // this.title.setTitle('Terms and Conditions');
   }
   agree(user): void {
     if (this.agreed === true) {
