@@ -55,7 +55,7 @@ export class RegistrationPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.title.setTitle('Terms and Conditions');
+    this.title.setTitle('Terms and Conditions');
 
     // check if email and activation_code are provided in the url/params
     if (!decodeURIComponent(this.params.get('email')) || !this.params.get('key')) {
