@@ -144,21 +144,20 @@ export class RegisterPage implements OnInit {
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value).subscribe(data => {
-              this.cacheService.setLocalObject('apikey', data.apikey);
+              self.cacheService.setLocalObject('apikey', data.apikey);
 
               if (data.Experience && data.Experience.config) {
-                this.cacheService.setLocalObject('config', data.Experience.config);
+                self.cacheService.setLocalObject('config', data.Experience.config);
               }
 
               // get game_id data after login
-              this.gameService.getGames().subscribe(data => {
+              self.gameService.getGames().subscribe(data => {
                 _.map(data, (element) => {
-                  this.cacheService.setLocal('game_id', element[0].id);
+                  self.cacheService.setLocalObject('game_id', element[0].id);
                 });
-              }, this.logError);
+              }, self.logError);
 
               // get user data after registration and login
-              // get milestone data after login
               self.authService.getUser().subscribe(data => {
                 self.cacheService.setLocalObject('name', data.User.name);
                 self.cacheService.setLocalObject('email', data.User.email);
@@ -170,7 +169,7 @@ export class RegisterPage implements OnInit {
               // get milestone data after registration and login
               self.milestoneService.getMilestones().subscribe(data => {
                 loading.dismiss().then(() => {
-                  this.milestone_id = data[0].id;
+                  self.milestone_id = data[0].id;
                   self.cacheService.setLocalObject('milestone_id', data[0].id);
                   self.navCtrl.push(TabsPage).then(() => {
                     window.history.replaceState({}, '', window.location.origin);
