@@ -157,6 +157,16 @@ export class RegisterPage implements OnInit {
                 });
               }, this.logError);
 
+              // get user data after registration and login
+              // get milestone data after login
+              self.authService.getUser().subscribe(data => {
+                self.cacheService.setLocalObject('name', data.User.name);
+                self.cacheService.setLocalObject('email', data.User.email);
+                self.cacheService.setLocalObject('program_id', data.User.program_id);
+                self.cacheService.setLocalObject('project_id', data.User.project_id);
+                self.cacheService.setLocalObject('user', data.User);
+              }, this.logError);
+
               // get milestone data after registration and login
               self.milestoneService.getMilestones().subscribe(data => {
                 loading.dismiss().then(() => {
