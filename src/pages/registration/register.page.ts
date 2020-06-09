@@ -128,6 +128,7 @@ export class RegisterPage implements OnInit {
         dismissOnPageChange: true,
         content: this.successRegistrationLoading
       });
+
       // registration api call: to let user set password and complete registration process
       loading.present().then(() => {
         this.authService.register({
@@ -140,14 +141,14 @@ export class RegisterPage implements OnInit {
           this.cacheService.setLocalObject('apikey', regRespond.apikey);
           this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
 
-          if (regRespond.Experience && regRespond.Experience.config) {
-            this.cacheService.setLocalObject('config', regRespond.Experience.config);
-          }
-
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value).subscribe(data => {
               this.cacheService.setLocalObject('apikey', data.apikey);
+
+              if (data.Experience && data.Experience.config) {
+                this.cacheService.setLocalObject('config', data.Experience.config);
+              }
 
               // get game_id data after login
               this.gameService.getGames().subscribe(data => {
@@ -155,9 +156,6 @@ export class RegisterPage implements OnInit {
                   this.cacheService.setLocal('game_id', element[0].id);
                 });
               }, this.logError);
-
-              // get user data after registration and login
-              self.authService.getUser().subscribe(data => console.log(data), this.logError);
 
               // get milestone data after registration and login
               self.milestoneService.getMilestones().subscribe(data => {

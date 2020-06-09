@@ -143,6 +143,7 @@ export class AuthService {
   getUser() {
     return this.request.get('api/users.json');
   }
+
   isAuthenticated() {
     return true;
   }

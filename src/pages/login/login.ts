@@ -139,57 +139,39 @@ export class LoginPage implements OnInit {
               self.cacheService.setLocal('gotNewItems', false);
 
               // get game_id data after login
-              this.gameService.getGames()
-                  .subscribe(
-                    data => {
-                      _.map(data, (element) => {
-                        this.cacheService.setLocal('game_id', element[0].id);
-                      });
-                    },
-                    err => {
-                      console.log("game err: ", err);
-                    }
-                  );
-              // get milestone data after login
-              this.authService.getUser()
-                  .subscribe(
-                    data => {
-                      self.cacheService.setLocalObject('name', data.User.name);
-                      self.cacheService.setLocalObject('email', data.User.email);
-                      self.cacheService.setLocalObject('program_id', data.User.program_id);
-                      self.cacheService.setLocalObject('project_id', data.User.project_id);
-                      self.cacheService.setLocalObject('user', data.User);
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  );
-
-              this.gameService.getGames()
-                .subscribe((data) => {
-                  if (data.Games) {
-                    // For now only have one game per project
-                    self.cacheService.setLocalObject('game_id', data.Games[0].id);
-                  }
+              this.gameService.getGames().subscribe(data => {
+                _.map(data, (element) => {
+                  this.cacheService.setLocal('game_id', element[0].id);
                 });
+              });
 
               // get milestone data after login
-              this.milestoneService.getMilestones()
-                  .subscribe(
-                    data => {
-                      loading.dismiss().then(() => {
-                        this.milestone_id = data[0].id;
-                        self.cacheService.setLocalObject('milestone_id', data[0].id);
-                        this.navCtrl.setRoot(TabsPage).then(() => {
-                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                          window.history.replaceState({}, '', window.location.origin);
-                        });
-                      });
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  )
+              this.authService.getUser().subscribe(data => {
+                self.cacheService.setLocalObject('name', data.User.name);
+                self.cacheService.setLocalObject('email', data.User.email);
+                self.cacheService.setLocalObject('program_id', data.User.program_id);
+                self.cacheService.setLocalObject('project_id', data.User.project_id);
+                self.cacheService.setLocalObject('user', data.User);
+              });
+
+              this.gameService.getGames().subscribe((data) => {
+                if (data.Games) {
+                  // For now only have one game per project
+                  self.cacheService.setLocalObject('game_id', data.Games[0].id);
+                }
+              });
+
+              // get milestone data after login
+              this.milestoneService.getMilestones().subscribe(data => {
+                loading.dismiss().then(() => {
+                  this.milestone_id = data[0].id;
+                  self.cacheService.setLocalObject('milestone_id', data[0].id);
+                  this.navCtrl.setRoot(TabsPage).then(() => {
+                    this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                    window.history.replaceState({}, '', window.location.origin);
+                  });
+                });
+              });
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             }, err => {
