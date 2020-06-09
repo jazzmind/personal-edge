@@ -156,7 +156,8 @@ $mono-font: 'Roboto Mono';
   .bar-button-default-ios,
   .toolbar-title-md,
   .toolbar-title-ios {
-    color: color($colors, primary, base);
+    color: color($colors, text, dark);
+    font-weight: bold;
   }
   .toolbar-title-md,
   .toolbar-title-ios {
