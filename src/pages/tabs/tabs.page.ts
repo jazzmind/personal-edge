@@ -9,8 +9,6 @@ import { SpinwheelPage } from '../spinwheel/spinwheel.page';
 import { TranslationService } from '../../shared/translation/translation.service';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
-import * as _ from 'lodash';
-
 @Component({
   templateUrl: 'tabs.html',
   providers: []
@@ -44,7 +42,7 @@ export class TabsPage {
       css.type = 'text/css';
       var styles = '.tab-button[aria-selected=true] .tab-button-icon, .tab-button[aria-selected=true] .tab-button-text { color: ' + this.config.primaryColor +  ' !important; }';
       css.appendChild(document.createTextNode(styles));
-      document.getElementsByTagName("head")[0].appendChild(css);  
+      document.getElementsByTagName("head")[0].appendChild(css);
       this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
     }
   }

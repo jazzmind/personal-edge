@@ -19,21 +19,47 @@ export class SpinwheelPage implements OnInit {
   segments = {
     general: [
       {
-        'textFontFamily': 'Roboto', 'textFontSize': 26, 'strokeStyle': null, 'lineWidth': 0,
-        'fillStyle' : '#00c4dd', 'text' : '100', 'value' : 100},
+        'textFontFamily': 'Roboto',
+        'textFontSize': 26,
+        'strokeStyle': null,
+        'lineWidth': 0,
+        'fillStyle' : '#00c4dd',
+        'text' : '100',
+        'value' : 100
+      },
     ],
     normal: [
-    { 'textFontFamily': 'Roboto', 'textFontSize': 26,'strokeStyle': null, 'lineWidth': 0,
-      'fillStyle': '#008ddd', 'text' : '200', 'value' : 200},
+      {
+        'textFontFamily': 'Roboto',
+        'textFontSize': 26,
+        'strokeStyle': null,
+        'lineWidth': 0,
+        'fillStyle': '#008ddd',
+        'text' : '200',
+        'value' : 200
+      },
     ],
     rare: [
-      {    
-        'textFontFamily'  : 'Roboto','textFontSize': 26,'strokeStyle': null, 'lineWidth': 0, 
-        'fillStyle' : '#a37ff1', 'text' : '300', 'value' : 300},
+      {
+        'textFontFamily': 'Roboto',
+        'textFontSize': 26,
+        'strokeStyle': null,
+        'lineWidth': 0,
+        'fillStyle': '#a37ff1',
+        'text': '300',
+        'value': 300
+      },
     ],
     ultimate: [
-      { 'textFontFamily': 'Roboto', 'textFontSize': 26,'strokeStyle': null, 'lineWidth': 0,
-      'fillStyle' : '#713ae9', 'text' : '400', 'value' : 400}
+      {
+        'textFontFamily': 'Roboto',
+        'textFontSize': 26,
+        'strokeStyle': null,
+        'lineWidth': 0,
+        'fillStyle': '#713ae9',
+        'text': '400',
+        'value' : 400
+      }
     ]
   };
   config = {
@@ -44,7 +70,7 @@ export class SpinwheelPage implements OnInit {
     'textOrientation' : 'vertical',
     'textAlignment'   : 'outer',
     'textFillStyle'   : '#ffffff',
-    'strokeStyle': null, 
+    'strokeStyle': null,
     'lineWidth': 0,
     'numSegments'     : 12,
     'segments'        : this.getSegments(),
@@ -85,7 +111,7 @@ export class SpinwheelPage implements OnInit {
     private gameService: GameService,
     private zone: NgZone,
     private el: ElementRef,
-    private cache: CacheService,
+    private cacheService: CacheService,
     private modalCtrl: ModalController,
     private eventListener: Events
   ) {
@@ -110,9 +136,9 @@ export class SpinwheelPage implements OnInit {
   pop() {
     let cacheKey = 'notified::spinner';
 
-    if (!this.cache.getLocal(cacheKey)) {
+    if (!this.cacheService.getLocal(cacheKey)) {
       let type = '';
-      let character = this.cache.getLocalObject('character');
+      let character = this.cacheService.getLocalObject('character');
       this.updateExp(character.experience_points);
 
       let chances = (this.getUnopened()).length;
@@ -124,7 +150,7 @@ export class SpinwheelPage implements OnInit {
           type = 'withSpin';
         }
 
-        this.cache.setLocal(cacheKey, true);
+        // this.cacheService.setLocal(cacheKey, true);
         let popup = this.popoverCtrl.create(SpinwheelPopOverPage, {statusText: type});
         popup.present();
       }
@@ -136,7 +162,7 @@ export class SpinwheelPage implements OnInit {
     this.statuses.value = 0;
     this.statuses.spinOn = true;
 
-    let character = this.cache.getLocalObject('character');
+    let character = this.cacheService.getLocalObject('character');
     this.updateExp(character.experience_points);
   }
 
@@ -151,7 +177,12 @@ export class SpinwheelPage implements OnInit {
    *  atm, we hardcode prizes and communicate with server on the final result
    */
   private getSegments() {
+    const remoteSegments = this.cacheService.getLocalObject('spinwheel');
     let segments = this.segments;
+
+    if (this.cacheService.getLocal('spinwheel')) {
+      segments = remoteSegments;
+    }
 
     let result = [];
     result = result.concat(segments.ultimate);
@@ -188,10 +219,10 @@ export class SpinwheelPage implements OnInit {
   retrieve(options = {}): Promise<any> {
     return new Promise((resolve, reject) => {
       options = Object.assign({
-        character_id: this.cache.getLocal('character_id')
+        character_id: this.cacheService.getLocal('character_id')
       }, options);
 
-      if (this.cache.getLocal('character_id')) {
+      if (this.cacheService.getLocal('character_id')) {
         this.gameService.getItems(options).subscribe(res => {
           resolve(res);
         }, err => {
@@ -272,9 +303,10 @@ export class SpinwheelPage implements OnInit {
   }
 
   private getUnopened(retrievedContainer?) {
-    let containers = retrievedContainer || this.cache.getLocalObject('containers');
-
+    let containers = retrievedContainer || this.cacheService.getLocalObject('containers');
     let unopened = [];
+
+    containers = _.isEmpty(containers) ? [] : containers;
     containers.forEach(container => {
       if (!container.opened) {
         unopened.push(container);
@@ -329,7 +361,7 @@ export class SpinwheelPage implements OnInit {
 
       this.gameService.postItems({
         "Character": {
-          "id": this.cache.getLocal('character_id')
+          "id": this.cacheService.getLocal('character_id')
         },
         "Item": {
           "id": itemId // ID of the item to take action
@@ -434,7 +466,7 @@ export class SpinwheelPage implements OnInit {
     let prize = this.wheel.getIndicatedSegment();
     this.statuses.value += prize.value;
 
-    let characterEP = this.cache.getLocalObject('character');
+    let characterEP = this.cacheService.getLocalObject('character');
     this.statuses.totalEP += this.statuses.newTotalEP; // display new total EP
     this.openAlert({description: `Congratulations you’ve won ${prize.value} points.`});
   }
