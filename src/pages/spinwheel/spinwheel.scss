@@ -44,3 +44,9 @@
 #spinEP {
   color: #00b5ac;
 }
+
+.popover-content {
+  @media screen and (min-width: 800px) {
+    left: 35% !important;
+  }
+}
