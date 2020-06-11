@@ -150,7 +150,7 @@ export class SpinwheelPage implements OnInit {
           type = 'withSpin';
         }
 
-        // this.cacheService.setLocal(cacheKey, true);
+        this.cacheService.setLocal(cacheKey, true);
         let popup = this.popoverCtrl.create(SpinwheelPopOverPage, {statusText: type});
         popup.present();
       }
