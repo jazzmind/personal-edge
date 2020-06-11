@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, NavController, Nav, Tabs } from 'ionic-angular';
+import { Events, Tabs } from 'ionic-angular';
 import { ActivitiesListPage } from '../activities/list/list.page';
 import { CacheService } from '../../shared/cache/cache.service';
 import { EventsListPage } from '../events/list/list.page';
