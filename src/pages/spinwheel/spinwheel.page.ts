@@ -143,17 +143,17 @@ export class SpinwheelPage implements OnInit {
 
       let chances = (this.getUnopened()).length;
 
-      if (character.experience_points === 0) {
-        if (chances === 0) { // first time
-          type = 'withoutSpin';
-        } else if (chances > 0) {
-          type = 'withSpin';
-        }
+      // if (character.experience_points === 0) {
+      //   if (chances === 0) { // first time
+      //     type = 'withoutSpin';
+      //   } else if (chances > 0) {
+      //     type = 'withSpin';
+      //   }
 
-        // this.cacheService.setLocal(cacheKey, true);
-        let popup = this.popoverCtrl.create(SpinwheelPopOverPage, {statusText: type});
-        popup.present();
-      }
+      //   // this.cacheService.setLocal(cacheKey, true);
+      //   let popup = this.popoverCtrl.create(SpinwheelPopOverPage, {statusText: type});
+      //   popup.present();
+      // }
     }
   }
 

@@ -8,7 +8,7 @@
     tabBadge="{{spins}}"
     tabTitle=" {{ 'TABS.SPINNER' | translate }}"
     tabIcon="md-aperture"
-  
+    (ionSelect)="popover($event)"
     ></ion-tab>
 
   <ion-tab tabsHideOnSubPages="true" [root]="settings" tabTitle=" {{ 'TABS.ACCOUNT' | translate }}" tabIcon="md-person"></ion-tab>
