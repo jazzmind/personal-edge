@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, NavController, Nav, Tabs } from 'ionic-angular';
+import { Events, Tabs } from 'ionic-angular';
 import { ActivitiesListPage } from '../activities/list/list.page';
 import { CacheService } from '../../shared/cache/cache.service';
 import { EventsListPage } from '../events/list/list.page';
@@ -8,8 +8,6 @@ import { SettingsPage } from '../settings/settings.page';
 import { SpinwheelPage } from '../spinwheel/spinwheel.page';
 import { TranslationService } from '../../shared/translation/translation.service';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
-
-import * as _ from 'lodash';
 
 @Component({
   templateUrl: 'tabs.html',
@@ -44,7 +42,7 @@ export class TabsPage {
       css.type = 'text/css';
       var styles = '.tab-button[aria-selected=true] .tab-button-icon, .tab-button[aria-selected=true] .tab-button-text { color: ' + this.config.primaryColor +  ' !important; }';
       css.appendChild(document.createTextNode(styles));
-      document.getElementsByTagName("head")[0].appendChild(css);  
+      document.getElementsByTagName("head")[0].appendChild(css);
       this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
     }
   }

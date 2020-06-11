@@ -1,6 +1,6 @@
 // libs
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler, OnInit } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -10,10 +10,10 @@ import { MyApp } from './app.component';
 import { FilestackModule } from '../shared/filestack/filestack.module';
 import { UtilsModule } from '../shared/utils/utils.module';
 import { TestModule } from '../shared/testModules/test.module';
-import { HttpModule, Http } from '@angular/http';
+import { Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { i18nData } from './assets/i18n-en';
+// import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
 import { MomentModule } from 'angular2-moment';
 import { LinkyModule } from 'angular-linky';

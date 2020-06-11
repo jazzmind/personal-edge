@@ -8,7 +8,7 @@ import {
   AlertController,
   Events
 } from 'ionic-angular';
-import { confirmMessages, errMessages, loadingMessages } from '../../app/messages';
+import { confirmMessages, loadingMessages } from '../../app/messages';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 //services
@@ -16,10 +16,10 @@ import { AssessmentService } from '../../services/assessment.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { SubmissionService } from '../../services/submission.service';
-import { TranslationService } from '../../shared/translation/translation.service';
+// import { TranslationService } from '../../shared/translation/translation.service';
 // pages
 import { AssessmentsGroupPage } from './group/assessments-group.page'
-import { ItemsPopupPage } from './popup/items-popup.page';
+// import { ItemsPopupPage } from './popup/items-popup.page';
 // import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ActivitiesListPage } from '../activities/list/list.page';
 import { NotificationService } from '../../shared/notification/notification.service';
@@ -54,7 +54,7 @@ export class AssessmentsPage {
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   submissionUpdated: boolean = false; // event listener flag
   // confirm message variables
-  private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  // private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
   private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
 
   constructor(
@@ -67,7 +67,7 @@ export class AssessmentsPage {
     private cacheService: CacheService,
     private gameService: GameService,
     private submissionService: SubmissionService,
-    private translationService: TranslationService,
+    // private translationService: TranslationService,
     public events: Events,
     private notificationService: NotificationService,
   ) {
