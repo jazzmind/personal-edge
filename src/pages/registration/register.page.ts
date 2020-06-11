@@ -1,5 +1,6 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
@@ -19,8 +20,6 @@ import { LoginPage } from '../login/login';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 
-const supportEmail = generalVariableMessages.helpMail.email;
-
 @Component({
   selector: 'register',
   templateUrl: 'register.html',
@@ -34,6 +33,8 @@ export class RegisterPage implements OnInit {
   submitted: boolean = false;
   email: string;
   color: string;
+  supportEmail = generalVariableMessages.helpMail.email;
+
 
   private regForm: any;
   private pwdMacthBool: boolean = false;
@@ -71,7 +72,9 @@ export class RegisterPage implements OnInit {
     private cacheService: CacheService,
     private gameService: GameService,
     private milestoneService: MilestoneService,
-    public translationService: TranslationService) {
+    public translationService: TranslationService,
+    private title: Title
+  ) {
     this.verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
     this.successRegistrationLoading = loadingMessages.SuccessRegistration.successRegistration;
     this.passwordMismatchErrMessage = errMessages.Registration.mismatch.mismatch;
@@ -89,6 +92,7 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
+    this.title.setTitle('e-Portfolio');
     this.email = this.cacheService.getLocal('user.email');
   }
 
@@ -124,6 +128,7 @@ export class RegisterPage implements OnInit {
         dismissOnPageChange: true,
         content: this.successRegistrationLoading
       });
+
       // registration api call: to let user set password and complete registration process
       loading.present().then(() => {
         this.authService.register({
@@ -136,29 +141,35 @@ export class RegisterPage implements OnInit {
           this.cacheService.setLocalObject('apikey', regRespond.apikey);
           this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
 
-          if (regRespond.Experience && regRespond.Experience.config) {
-            this.cacheService.setLocalObject('config', regRespond.Experience.config);
-          }
-
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value).subscribe(data => {
-              this.cacheService.setLocalObject('apikey', data.apikey);
+              self.cacheService.setLocalObject('apikey', data.apikey);
+
+              if (data.Experience && data.Experience.config) {
+                self.cacheService.setLocalObject('config', data.Experience.config);
+              }
 
               // get game_id data after login
-              this.gameService.getGames().subscribe(data => {
+              self.gameService.getGames().subscribe(data => {
                 _.map(data, (element) => {
-                  this.cacheService.setLocal('game_id', element[0].id);
+                  self.cacheService.setLocalObject('game_id', element[0].id);
                 });
-              }, this.logError);
+              }, self.logError);
 
               // get user data after registration and login
-              self.authService.getUser().subscribe(data => console.log(data), this.logError);
+              self.authService.getUser().subscribe(data => {
+                self.cacheService.setLocalObject('name', data.User.name);
+                self.cacheService.setLocalObject('email', data.User.email);
+                self.cacheService.setLocalObject('program_id', data.User.program_id);
+                self.cacheService.setLocalObject('project_id', data.User.project_id);
+                self.cacheService.setLocalObject('user', data.User);
+              }, this.logError);
 
               // get milestone data after registration and login
               self.milestoneService.getMilestones().subscribe(data => {
                 loading.dismiss().then(() => {
-                  this.milestone_id = data[0].id;
+                  self.milestone_id = data[0].id;
                   self.cacheService.setLocalObject('milestone_id', data[0].id);
                   self.navCtrl.push(TabsPage).then(() => {
                     window.history.replaceState({}, '', window.location.origin);
@@ -199,7 +210,7 @@ export class RegisterPage implements OnInit {
         buttons: [ 'Close' ]
       });
     } else if (err || data) {
-      let message = `${this.registrationErrMessage} ${supportEmail}`;
+      let message = `${this.registrationErrMessage} ${this.supportEmail}`;
       switch ((data || err).msg) {
         case 'No password':
           message = this.noPasswordErrMessage;

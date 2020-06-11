@@ -126,7 +126,7 @@ export class ActivitiesListPage {
   public checkUserPointer: boolean = false;
   public experiencePrimaryColor: SafeStyle = "";
   public experienceSecondaryColor: SafeStyle = "";
-  public experienceBackgroundUrl: SafeStyle = "url(/assets/img/main/skills-generic-cover@3x.png)";
+  public experienceBackgroundUrl: SafeStyle = "";
   public experience: any = {};
   constructor(
     public navCtrl: NavController,
@@ -159,9 +159,12 @@ export class ActivitiesListPage {
     this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
 
     // showing custom background-image based on experience url
-    this.config = JSON.parse(this.cacheService.getLocal('config'));
+    this.config = this.cacheService.getLocalObject('config');
+
     if (this.config.backgroundImageUrl) {
-      this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl+ ')');
+      this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl + ')');
+    } else {
+      this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(/assets/img/main/skills-generic-cover@3x.png)');
     }
     if (this.config.primaryColor) {
       this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);

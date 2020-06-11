@@ -69,13 +69,12 @@ export class SettingsPage {
           }
           loading.dismiss();
         }, (err) => {
-          console.log('err', err);
           loading.dismiss();
         });
     }
     // getting user data saved in cashe
     this.user = this.cache.getLocalObject('user');
-    
+
   }
   public getUserEmail() {
     return this.cache.getLocalObject('email') || '';

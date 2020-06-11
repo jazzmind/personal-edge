@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RequestService, CustomQueryEncoder } from '../shared/request/request.service';
 import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { default as Configuration } from '../configs/config';
 import { Observable } from 'rxjs';
+import { CacheService } from '../shared/cache/cache.service';
 
 const APIs = {
   experience: 'api/v2/plan/experience/list'
@@ -9,6 +11,11 @@ const APIs = {
 
 export interface ProfileData {
   image:string
+}
+
+export interface CustomBranding {
+  logo?: string;
+  color?: string;
 }
 @Injectable()
 export class AuthService {
@@ -21,8 +28,41 @@ export class AuthService {
     headers.append('appkey', this.appkey);
     return headers;
   }
-  constructor(private request: RequestService,
-              private http: Http) {}
+  constructor(
+    private request: RequestService,
+    private http: Http,
+    private cacheService: CacheService
+  ) {}
+
+  /**
+   * get color and logo from custom branding config
+   * @return {Promise}
+   */
+  async getConfig(domain?): Promise<CustomBranding> {
+    const res = await this.experienceConfig(domain).toPromise();
+    let result = {
+      logo: '',
+      color: ''
+    };
+
+    if (res && res.data && res.data.length > 0) {
+      const thisExperience = res.data[0];
+
+      if (thisExperience.logo) {
+        const logo = `${Configuration.prefixUrl}${thisExperience.logo}`;
+        this.cacheService.setLocalObject('branding.logo', logo);
+        result.logo = logo;
+      }
+
+      if (thisExperience.config && thisExperience.config.theme_color) {
+        result.color = thisExperience.config.theme_color;
+        this.cacheService.setLocalObject('branding.color', thisExperience.config.theme_color);
+      }
+    }
+
+    return result;
+  }
+
   experienceConfig(domain?): Observable<any> {
     const location: Location = window.location;
     let options = new RequestOptions({headers: this.headerData()});
@@ -34,14 +74,14 @@ export class AuthService {
     return this.http.get(this.prefixUrl+'api/registration_details.json', options)
                     .map(res => res.json());
   }
+
   verifyRegistration(data) {
     let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams([
       `email=${data.email}`,
       `key=${data.key}`
     ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'verify_registration', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.http.post(this.AUTH_ENDPOINT+'verify_registration', urlSearchParams.toString(), options).map(res => res.json());
   }
 
   register(data) {
@@ -103,6 +143,7 @@ export class AuthService {
   getUser() {
     return this.request.get('api/users.json');
   }
+
   isAuthenticated() {
     return true;
   }

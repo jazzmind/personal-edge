@@ -27,7 +27,7 @@ export class TermConditionPage {
     private alertCtrl: AlertController,
     private authService: AuthService,
     private notificationService: NotificationService,
-    public translationService: TranslationService,
+    public translationService: TranslationService
   ) {}
 
   // @NOTE: this is a reused page for existing app and for registration purpose
@@ -51,9 +51,7 @@ export class TermConditionPage {
   private backToSAccountPage() {
     this.nav.popToRoot();
   }
-  ionViewDidEnter() {
-    console.log(this.user);
-  }
+
   agree(user): void {
     if (this.agreed === true) {
       this.nav.push(RegisterPage, user);

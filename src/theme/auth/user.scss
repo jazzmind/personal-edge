@@ -110,6 +110,9 @@
         font-family: $title-font;
       }
     }
+    ion-col {
+      min-height: 15em;
+    }
     .login-welcome-text {
       margin: 0 auto;
       color: color($colors, text, base);

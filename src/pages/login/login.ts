@@ -26,8 +26,6 @@ import { ForgetPasswordPage } from '../../pages/forget-password/forget-password'
 import { default as Configuration } from '../../configs/config';
 import * as _ from 'lodash';
 
-const DEFAULT_LOGO = './assets/img/main/logo.svg';
-
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
@@ -35,8 +33,8 @@ const DEFAULT_LOGO = './assets/img/main/logo.svg';
   styleUrls: ['./login.scss']
 })
 export class LoginPage implements OnInit {
-  public styles: {color: string; backgroundColor: string};
   public logoSrc: string;
+  public styles: {color: string; backgroundColor: string};
   public email: string;
   public password: any;
   public userName: string;
@@ -65,11 +63,11 @@ export class LoginPage implements OnInit {
     private utilsService: UtilsService
 
   ) {
+    this.logoSrc = '';
     this.styles = {
       color: '',
       backgroundColor: '',
     };
-    this.logoSrc = '';
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
       email: ['', [FormValidator.isValidEmail, Validators.required]],
@@ -78,29 +76,16 @@ export class LoginPage implements OnInit {
   }
 
   async ngOnInit() {
-    const res = await this.authService.experienceConfig().toPromise();
+    await this.authService.getConfig();
+    if (this.cacheService.getLocal('branding.color')) {
+      const color = this.cacheService.getLocalObject('branding.color');
 
-    if (res && res.data && res.data.length > 0) {
-      const thisExperience = res.data[0];
-
-      if (thisExperience.logo) {
-        this.logoSrc = `${Configuration.prefixUrl}${thisExperience.logo}`;
-        await this.cacheService.write('branding.logo', this.logoSrc);
-        this.cacheService.setLocalObject('branding.logo', this.logoSrc);
-      }
-
-      if (thisExperience.config && thisExperience.config.theme_color) {
+      if (color) {
         this.styles = {
-          color: `${thisExperience.config.theme_color}`,
-          backgroundColor: `${thisExperience.config.theme_color}`,
+          color: `${color}`,
+          backgroundColor: `${color}`,
         };
-        await this.cacheService.write('branding.color', this.styles.color);
-        this.cacheService.setLocalObject('branding.color', this.styles.color);
       }
-    }
-
-    if (_.isEmpty(this.logoSrc)) {
-      this.logoSrc = DEFAULT_LOGO;
     }
   }
 
@@ -154,57 +139,39 @@ export class LoginPage implements OnInit {
               self.cacheService.setLocal('gotNewItems', false);
 
               // get game_id data after login
-              this.gameService.getGames()
-                  .subscribe(
-                    data => {
-                      _.map(data, (element) => {
-                        this.cacheService.setLocal('game_id', element[0].id);
-                      });
-                    },
-                    err => {
-                      console.log("game err: ", err);
-                    }
-                  );
-              // get milestone data after login
-              this.authService.getUser()
-                  .subscribe(
-                    data => {
-                      self.cacheService.setLocalObject('name', data.User.name);
-                      self.cacheService.setLocalObject('email', data.User.email);
-                      self.cacheService.setLocalObject('program_id', data.User.program_id);
-                      self.cacheService.setLocalObject('project_id', data.User.project_id);
-                      self.cacheService.setLocalObject('user', data.User);
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  );
-
-              this.gameService.getGames()
-                .subscribe((data) => {
-                  if (data.Games) {
-                    // For now only have one game per project
-                    self.cacheService.setLocalObject('game_id', data.Games[0].id);
-                  }
+              this.gameService.getGames().subscribe(data => {
+                _.map(data, (element) => {
+                  this.cacheService.setLocal('game_id', element[0].id);
                 });
+              });
 
               // get milestone data after login
-              this.milestoneService.getMilestones()
-                  .subscribe(
-                    data => {
-                      loading.dismiss().then(() => {
-                        this.milestone_id = data[0].id;
-                        self.cacheService.setLocalObject('milestone_id', data[0].id);
-                        this.navCtrl.setRoot(TabsPage).then(() => {
-                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                          window.history.replaceState({}, '', window.location.origin);
-                        });
-                      });
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  )
+              this.authService.getUser().subscribe(data => {
+                self.cacheService.setLocalObject('name', data.User.name);
+                self.cacheService.setLocalObject('email', data.User.email);
+                self.cacheService.setLocalObject('program_id', data.User.program_id);
+                self.cacheService.setLocalObject('project_id', data.User.project_id);
+                self.cacheService.setLocalObject('user', data.User);
+              });
+
+              this.gameService.getGames().subscribe((data) => {
+                if (data.Games) {
+                  // For now only have one game per project
+                  self.cacheService.setLocalObject('game_id', data.Games[0].id);
+                }
+              });
+
+              // get milestone data after login
+              this.milestoneService.getMilestones().subscribe(data => {
+                loading.dismiss().then(() => {
+                  this.milestone_id = data[0].id;
+                  self.cacheService.setLocalObject('milestone_id', data[0].id);
+                  this.navCtrl.setRoot(TabsPage).then(() => {
+                    this.viewCtrl.dismiss(); // close the login modal and go to dashboard page
+                    window.history.replaceState({}, '', window.location.origin);
+                  });
+                });
+              });
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             }, err => {

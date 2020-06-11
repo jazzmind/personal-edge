@@ -1,6 +1,5 @@
 {
   "ACTIVITY": {
-    "PAGETITLE": "Skills Passport",
     "POINTS": "Points",
     "PROGRESS": "Progress",
     "SUBMISSION": "Submission",
@@ -12,7 +11,7 @@
     "LEADERBOARD": "Leaderboard",
     "GRADE": "Grade",
     "EXPLAINPORTFOLIO": "What's this?",
-    "REQUESTPORTFOLIO": "Request Passport",
+    "REQUESTPORTFOLIO": "Request Portfolio",
     "VIEWPORTFOLIO": "View Passport"
   },
   "ASSESSMENT": {
@@ -86,7 +85,7 @@
   },
   "TABS": {
     "ACCOUNT": "Account",
-    "DASHBOARD": "Passport",
+    "DASHBOARD": "Home",
     "EVENTS": "Events",
     "RANKING": "Leaderboard",
     "ACTIVITIES": "Activities",
