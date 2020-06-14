@@ -10,6 +10,16 @@ import * as _ from 'lodash';
 import * as Winwheel from 'winwheel';
 import { TweenLite } from "gsap";
 
+interface SpinwheelSegment {
+  textFontFamily: string;
+  textFontSize: number;
+  strokeStyle: string;
+  lineWidth: number;
+  fillStyle : string;
+  text : string;
+  value : number;
+}
+
 @Component({
   templateUrl: './spinwheel.html',
   styleUrls: ['./spinwheel.scss']
@@ -23,9 +33,9 @@ export class SpinwheelPage implements OnInit {
         'textFontSize': 26,
         'strokeStyle': null,
         'lineWidth': 0,
-        'fillStyle' : '#00c4dd',
-        'text' : '100',
-        'value' : 100
+        'fillStyle': '#00c4dd',
+        'text': '100',
+        'value': 100
       },
     ],
     normal: [
@@ -181,6 +191,8 @@ export class SpinwheelPage implements OnInit {
     let segments = this.segments;
 
     if (this.cacheService.getLocal('spinwheel')) {
+      console.log('misconfigured spinwheel color', this.checkSegmentHasError(remoteSegments));
+
       // to avoid human error, double confirm existence of each mandatory segment
       segments.ultimate = remoteSegments.ultimate || segments.ultimate;
       segments.general = remoteSegments.general || segments.general;
@@ -210,7 +222,64 @@ export class SpinwheelPage implements OnInit {
     return result;
   }
 
+  checkSegmentHasError(segments) {
+    /*let wrongColorAlert = this.alertCtrl.create({
+      title: 'Color Config Error',
+      subTitle: 'Default color would be applied.'
+    });*/
 
+    if (segments.ultimate && this.checkConfigHasError(segments.ultimate)) {
+      // return wrongColorAlert.present();
+      return true;
+    }
+
+    if (segments.general && this.checkConfigHasError(segments.general)) {
+      // return wrongColorAlert.present();
+      return true;
+    }
+
+    if (segments.normal && this.checkConfigHasError(segments.normal)) {
+      // return wrongColorAlert.present();
+      return true;
+    }
+
+    if (segments.rare && this.checkConfigHasError(segments.rare)) {
+      // return wrongColorAlert.present();
+      return true;
+    }
+
+    return false;
+  }
+
+  checkConfigHasError(segmentList: SpinwheelSegment[]) {
+    if (_.isEmpty(segmentList) || _.isEmpty(segmentList[0])) {
+      return true;
+    }
+
+    const currentSegment = segmentList[0];
+    const {
+      textFontFamily,
+      textFontSize,
+      strokeStyle,
+      lineWidth,
+      fillStyle,
+      text,
+      value
+    } = currentSegment;
+
+    // all value must not empty
+    if (
+      textFontFamily &&
+      fillStyle &&
+      text &&
+      typeof textFontSize === 'number' &&
+      typeof value === 'number'
+    ) {
+      return true;
+    }
+
+    return false;
+  }
 
   private spinningSound(cb: Function) {
     // let audio = new Audio();
