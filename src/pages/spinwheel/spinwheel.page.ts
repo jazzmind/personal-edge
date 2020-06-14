@@ -181,12 +181,17 @@ export class SpinwheelPage implements OnInit {
     let segments = this.segments;
 
     if (this.cacheService.getLocal('spinwheel')) {
-      segments = remoteSegments;
+      // to avoid human error, double confirm existence of each mandatory segment
+      segments.ultimate = remoteSegments.ultimate || segments.ultimate;
+      segments.general = remoteSegments.general || segments.general;
+      segments.normal = remoteSegments.normal || segments.normal;
+      segments.rare = remoteSegments.rare || segments.rare;
     }
 
     let result = [];
-    result = result.concat(segments.ultimate);
 
+    // construct
+    result = result.concat(segments.ultimate);
     for (let x = 0; x < 5; x++) {
       // general
       result = result.concat(segments.general);
@@ -200,7 +205,6 @@ export class SpinwheelPage implements OnInit {
       if (x === 0 || x === 2) {
         result = result.concat(segments.rare);
       }
-
     }
 
     return result;
