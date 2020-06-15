@@ -228,6 +228,9 @@ export class ActivitiesListPage {
     }
   }
 
+  /**
+   * notification about new spinwheel oppurtunity awarded
+   */
   openNewItemsModal(params: any = {}) {
     let modal = this.modalCtrl.create(NewItemsPage, params);
     modal.present();

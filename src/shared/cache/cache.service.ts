@@ -18,7 +18,6 @@ export class CacheService {
     public storage: Storage,
   ) {
     storage.ready().then(() => {
-      console.log('Storage loaded.');
       this.read('*', true).then(content => this.bufferZone = content);
     });
 

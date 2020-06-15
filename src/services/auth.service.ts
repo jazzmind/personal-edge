@@ -54,9 +54,15 @@ export class AuthService {
         result.logo = logo;
       }
 
-      if (thisExperience.config && thisExperience.config.theme_color) {
-        result.color = thisExperience.config.theme_color;
-        this.cacheService.setLocalObject('branding.color', thisExperience.config.theme_color);
+      if (thisExperience.config) {
+        if (thisExperience.config.theme_color) {
+          result.color = thisExperience.config.theme_color;
+          this.cacheService.setLocalObject('branding.color', thisExperience.config.theme_color);
+        }
+
+        if (thisExperience.config.spinwheel) {
+          this.cacheService.setLocalObject('spinwheel', thisExperience.config.spinwheel);
+        }
       }
     }
 
