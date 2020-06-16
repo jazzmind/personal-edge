@@ -1,5 +1,5 @@
 export class Default {
-  public helpline = '';
+  public helpline = 'help@practera.com';
 
   public notifications = {
     congratulations: {
