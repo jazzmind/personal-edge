@@ -79,7 +79,6 @@ export class AssessmentsPage {
 
   ionViewWillEnter() {
     let loader = this.loadingCtrl.create();
-    console.log(this.activity);
     loader.present().then(() => {
       this.loadQuestions()
       .then(() => {
@@ -511,60 +510,61 @@ export class AssessmentsPage {
 
     this.gameService.getItems({
       character_id: this.getCharacterID
-    }).subscribe(
-          data => {
-            this.newItemsData = data.Items;
-            _.forEach(data.Items, (element, index) => {
-              let id = element.id;
-              if(!this.newItemsCount[id]){
-                this.newItemsCount[id] = 0;
-              }
-              this.newItemsCount[id]++;
-            });
-            // compare with previous get_characters() results and generate final index value array result
-            _.forEach(this.newItemsCount, (element, id) => {
-              if(!this.initialItemsCount[id]){
-                this.totalItems.push({ "count": element, "id": id });
-              }else {
-                let diffCountVal = element - this.initialItemsCount[id];
-                if(diffCountVal > 0){
-                  this.totalItems.push({ "count": diffCountVal, "id": id });
-                }
-              }
-            });
-            _.forEach(this.totalItems, (element, index) => {
-              element.id = parseInt(element.id);
-            });
-            this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
-            // get the final object with item occurance count value
-            let groupData = _.groupBy(this.totalItems, 'id');
-            if(this.allItemsData.length === 0){
-              this.gotNewItems = false;
-              this.cacheService.setLocal('gotNewItems', this.gotNewItems);
-              loading.onDidDismiss(() => {
-                alert.present(); // redirect to dashboard page
-              });
-              loading.dismiss();
-            } else {
-              _.map(this.allItemsData, (ele) => {
-                this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
-              });
-              // display items on dashboard page
-              this.gotNewItems = true;
-              this.cacheService.setLocal('gotNewItems', this.gotNewItems);
-              this.cacheService.setLocalObject('allNewItems', this.combinedItems);
-              loading.onDidDismiss(() => {
-                this.navCtrl.setRoot(ActivitiesListPage);
-              });
-              loading.dismiss();
-            }
-          },
-          err => {
-            loading.dismiss().then(() => {
-              console.log("Err: ", err);
-            });
+    }).subscribe(data => {
+      this.newItemsData = data.Items;
+      _.forEach(data.Items, element => {
+        const id = element.id;
+        if (!this.newItemsCount[id]) {
+          this.newItemsCount[id] = 0;
+        }
+        this.newItemsCount[id]++;
+      });
+
+      // compare with previous get_characters() results and generate final index value array result
+      _.forEach(this.newItemsCount, (element, id) => {
+        if (!this.initialItemsCount[id]) {
+          this.totalItems.push({ "count": element, "id": id });
+        } else {
+          let diffCountVal = element - this.initialItemsCount[id];
+          if (diffCountVal > 0) {
+            this.totalItems.push({ "count": diffCountVal, "id": id });
           }
-        );
+        }
+      });
+
+      _.forEach(this.totalItems, (element) => {
+        element.id = parseInt(element.id);
+      });
+      this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
+
+      // get the final object with item occurance count value
+      let groupData = _.groupBy(this.totalItems, 'id');
+      if (this.allItemsData.length === 0){
+        this.gotNewItems = false;
+        this.cacheService.setLocal('gotNewItems', this.gotNewItems);
+        loading.onDidDismiss(() => {
+          alert.present(); // redirect to dashboard page
+        });
+        loading.dismiss();
+      } else {
+        _.map(this.allItemsData, (ele) => {
+          this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
+        });
+
+        // display items on dashboard page
+        this.gotNewItems = true;
+        this.cacheService.setLocal('gotNewItems', this.gotNewItems);
+        this.cacheService.setLocalObject('allNewItems', this.combinedItems);
+        loading.onDidDismiss(() => {
+          this.navCtrl.setRoot(ActivitiesListPage);
+        });
+        loading.dismiss();
+      }
+    }, err => {
+      loading.dismiss().then(() => {
+        console.log("Game item retrival:", err);
+      });
+    });
   }
 
   gotoAssessment(assessmentGroup, activity) {
