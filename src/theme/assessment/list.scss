@@ -11,7 +11,7 @@ assessments-page {
   .assessment-title {
     font-weight: bold;
     font-family: 'Roboto';
-    color: color($colors, primary);
+    color: color($colors, text, dark);
     text-transform: uppercase;
   }
   .assessment-description {

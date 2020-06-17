@@ -158,9 +158,9 @@ $colors: (
 );
 
 // Small arrow color for list
-$item-md-detail-push-color: color($colors, primary, base);
-$item-wp-detail-push-color: color($colors, primary, base);
-$item-ios-detail-push-color: color($colors, primary, base);
+$item-md-detail-push-color: color($colors, text, dark);
+$item-wp-detail-push-color: color($colors, text, dark);
+$item-ios-detail-push-color: color($colors, text, dark);
 
 // Badge style
 $badge-ios-background-color: color($colors, badge-bg, base);
