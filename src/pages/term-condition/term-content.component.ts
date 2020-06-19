@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth.service';
-
+import { default as Configuration } from '../../configs/config';
 
 const TermContent = `<h2>Terms of Use Agreement</h2>
 
@@ -74,10 +74,10 @@ const TermContent = `<h2>Terms of Use Agreement</h2>
 <p><b>6. Security of your personal information.</b> We take reasonable steps to protect your personal information. However we are not liable for any unauthorised access to this information.
 </p>
 
-<p><b>7. Access to your personal information.</b> You can access and update your personal information by contacting us on {{helpline}}
+<p><b>7. Access to your personal information.</b> You can access and update your personal information by contacting us on <a target="_blank" href="mailto:${Configuration.helpline}">${Configuration.helpline}</a>
 </p>
 
-<p><b>8. Complaints about privacy.</b> If you have any complaints about our privacy practices, please feel free to send in details of your complaints to {{helpline}}. We take complaints very seriously and will respond shortly after receiving written notice of your complaint.
+<p><b>8. Complaints about privacy.</b> If you have any complaints about our privacy practices, please feel free to send in details of your complaints to <a target="_blank" href="mailto:${Configuration.helpline}">${Configuration.helpline}</a>. We take complaints very seriously and will respond shortly after receiving written notice of your complaint.
 </p>
 
 <p><b>9. Changes.</b> Please be aware that we may change this Privacy Policy in the future. The revised versions will be uploaded onto our website, so please check back from time to time.

@@ -54,6 +54,61 @@ File involved: `src/configs/config.ts`
 
 Different set of hardcoded IDs would be used depend on the domain name on the client side/browser.
 
+### Spinwheel Color
+
+Color of each segments can be changed to different color by passing different color code from Practera config.
+
+The format should be followed exactly as below. The *general*, *normal*, *rare*, and *ultimate* indicates a particular segment being configured.
+
+```json
+{
+    "general": [
+      {
+        "textFontFamily": "Roboto",
+        "textFontSize": 26,
+        "strokeStyle": null,
+        "lineWidth": 0,
+        "fillStyle" : "#00c4dd",
+        "text" : "100",
+        "value" : 100
+      }
+    ],
+    "normal": [
+      {
+        "textFontFamily": "Roboto",
+        "textFontSize": 26,
+        "strokeStyle": null,
+        "lineWidth": 0,
+        "fillStyle": "#008ddd",
+        "text" : "200",
+        "value" : 200
+      }
+    ],
+    "rare": [
+      {
+        "textFontFamily": "Roboto",
+        "textFontSize": 26,
+        "strokeStyle": null,
+        "lineWidth": 0,
+        "fillStyle": "#a37ff1",
+        "text": "300",
+        "value": 300
+      }
+    ],
+    "ultimate": [
+      {
+        "textFontFamily": "Roboto",
+        "textFontSize": 26,
+        "strokeStyle": null,
+        "lineWidth": 0,
+        "fillStyle": "#713ae9",
+        "text": "400",
+        "value" : 400
+      }
+    ]
+  }
+```
+
 ## Development Notes
 
 1. Ionic Deeplinking/Routing

@@ -262,6 +262,7 @@ const HardcodeDataList = () => {
     hardcodeQuestionIds: this.hardcodeQuestionIds,
     portfolio_domain: this.portfolio_domain,
     achievementsByMilestone: milestones,
+    helpline: 'help@practera.com'
   }
 }
 export default HardcodeDataList();

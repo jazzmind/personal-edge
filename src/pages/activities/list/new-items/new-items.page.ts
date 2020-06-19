@@ -8,6 +8,7 @@ import { CacheService } from '../../../../shared/cache/cache.service';
 })
 export class NewItemsPage {
   newItemsData: any = [];
+  newItemImage: string = 'https://www.filepicker.io/api/file/ySw7HfSQbOmkVdowHrag';
 
   constructor(
     public cacheService: CacheService,
@@ -15,6 +16,12 @@ export class NewItemsPage {
     public viewCtrl: ViewController
   ) {
     this.newItemsData = this.params.get('newItemsData');
+    if (this.newItemsData
+      && this.newItemsData[0]
+      && this.newItemsData[0].meta !== null
+      && this.newItemsData[0].meta.img) {
+      this.newItemImage = this.newItemsData[0].meta.img;
+    }
 
     // Remove data in localstorage
     this.cacheService.setLocalObject('allNewItems', []);
