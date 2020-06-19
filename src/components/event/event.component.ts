@@ -22,8 +22,6 @@ export class EventComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('CoverURL::', this.event.coverUrl);
-    console.log(this.event);
     const imageFileFound = this.findCoverImageFromFiles(this.event.files);
     if (imageFileFound) {
       this.event.coverUrl = imageFileFound.url;
