@@ -54,7 +54,7 @@ export class EventsListPage {
   public experiencePrimaryColor: SafeStyle = "";
   public experienceSecondaryColor: SafeStyle = "";
   public config: any = {};
-
+  
   constructor(
     public navCtrl: NavController,
     public eventService: EventService,

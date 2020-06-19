@@ -1,10 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EventService } from '../../services/event.service';
 import { CardHeightDirective } from './card-height.directive';
 
 import * as moment from 'moment';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'event',
@@ -13,32 +12,13 @@ import * as _ from 'lodash';
     event: '[event]',
   }
 })
-export class EventComponent implements OnInit {
+export class EventComponent {
   @Input() event: any;
 
   constructor(
     public navCtrl: NavController,
     private eventService: EventService
   ) { }
-
-  ngOnInit() {
-    const imageFileFound = this.findCoverImageFromFiles(this.event.files);
-    if (imageFileFound) {
-      this.event.coverUrl = imageFileFound.url;
-    }
-  }
-
-  // extract first image file from attachments, just so it can be displayed as event banner
-  findCoverImageFromFiles(files) {
-    let firstImageFile: any = false;
-    files.forEach(file => {
-      if (_.isEmpty(firstImageFile) && file.type.includes('image')) {
-        firstImageFile = file;
-      }
-    });
-
-    return firstImageFile;
-  }
 
   // Check event has been booked
   isBookedEvent(event) {
