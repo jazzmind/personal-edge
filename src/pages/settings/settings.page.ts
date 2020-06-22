@@ -39,7 +39,7 @@ export class SettingsPage {
     private zone: NgZone,
     private utils: UtilsService,
   ) {
-    this.config = JSON.parse(this.cache.getLocal('config'));
+    this.config = this.cache.getLocalObject('config');
     if (this.config.handbookUrl) {
       this.handbookUrl = this.config.handbookUrl;
     }

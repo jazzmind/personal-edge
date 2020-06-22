@@ -63,7 +63,7 @@ export class EventsListPage {
     public loadingCtrl: LoadingController,
     public sanitization: DomSanitizer
   ) {
-    this.config = JSON.parse(this.cacheService.getLocal('config'));
+    this.config = this.cacheService.getLocalObject('config');
 
     if (this.config.primaryColor) {
       this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);

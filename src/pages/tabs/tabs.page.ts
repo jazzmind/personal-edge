@@ -35,7 +35,7 @@ export class TabsPage {
     public sanitization: DomSanitizer
   ) {
     this.traceSpinProgress();
-    this.config = JSON.parse(this.cacheService.getLocal('config'));
+    this.config = this.cacheService.getLocalObject('config');
     if (this.config.primaryColor) {
       // wow... this is a sledgehammer
       var css = document.createElement('style');
