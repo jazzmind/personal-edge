@@ -54,7 +54,7 @@ export class ActivitiesViewPage {
   public config: any = {};
   public experiencePrimaryColor: SafeStyle = "";
   public experienceSecondaryColor: SafeStyle = "";
-  
+
   initialised_eset() {
     this.isReadonly = this.cache.isReadonly();
 
@@ -80,17 +80,17 @@ export class ActivitiesViewPage {
     private alertCtrl: AlertController,
     private cache: CacheService,
     public sanitization: DomSanitizer
- 
+
   ) {
     this.portfolioView = this.navParams.get('portfolioView');
-    this.config = JSON.parse(this.cache.getLocal('config'));
-    console.log(this.config);
+    this.config = this.cache.getLocalObject('config');
+
     if (this.config.hardcodeSkillAssessmentIds) {
       this.hardcodeSkillAssessmentIds = this.config.hardcodeSkillAssessmentIds;
       this.hardcodeQuestionIds = this.config.hardcodeQuestionIds;
       this.hardcodeActivityId = this.config.hardcodeActivityId;
     }
-    
+
     if (this.config.primaryColor) {
       this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
     }
@@ -128,7 +128,7 @@ export class ActivitiesViewPage {
     this.eachScore = this.eachFinalScore.length ? this.eachFinalScore[this.activityIndex-1] : -1;
     this.newTickIDsArray = this.navParams.get('newTickIDsArray');
     if (this.activity.lead_image) {
-      this.activity.backgroundImgUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.activity.lead_image+ ')');   
+      this.activity.backgroundImgUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.activity.lead_image+ ')');
     }
     if (this.newTickIDsArray.length) {
       this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];

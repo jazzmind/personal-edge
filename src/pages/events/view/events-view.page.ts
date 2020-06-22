@@ -68,7 +68,7 @@ export class EventsViewPage {
   ) {
     this.event = navParams.get('event');
     this.eventTag = navParams.get('tag');
-    this.config = JSON.parse(this.cache.getLocal('config'));
+    this.config = this.cache.getLocalObject('customConfig');
 
     if (this.config.eventLogo) {
       this.eventLogo = this.config.eventLogo;
