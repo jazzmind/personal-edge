@@ -223,7 +223,7 @@ export class EventsViewPage {
                       this.booked_text;
                     }
                     bookLoading.dismiss().then(() => {
-                      this.navCtrl.popToRoot(EventsListPage);
+                      return this.navCtrl.popToRoot();
                     });
                   },
                   err => {
@@ -278,7 +278,7 @@ export class EventsViewPage {
               .subscribe(
                 data => {
                   cancelLoading.dismiss().then(() => {
-                   this.navCtrl.popToRoot(EventsListPage);
+                   this.navCtrl.popToRoot();
                   });
                 },
                 err => {
