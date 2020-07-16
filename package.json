@@ -31,6 +31,7 @@
     "@ionic/storage": "^2.0.1",
     "@ngx-translate/core": "^7.0.0",
     "@ngx-translate/http-loader": "^0.1.0",
+    "@types/greensock": "^1.15.32",
     "angular-linky": "^1.2.2",
     "angular2-local-storage": "^0.2.0",
     "angular2-moment": "1.4.0",
@@ -48,9 +49,8 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "2.0.0",
-    "@types/greensock": "^1.15.32",
-    "@types/jasmine": "^3.5.10",
-    "@types/node": "^10.15.3",
+    "@types/jasmine": "^2.5.47",
+    "@types/node": "^7.0.13",
     "angular2-template-loader": "^0.6.2",
     "connect": "^3.6.0",
     "del": "2.2.0",
@@ -68,6 +68,6 @@
     "protractor": "^5.1.1",
     "ts-loader": "^2.0.3",
     "ts-node": "^3.0.2",
-    "typescript": "^3.9.6"
+    "typescript": "2.3.4"
   }
 }
