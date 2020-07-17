@@ -200,16 +200,11 @@ export class RequestService {
    * Get the user's current location from IP
    */
   public getIpLocation() {
-    if ('geolocation' in navigator) {
-      return this._ipAPI().subscribe(
-        res => {
-          this.cacheService.setCountry(res.country_name);
-        },
-      );
-    }
-    return Observable.of(null).subscribe(() => {
-      this.cacheService.setCountry(null);
-    });
+    return this._ipAPI().subscribe(
+      res => {
+        this.cacheService.setCountry(res.country_name);
+      },
+    );
   }
 
   // obtain location information from IP API
