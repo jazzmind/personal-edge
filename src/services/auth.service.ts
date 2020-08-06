@@ -63,6 +63,8 @@ export class AuthService {
         if (thisExperience.config.spinwheel) {
           this.cacheService.setLocalObject('spinwheel', thisExperience.config.spinwheel);
         }
+
+        this.cacheService.setLocalObject('customConfig', thisExperience.config);
       }
     }
 
