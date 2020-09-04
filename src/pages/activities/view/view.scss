@@ -1,53 +1,20 @@
-.activity-badge-bg {
-  &-1 {
-    background-color: rgba(215, 238, 236, 1);
-    background-image: url(/assets/img/skills/skill-illustration-service-oriented@3x.png);
-    background-size: cover;
-    background-position: center;
-  }
-  &-1.starter {
-    background-color: rgba(215, 238, 236, 1);
-    background-image: url(/assets/img/skills/skill-illustration-starter@3x.png);
-    background-size: cover;
-    background-position: center;
-  }
-  &-2 {
-    background-color: rgba(253, 214, 153, 0.9);
-    background-image: url(/assets/img/skills/skill-illustration-collaborative@3x.png);
-    background-size: cover;
-    background-position: center;
-  }
-  &-3 {
-    background-color: rgba(204, 213, 235, 1);
-    background-image: url(/assets/img/skills/skill-illustration-problem-solver@3x.png);
-    background-size: cover;
-    background-position: center;
-  }
-  &-4 {
-    background-color: rgba(228, 240, 214, 1);
-    background-image: url(/assets/img/skills/skill-illustration-innovative@3x.png);
-    background-size: cover;
-    background-position: center;
-  }
-  &-5 {
-    background-color: rgba(217, 240, 247, 1);
-    background-image: url(/assets/img/skills/skill-illustration-culturally-conscious@3x.png);
-    background-size: cover;
-    background-position: center;
-  }
-  &-6 {
-    background-color: rgba(255, 240, 203, 1);
-    background-image: url(/assets/img/skills/skill-illustration-leader@3x.png);
-    background-size: cover;
-    background-position: center;
-  }
-  &-7 {
-    background-color: rgba(233, 246, 245, 1);
-    background-image: url(/assets/img/skills/skill-illustration-starter@3x.png);
+@mixin activityBadgeBg($append, $color, $image) {
+  .activity-badge-bg-#{$append} {
+    background-color: $color;
+    background-image: $image;
     background-size: cover;
     background-position: center;
   }
 }
+
+@include activityBadgeBg(1, rgba(215, 238, 236, 1), url(/assets/img/skills/skill-illustration-service-oriented@3x.png));
+@include activityBadgeBg('1.starter', rgba(215, 238, 236, 1), url(/assets/img/skills/skill-illustration-starter@3x.png));
+@include activityBadgeBg(2, rgba(253, 214, 153, 0.9), url(/assets/img/skills/skill-illustration-collaborative@3x.png));
+@include activityBadgeBg(3, rgba(204, 213, 235, 1), url(/assets/img/skills/skill-illustration-problem-solver@3x.png));
+@include activityBadgeBg(4, rgba(228, 240, 214, 1), url(/assets/img/skills/skill-illustration-innovative@3x.png));
+@include activityBadgeBg(5, rgba(217, 240, 247, 1), url(/assets/img/skills/skill-illustration-culturally-conscious@3x.png));
+@include activityBadgeBg(6, rgba(255, 240, 203, 1), url(/assets/img/skills/skill-illustration-leader@3x.png));
+@include activityBadgeBg(7, rgba(233, 246, 245, 1), url(/assets/img/skills/skill-illustration-starter@3x.png));
 
 .activity-badge {
   display: flex;
