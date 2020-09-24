@@ -115,9 +115,9 @@ The format should be followed exactly as below. The *general*, *normal*, *rare*,
 
     Go to [Experience configuration - sandbox](https://sandbox.practera.com/admin/experiences/edit/120), and scroll down to `Customised configurations` section.
 
-    Add additional (if it doesn't exist) or edit `branding_html` item as following:
+    Add additional (if it doesn't exist) or edit `html_branding` item as following:
     ```json
-    "branding_html": {
+    "html_branding": {
       "header": "<div>Example HTML code</div>"
     }
     ```

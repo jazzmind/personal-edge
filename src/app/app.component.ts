@@ -38,7 +38,6 @@ export class MyApp implements OnInit {
     'resetpassword': ResetPasswordPage,
     'secure': MagicLinkPage
   };
-  customHeader: SafeHtml;
 
   constructor(
     win: WindowRef,
@@ -52,7 +51,6 @@ export class MyApp implements OnInit {
     private requestService: RequestService,
     private sanitizer: DomSanitizer,
   ) {
-    this.customHeader = null;
     eventsListener.subscribe('toaster', data => {
       let toast = toastCtrl.create({
         message: data.msg,
@@ -137,13 +135,6 @@ export class MyApp implements OnInit {
 
       if (res.color) {
         branding.logo = res.color;
-      }
-
-      if (res.html_branding) {
-        branding.html_branding = res.html_branding;
-        if (this.customHeader && res.html_branding.header) {
-          this.customHeader = this.sanitizer.bypassSecurityTrustHtml(res.html_branding.header);
-        }
       }
 
       if (!this.cacheService.bufferZone) {

@@ -45,7 +45,7 @@ import { WindowRef } from '../../../shared/window';
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage {
-  customHeader: string;
+  customHeader: SafeStyle;
 
   public initilized_varible() {
     this.customHeader = null;
@@ -189,6 +189,11 @@ export class ActivitiesListPage {
     // reset data to 0 when page reloaded before got new data
     this.initilized_varible();
     this.loadingDashboard();
+
+    const html_branding = this.cacheService.getLocalObject('branding.html');
+    if (html_branding && html_branding.header) {
+      this.customHeader = this.sanitizer.bypassSecurityTrustHtml(html_branding.header);
+    }
   }
 
   ionViewDidEnter() {
