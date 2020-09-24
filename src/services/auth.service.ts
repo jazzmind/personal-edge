@@ -13,9 +13,15 @@ export interface ProfileData {
   image:string
 }
 
+export interface HTMLBranding {
+  header?: string;
+  footer?: string;
+}
+
 export interface CustomBranding {
   logo?: string;
   color?: string;
+  html_branding?: HTMLBranding;
 }
 @Injectable()
 export class AuthService {
@@ -42,7 +48,8 @@ export class AuthService {
     const res = await this.experienceConfig(domain).toPromise();
     let result = {
       logo: '',
-      color: ''
+      color: '',
+      html_branding: {},
     };
 
     if (res && res.data && res.data.length > 0) {
@@ -62,6 +69,10 @@ export class AuthService {
 
         if (thisExperience.config.spinwheel) {
           this.cacheService.setLocalObject('spinwheel', thisExperience.config.spinwheel);
+        }
+
+        if (thisExperience.config.html_branding) {
+          this.cacheService.setLocalObject('branding.html', thisExperience.config.html_branding);
         }
 
         this.cacheService.setLocalObject('customConfig', thisExperience.config);
