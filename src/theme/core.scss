@@ -170,3 +170,10 @@ $mono-font: 'Roboto Mono';
     outline: none !important;
   }
 }
+
+.custom-header {
+  top: 85px !important;
+  &.mobile {
+    top: 65px !important;
+  }
+}

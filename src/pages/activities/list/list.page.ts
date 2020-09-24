@@ -45,7 +45,10 @@ import { WindowRef } from '../../../shared/window';
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage {
+  customHeader: string;
+
   public initilized_varible() {
+    this.customHeader = null;
     this.bookedEventsCount = 0;
     this.characterCurrentExperience = 0;
     this.currentPercentage = 0;
@@ -128,6 +131,7 @@ export class ActivitiesListPage {
   public experienceSecondaryColor: SafeStyle = "";
   public experienceBackgroundUrl: SafeStyle = "";
   public experience: any = {};
+
   constructor(
     public navCtrl: NavController,
     public activityService: ActivityService,
@@ -145,7 +149,7 @@ export class ActivitiesListPage {
     public popoverCtrl: PopoverController,
     public translationService: TranslationService,
     public win: WindowRef,
-    public sanitization: DomSanitizer
+    public sanitizer: DomSanitizer
   ) {
     if (this.email && this.program_id) {
       this.program_id = this.cacheService.getLocal('program_id');
@@ -162,15 +166,15 @@ export class ActivitiesListPage {
     this.config = this.cacheService.getLocalObject('config');
 
     if (this.config.backgroundImageUrl) {
-      this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl + ')');
+      this.experienceBackgroundUrl = this.sanitizer.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl + ')');
     } else {
-      this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(/assets/img/main/skills-generic-cover@3x.png)');
+      this.experienceBackgroundUrl = this.sanitizer.bypassSecurityTrustStyle('url(/assets/img/main/skills-generic-cover@3x.png)');
     }
     if (this.config.primaryColor) {
-      this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
+      this.experiencePrimaryColor = this.sanitizer.bypassSecurityTrustStyle(this.config.primaryColor);
     }
     if (this.config.secondaryColor) {
-      this.experienceSecondaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.secondaryColor);
+      this.experienceSecondaryColor = this.sanitizer.bypassSecurityTrustStyle(this.config.secondaryColor);
     }
     if (this.config.achievementListIDs) {
       console.log(this.config.achievementListIDs);

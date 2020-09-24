@@ -1,5 +1,8 @@
 <ion-header class="activities-header">
   <readonly></readonly>
+  <ng-container *ngIf="customHeader">
+    <div [innerHtml]="customHeader"></div>
+  </ng-container>
   <ion-grid>
     <ion-row class="score-board" [style.background-image]="experienceBackgroundUrl">
       <ion-col col-12>
@@ -34,7 +37,7 @@
               <p [style.height.px]="47.31" class="number user-grade">
                 <ion-badge *ngIf="show_badge" [ngClass]="{
                   'best-grade-color': finalAverageScoreShow >= 3.5,
-                  'better-grade-color': (finalAverageScoreShow < 3.5 && finalAverageScoreShow >= 2), 
+                  'better-grade-color': (finalAverageScoreShow < 3.5 && finalAverageScoreShow >= 2),
                   'worse-grade-color': finalAverageScoreShow < 2
                 }">
                   {{ finalAverageScoreShow }}
