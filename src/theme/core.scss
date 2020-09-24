@@ -174,4 +174,7 @@ $mono-font: 'Roboto Mono';
 .custom-header {
   display: flex;
   padding: 0;
+  div {
+    width: 100%;
+  }
 }
