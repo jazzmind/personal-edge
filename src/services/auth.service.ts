@@ -83,7 +83,7 @@ export class AuthService {
    * @return {Promise}
    */
   async getConfig(domain?): Promise<CustomBranding> {
-    const res = await this.experienceConfig('dev-skills.practera.com').toPromise();
+    const res = await this.experienceConfig(domain).toPromise();
     const result = this.cacheConfig(res);
     return result;
   }
