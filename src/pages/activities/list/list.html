@@ -1,6 +1,6 @@
 <ion-header class="activities-header">
   <readonly></readonly>
-  <div *ngIf="customHeader" class="custom-header" [innerHtml]="customHeader"></div>
+  <custom-header [customHeader]="customHeader"></custom-header>
   <ion-grid>
     <ion-row class="score-board" [style.background-image]="experienceBackgroundUrl">
       <ion-col col-12>

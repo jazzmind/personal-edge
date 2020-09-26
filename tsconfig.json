@@ -14,7 +14,11 @@
     "target": "es5",
     "skipLibCheck": true,
     "noUnusedParameters": false,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "baseUrl": "src",
+    "paths": {
+      "@shared/*": ["app/shared/*"]
+    }
   },
   "include": [
     "src/**/*.ts"

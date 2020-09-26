@@ -40,12 +40,7 @@ export class AuthService {
     private cacheService: CacheService
   ) {}
 
-  /**
-   * get color and logo from custom branding config
-   * @return {Promise}
-   */
-  async getConfig(domain?): Promise<CustomBranding> {
-    const res = await this.experienceConfig(domain).toPromise();
+  cacheConfig(res) {
     let result = {
       logo: '',
       color: '',
@@ -73,12 +68,23 @@ export class AuthService {
 
         if (thisExperience.config.html_branding) {
           this.cacheService.setLocalObject('branding.html', thisExperience.config.html_branding);
+          result.html_branding = thisExperience.config.html_branding;
         }
 
         this.cacheService.setLocalObject('customConfig', thisExperience.config);
       }
     }
 
+    return result;
+  }
+
+  /**
+   * get color and logo from custom branding config
+   * @return {Promise}
+   */
+  async getConfig(domain?): Promise<CustomBranding> {
+    const res = await this.experienceConfig('dev-skills.practera.com').toPromise();
+    const result = this.cacheConfig(res);
     return result;
   }
 
@@ -121,6 +127,9 @@ export class AuthService {
     ].join('&'));
     return this.request.post('api/auths.json?action=authentication', urlSearchParams, {
       'Content-Type': 'application/x-www-form-urlencoded',
+    }).map(res => {
+      this.cacheConfig(res);
+      return res;
     });
   }
 
@@ -128,8 +137,7 @@ export class AuthService {
     let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('email', email);
-    return this.http.post(this.AUTH_ENDPOINT+'forgot_password', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.http.post(this.AUTH_ENDPOINT+'forgot_password', urlSearchParams.toString(), options).map(res => res.json());
   }
 
   verifyUserKeyEmail(key, email){

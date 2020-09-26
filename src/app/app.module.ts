@@ -44,6 +44,7 @@ import { WindowRef } from '../shared/window';
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
+import { CustomHeaderComponent } from '../components/custom-header/custom-header.component';
 import { EventComponent } from '../components/event/event.component';
 import { LevelComponent } from '../components/level/level';
 import { LoadingMarkerComponent } from '../components/loadingMarker/loadingMarker';
@@ -139,6 +140,7 @@ export function HttpLoaderFactory(http: Http) {
     CardHeightDirective,
     ImgDirective,
     CustomLogoDirective,
+    CustomHeaderComponent,
     EventCheckinPage,
     EventComponent,
     EventsDownloadPage,

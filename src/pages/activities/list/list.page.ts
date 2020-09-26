@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ViewChild, Inject } from '@angular/core';
 import {
   ActionSheetController,
   NavController,
@@ -6,7 +7,8 @@ import {
   LoadingController,
   ModalController,
   PopoverController,
-  Events
+  Events,
+  Content,
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
@@ -45,10 +47,10 @@ import { WindowRef } from '../../../shared/window';
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage {
+  @ViewChild(Content) content: Content;
   customHeader: SafeStyle;
 
   public initilized_varible() {
-    this.customHeader = null;
     this.bookedEventsCount = 0;
     this.characterCurrentExperience = 0;
     this.currentPercentage = 0;
@@ -149,8 +151,10 @@ export class ActivitiesListPage {
     public popoverCtrl: PopoverController,
     public translationService: TranslationService,
     public win: WindowRef,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    @Inject(DOCUMENT) private document: HTMLDocument,
   ) {
+    this.customHeader = null;
     if (this.email && this.program_id) {
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = this.cacheService.getLocalObject('email');
@@ -189,14 +193,14 @@ export class ActivitiesListPage {
     // reset data to 0 when page reloaded before got new data
     this.initilized_varible();
     this.loadingDashboard();
-
-    const html_branding = this.cacheService.getLocalObject('branding.html');
-    if (html_branding && html_branding.header) {
-      this.customHeader = this.sanitizer.bypassSecurityTrustHtml(html_branding.header);
-    }
   }
 
   ionViewDidEnter() {
+    console.log('content::', this.content);
+    console.log('content::scrollElement', this.content.getScrollElement());
+    console.log(this.document.getElementsByClassName('custom-header'));
+    console.log(document.getElementsByClassName('custom-header'));
+
     // Open new items modal when submitted no-need-review answer.
     // @NOTE getLocal() return boolean data as string
     if (this.cacheService.getLocal('gotNewItems') === 'true') {
@@ -204,6 +208,9 @@ export class ActivitiesListPage {
         newItemsData: this.cacheService.getLocalObject('allNewItems')
       });
     }
+
+    const html_branding = this.cacheService.getLocalObject('branding.html');
+    this.customHeader = (html_branding && html_branding.header) ? html_branding.header : null;
   }
 
   refreshPage() {
@@ -260,8 +267,8 @@ export class ActivitiesListPage {
         this.returnError = true;
       }
 
-      if (this.activities.length == 1 && document.cookie == "") {
-        document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+      if (this.activities.length == 1 && this.document.cookie == "") {
+        this.document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
         this.navCtrl.push(InstructionPage);
       }
 
