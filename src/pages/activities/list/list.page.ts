@@ -210,9 +210,7 @@ export class ActivitiesListPage {
     }
 
     const html_branding = this.cacheService.getLocalObject('branding.html');
-    if (html_branding && html_branding.header) {
-      this.customHeader = this.sanitizer.bypassSecurityTrustHtml(html_branding.header);
-    }
+    this.customHeader = (html_branding && html_branding.header) ? html_branding.header : null;
   }
 
   refreshPage() {
