@@ -47,7 +47,6 @@ import { WindowRef } from '../../../shared/window';
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage {
-  @ViewChild(Content) content: Content;
   customHeader: SafeStyle;
 
   public initilized_varible() {
@@ -196,11 +195,6 @@ export class ActivitiesListPage {
   }
 
   ionViewDidEnter() {
-    console.log('content::', this.content);
-    console.log('content::scrollElement', this.content.getScrollElement());
-    console.log(this.document.getElementsByClassName('custom-header'));
-    console.log(document.getElementsByClassName('custom-header'));
-
     // Open new items modal when submitted no-need-review answer.
     // @NOTE getLocal() return boolean data as string
     if (this.cacheService.getLocal('gotNewItems') === 'true') {
