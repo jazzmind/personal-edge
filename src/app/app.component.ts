@@ -1,4 +1,5 @@
 import { Component, ViewChild, OnInit, NgZone } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Platform, NavController, AlertController, ToastController, Events } from 'ionic-angular';
 
 // services
@@ -38,16 +39,6 @@ export class MyApp implements OnInit {
     'secure': MagicLinkPage
   };
 
-  // trace screen size (we serve only portrait size)
-  public isPortrait: boolean = this.initialStatus();
-  initialStatus() {
-    if (this.platform.isPortrait() || this.platform.is('core')) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   constructor(
     win: WindowRef,
     zone: NgZone,
@@ -58,6 +49,7 @@ export class MyApp implements OnInit {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private requestService: RequestService,
+    private sanitizer: DomSanitizer,
   ) {
     eventsListener.subscribe('toaster', data => {
       let toast = toastCtrl.create({
@@ -82,6 +74,16 @@ export class MyApp implements OnInit {
         });
       };
     }*/
+  }
+
+  // trace screen size (we serve only portrait size)
+  public isPortrait: boolean = this.initialStatus();
+  initialStatus() {
+    if (this.platform.isPortrait() || this.platform.is('core')) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /* Customized Flag Start */
@@ -124,6 +126,7 @@ export class MyApp implements OnInit {
       const branding = {
         logo: '',
         color: '',
+        html_branding: {},
       };
 
       if (res.logo) {

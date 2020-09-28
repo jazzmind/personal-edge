@@ -109,6 +109,19 @@ The format should be followed exactly as below. The *general*, *normal*, *rare*,
   }
 ```
 
+### Custom Branding - Custom Template
+
+#### Header bar on home page (Activity list)
+
+    Go to [Experience configuration - sandbox](https://sandbox.practera.com/admin/experiences/edit/120), and scroll down to `Customised configurations` section.
+
+    Add additional (if it doesn't exist) or edit `html_branding` item as following:
+    ```json
+    "html_branding": {
+      "header": "<div>Example HTML code</div>"
+    }
+    ```
+
 ## Development Notes
 
 1. Ionic Deeplinking/Routing
@@ -127,6 +140,8 @@ The format should be followed exactly as below. The *general*, *normal*, *rare*,
     ```
     ionic serve
     ```
+
+1. Dev environment - Sandbox experience configuration: [Link](https://sandbox.practera.com/admin/experiences/edit/120)
 
 ## Troubleshooting
 
