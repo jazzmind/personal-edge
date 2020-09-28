@@ -18,7 +18,7 @@ export class CustomHeaderComponent implements OnChanges {
     if (changes.customHeader && changes.customHeader.currentValue) {
       this.customHeader = this.sanitizer.bypassSecurityTrustHtml(changes.customHeader.currentValue);
     } else if (changes.customHeader && _.isEmpty(changes.customHeader.currentValue)) {
-      const html_branding = this.cacheService.getLocalObject('branding.html');
+      const html_branding = this.cacheService.getLocalObject('user.branding.html');
       if (html_branding && html_branding.header) {
         this.customHeader = this.sanitizer.bypassSecurityTrustHtml(html_branding.header);
       }
