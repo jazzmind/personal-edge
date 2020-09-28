@@ -40,11 +40,27 @@ export class AuthService {
     private cacheService: CacheService
   ) {}
 
-  cacheConfig(res) {
+  cacheConfig(res, options = {
+    isUserSpecfic: false
+  }) {
     let result = {
       logo: '',
       color: '',
       html_branding: {},
+    };
+
+    const configKeys = (options.isUserSpecfic === true) ? {
+      logo: 'user.branding.logo',
+      color: 'user.branding.color',
+      html: 'user.branding.html',
+      spinwheel: 'user.spinwheel',
+      customConfig: 'user.customConfig',
+    } : {
+      logo: 'branding.logo',
+      color: 'branding.color',
+      html: 'branding.html',
+      spinwheel: 'spinwheel',
+      customConfig: 'customConfig',
     };
 
     if (res && res.data && res.data.length > 0) {
@@ -52,26 +68,26 @@ export class AuthService {
 
       if (thisExperience.logo) {
         const logo = `${Configuration.prefixUrl}${thisExperience.logo}`;
-        this.cacheService.setLocalObject('branding.logo', logo);
+        this.cacheService.setLocalObject(configKeys.logo, logo);
         result.logo = logo;
       }
 
       if (thisExperience.config) {
         if (thisExperience.config.theme_color) {
           result.color = thisExperience.config.theme_color;
-          this.cacheService.setLocalObject('branding.color', thisExperience.config.theme_color);
+          this.cacheService.setLocalObject(configKeys.color, thisExperience.config.theme_color);
         }
 
         if (thisExperience.config.spinwheel) {
-          this.cacheService.setLocalObject('spinwheel', thisExperience.config.spinwheel);
+          this.cacheService.setLocalObject(configKeys.spinwheel, thisExperience.config.spinwheel);
         }
 
         if (thisExperience.config.html_branding) {
-          this.cacheService.setLocalObject('branding.html', thisExperience.config.html_branding);
+          this.cacheService.setLocalObject(configKeys.html, thisExperience.config.html_branding);
           result.html_branding = thisExperience.config.html_branding;
         }
 
-        this.cacheService.setLocalObject('customConfig', thisExperience.config);
+        this.cacheService.setLocalObject(configKeys.customConfig, thisExperience.config);
       }
     }
 
@@ -128,7 +144,7 @@ export class AuthService {
     return this.request.post('api/auths.json?action=authentication', urlSearchParams, {
       'Content-Type': 'application/x-www-form-urlencoded',
     }).map(res => {
-      this.cacheConfig(res);
+      this.cacheConfig({ data: [res] }, { isUserSpecfic: true });
       return res;
     });
   }

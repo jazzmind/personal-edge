@@ -203,7 +203,7 @@ export class ActivitiesListPage {
       });
     }
 
-    const html_branding = this.cacheService.getLocalObject('branding.html');
+    const html_branding = this.cacheService.getLocalObject('user.branding.html');
     this.customHeader = (html_branding && html_branding.header) ? html_branding.header : null;
   }
 
