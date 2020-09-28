@@ -40,6 +40,37 @@ export class AuthService {
     private cacheService: CacheService
   ) {}
 
+  // cache experience config from auth.json endpoint
+  cacheUserSpecificConfig(res): void {
+    const configKeys = {
+      logo: 'user.branding.logo',
+      color: 'user.branding.color',
+      html: 'user.branding.html',
+      spinwheel: 'user.spinwheel',
+      customConfig: 'user.customConfig',
+    };
+
+    const thisExperience = res.Experience || {};
+    if (thisExperience && thisExperience.config) {
+      if (thisExperience.config.theme_color) {
+        this.cacheService.setLocalObject(configKeys.color, thisExperience.config.theme_color);
+      }
+
+      if (thisExperience.config.spinwheel) {
+        this.cacheService.setLocalObject(configKeys.spinwheel, thisExperience.config.spinwheel);
+      }
+
+      if (thisExperience.config.html_branding) {
+        this.cacheService.setLocalObject(configKeys.html, thisExperience.config.html_branding);
+      }
+
+      this.cacheService.setLocalObject(configKeys.customConfig, thisExperience.config);
+    }
+
+    return;
+  }
+
+  // cache experience config from api/v2/plan/experience/list endpoint
   cacheConfig(res, options = {
     isUserSpecfic: false
   }) {
@@ -49,13 +80,7 @@ export class AuthService {
       html_branding: {},
     };
 
-    const configKeys = (options.isUserSpecfic === true) ? {
-      logo: 'user.branding.logo',
-      color: 'user.branding.color',
-      html: 'user.branding.html',
-      spinwheel: 'user.spinwheel',
-      customConfig: 'user.customConfig',
-    } : {
+    const configKeys = {
       logo: 'branding.logo',
       color: 'branding.color',
       html: 'branding.html',
@@ -144,7 +169,7 @@ export class AuthService {
     return this.request.post('api/auths.json?action=authentication', urlSearchParams, {
       'Content-Type': 'application/x-www-form-urlencoded',
     }).map(res => {
-      this.cacheConfig({ data: [res] }, { isUserSpecfic: true });
+      this.cacheUserSpecificConfig(res);
       return res;
     });
   }
