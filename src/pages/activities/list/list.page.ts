@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ViewChild, Inject } from '@angular/core';
 import {
   ActionSheetController,
   NavController,
@@ -6,7 +7,8 @@ import {
   LoadingController,
   ModalController,
   PopoverController,
-  Events
+  Events,
+  Content,
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
@@ -45,6 +47,8 @@ import { WindowRef } from '../../../shared/window';
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage {
+  customHeader: SafeStyle;
+
   public initilized_varible() {
     this.bookedEventsCount = 0;
     this.characterCurrentExperience = 0;
@@ -128,6 +132,7 @@ export class ActivitiesListPage {
   public experienceSecondaryColor: SafeStyle = "";
   public experienceBackgroundUrl: SafeStyle = "";
   public experience: any = {};
+
   constructor(
     public navCtrl: NavController,
     public activityService: ActivityService,
@@ -145,8 +150,10 @@ export class ActivitiesListPage {
     public popoverCtrl: PopoverController,
     public translationService: TranslationService,
     public win: WindowRef,
-    public sanitization: DomSanitizer
+    public sanitizer: DomSanitizer,
+    @Inject(DOCUMENT) private document: HTMLDocument,
   ) {
+    this.customHeader = null;
     if (this.email && this.program_id) {
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = this.cacheService.getLocalObject('email');
@@ -162,15 +169,15 @@ export class ActivitiesListPage {
     this.config = this.cacheService.getLocalObject('config');
 
     if (this.config.backgroundImageUrl) {
-      this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl + ')');
+      this.experienceBackgroundUrl = this.sanitizer.bypassSecurityTrustStyle('url(' + this.config.backgroundImageUrl + ')');
     } else {
-      this.experienceBackgroundUrl = this.sanitization.bypassSecurityTrustStyle('url(/assets/img/main/skills-generic-cover@3x.png)');
+      this.experienceBackgroundUrl = this.sanitizer.bypassSecurityTrustStyle('url(/assets/img/main/skills-generic-cover@3x.png)');
     }
     if (this.config.primaryColor) {
-      this.experiencePrimaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.primaryColor);
+      this.experiencePrimaryColor = this.sanitizer.bypassSecurityTrustStyle(this.config.primaryColor);
     }
     if (this.config.secondaryColor) {
-      this.experienceSecondaryColor = this.sanitization.bypassSecurityTrustStyle(this.config.secondaryColor);
+      this.experienceSecondaryColor = this.sanitizer.bypassSecurityTrustStyle(this.config.secondaryColor);
     }
     if (this.config.achievementListIDs) {
       console.log(this.config.achievementListIDs);
@@ -195,6 +202,9 @@ export class ActivitiesListPage {
         newItemsData: this.cacheService.getLocalObject('allNewItems')
       });
     }
+
+    const html_branding = this.cacheService.getLocalObject('user.branding.html');
+    this.customHeader = (html_branding && html_branding.header) ? html_branding.header : null;
   }
 
   refreshPage() {
@@ -251,8 +261,8 @@ export class ActivitiesListPage {
         this.returnError = true;
       }
 
-      if (this.activities.length == 1 && document.cookie == "") {
-        document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+      if (this.activities.length == 1 && this.document.cookie == "") {
+        this.document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
         this.navCtrl.push(InstructionPage);
       }
 

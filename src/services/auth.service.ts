@@ -13,9 +13,15 @@ export interface ProfileData {
   image:string
 }
 
+export interface HTMLBranding {
+  header?: string;
+  footer?: string;
+}
+
 export interface CustomBranding {
   logo?: string;
   color?: string;
+  html_branding?: HTMLBranding;
 }
 @Injectable()
 export class AuthService {
@@ -34,15 +40,52 @@ export class AuthService {
     private cacheService: CacheService
   ) {}
 
-  /**
-   * get color and logo from custom branding config
-   * @return {Promise}
-   */
-  async getConfig(domain?): Promise<CustomBranding> {
-    const res = await this.experienceConfig(domain).toPromise();
+  // cache experience config from auth.json endpoint
+  cacheUserSpecificConfig(res): void {
+    const configKeys = {
+      logo: 'user.branding.logo',
+      color: 'user.branding.color',
+      html: 'user.branding.html',
+      spinwheel: 'user.spinwheel',
+      customConfig: 'user.customConfig',
+    };
+
+    const thisExperience = res.Experience || {};
+    if (thisExperience && thisExperience.config) {
+      if (thisExperience.config.theme_color) {
+        this.cacheService.setLocalObject(configKeys.color, thisExperience.config.theme_color);
+      }
+
+      if (thisExperience.config.spinwheel) {
+        this.cacheService.setLocalObject(configKeys.spinwheel, thisExperience.config.spinwheel);
+      }
+
+      if (thisExperience.config.html_branding) {
+        this.cacheService.setLocalObject(configKeys.html, thisExperience.config.html_branding);
+      }
+
+      this.cacheService.setLocalObject(configKeys.customConfig, thisExperience.config);
+    }
+
+    return;
+  }
+
+  // cache experience config from api/v2/plan/experience/list endpoint
+  cacheConfig(res, options = {
+    isUserSpecfic: false
+  }) {
     let result = {
       logo: '',
-      color: ''
+      color: '',
+      html_branding: {},
+    };
+
+    const configKeys = {
+      logo: 'branding.logo',
+      color: 'branding.color',
+      html: 'branding.html',
+      spinwheel: 'spinwheel',
+      customConfig: 'customConfig',
     };
 
     if (res && res.data && res.data.length > 0) {
@@ -50,24 +93,39 @@ export class AuthService {
 
       if (thisExperience.logo) {
         const logo = `${Configuration.prefixUrl}${thisExperience.logo}`;
-        this.cacheService.setLocalObject('branding.logo', logo);
+        this.cacheService.setLocalObject(configKeys.logo, logo);
         result.logo = logo;
       }
 
       if (thisExperience.config) {
         if (thisExperience.config.theme_color) {
           result.color = thisExperience.config.theme_color;
-          this.cacheService.setLocalObject('branding.color', thisExperience.config.theme_color);
+          this.cacheService.setLocalObject(configKeys.color, thisExperience.config.theme_color);
         }
 
         if (thisExperience.config.spinwheel) {
-          this.cacheService.setLocalObject('spinwheel', thisExperience.config.spinwheel);
+          this.cacheService.setLocalObject(configKeys.spinwheel, thisExperience.config.spinwheel);
         }
 
-        this.cacheService.setLocalObject('customConfig', thisExperience.config);
+        if (thisExperience.config.html_branding) {
+          this.cacheService.setLocalObject(configKeys.html, thisExperience.config.html_branding);
+          result.html_branding = thisExperience.config.html_branding;
+        }
+
+        this.cacheService.setLocalObject(configKeys.customConfig, thisExperience.config);
       }
     }
 
+    return result;
+  }
+
+  /**
+   * get color and logo from custom branding config
+   * @return {Promise}
+   */
+  async getConfig(domain?): Promise<CustomBranding> {
+    const res = await this.experienceConfig(domain).toPromise();
+    const result = this.cacheConfig(res);
     return result;
   }
 
@@ -110,6 +168,9 @@ export class AuthService {
     ].join('&'));
     return this.request.post('api/auths.json?action=authentication', urlSearchParams, {
       'Content-Type': 'application/x-www-form-urlencoded',
+    }).map(res => {
+      this.cacheUserSpecificConfig(res);
+      return res;
     });
   }
 
@@ -117,8 +178,7 @@ export class AuthService {
     let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('email', email);
-    return this.http.post(this.AUTH_ENDPOINT+'forgot_password', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.http.post(this.AUTH_ENDPOINT+'forgot_password', urlSearchParams.toString(), options).map(res => res.json());
   }
 
   verifyUserKeyEmail(key, email){
