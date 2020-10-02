@@ -9,9 +9,11 @@ import * as _ from 'lodash';
 })
 export class CustomHeaderComponent implements OnChanges {
   @Input() customHeader: SafeStyle;
+  isMobileSize: boolean;
+
   constructor(
     private cacheService: CacheService,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
