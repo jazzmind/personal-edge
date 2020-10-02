@@ -63,7 +63,7 @@ export class MagicLinkPage {
         this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
         this.cacheService.setLocalObject('teams', data.Teams);
         if (data.Experience.config) {
-          this.cacheService.setLocalObject('config', data.Experience.config);            
+          this.cacheService.setLocalObject('config', data.Experience.config);
         }
 
         Observable.forkJoin([
