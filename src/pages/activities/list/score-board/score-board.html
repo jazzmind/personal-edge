@@ -1,0 +1,56 @@
+<ion-grid>
+  <ion-row class="score-board" [style.background-image]="experienceBackgroundUrl">
+    <ion-col col-12>
+      <img class="dashboard-logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" (click)="refreshPage()" />
+    </ion-col>
+
+    <ion-col col-12>
+      <ul class="dashboard-data">
+        <li col-4>
+          <div (click)="openEvent()">
+            <p class="title">{{ 'ACTIVITY.EVENTS' | translate }}</p>
+            <p *ngIf="bookedEventsCount != 0" [ngClass]="sameFontSize == true ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
+              {{bookedEventsCount}}
+            </p>
+            <ion-icon class="event-btn-icon event-btn-pulse" [style.color]="experiencePrimaryColor" [style.height.px]="47.31" *ngIf="bookedEventsCount === 0" name="md-calendar"></ion-icon>
+            <p *ngIf="bookedEventsCount === 0" class="link">{{ 'ACTIVITY.BOOKEVENTS' | translate }}</p>
+            <p *ngIf="bookedEventsCount > 0" class="link">{{ 'ACTIVITY.BROWSEEVENTS' | translate }}</p>
+          </div>
+        </li>
+        <li col-4>
+          <div (click)="openLeaderboard()">
+            <p class="title">{{ 'ACTIVITY.POINTS' | translate }}</p>
+            <p [ngClass]="userExperiencePoint >= 10000 ? 'font-20pt': 'font-22pt'" class="number" [style.color]="experiencePrimaryColor" [style.height.px]="47.31">
+              {{ characterCurrentExperience || '' }}
+            </p>
+            <p class="link">{{ 'ACTIVITY.LEADERBOARD' | translate }}</p>
+          </div>
+        </li>
+        <li col-4>
+          <div (click)="openPortfolio()">
+            <p class="title">{{ 'ACTIVITY.GRADE' | translate }}</p>
+            <p [style.height.px]="47.31" class="number user-grade">
+              <ion-badge *ngIf="show_badge" [ngClass]="{
+                'best-grade-color': finalAverageScoreShow >= 3.5,
+                'better-grade-color': (finalAverageScoreShow < 3.5 && finalAverageScoreShow >= 2),
+                'worse-grade-color': finalAverageScoreShow < 2
+              }">
+                {{ finalAverageScoreShow }}
+              </ion-badge>
+              <button block *ngIf="!show_badge">
+                <i class="fa fa-clock-o"></i>
+              </button>
+            </p>
+            <div *ngIf="!view_portfolio">
+              <p *ngIf="!portfolio_request" class="link">{{ 'ACTIVITY.EXPLAINPORTFOLIO' | translate }}</p>
+              <p *ngIf="portfolio_request" class="link">{{ 'ACTIVITY.REQUESTPORTFOLIO' | translate }}</p>
+            </div>
+            <div *ngIf="view_portfolio">
+              <p class="link">{{ 'ACTIVITY.VIEWPORTFOLIO' | translate }}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </ion-col>
+  </ion-row>
+</ion-grid>

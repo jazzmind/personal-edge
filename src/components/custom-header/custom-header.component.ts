@@ -11,25 +11,34 @@ import * as _ from 'lodash';
 export class CustomHeaderComponent implements OnChanges, OnInit {
   @Input() customHeader: SafeStyle;
   isMobile: boolean;
+  private screenWdith: number;
 
   constructor(
     private cacheService: CacheService,
     private sanitizer: DomSanitizer,
     private platform: Platform
   ) {
+    this.screenWdith = platform.width();
+    console.log('construction::', this.screenWdith);
   }
 
   ngOnInit() {
-    this.isMobile = (this.platform.width() < 460) ? true: false;
+    console.log('oninit::', this.screenWdith);
+    this.isMobile = (this.screenWdith < 460) ? true: false;
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if (changes.customHeader && changes.customHeader.currentValue) {
-      this.customHeader = this.sanitizer.bypassSecurityTrustHtml(changes.customHeader.currentValue);
-    } else if (changes.customHeader && _.isEmpty(changes.customHeader.currentValue)) {
-      const html_branding = this.cacheService.getLocalObject('user.branding.html');
-      if (html_branding && html_branding.header) {
-        this.customHeader = this.sanitizer.bypassSecurityTrustHtml(html_branding.header);
+    console.log('onchange::', this.screenWdith);
+    this.isMobile = (this.screenWdith < 460) ? true: false;
+
+    if (changes.customHeader) {
+      if (changes.customHeader.currentValue) {
+        this.customHeader = this.sanitizer.bypassSecurityTrustHtml(changes.customHeader.currentValue);
+      } else if (_.isEmpty(changes.customHeader.currentValue)) {
+        const html_branding = this.cacheService.getLocalObject('user.branding.html');
+        if (html_branding && html_branding.header) {
+          this.customHeader = this.sanitizer.bypassSecurityTrustHtml(html_branding.header);
+        }
       }
     }
   }
