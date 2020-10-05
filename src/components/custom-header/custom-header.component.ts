@@ -1,19 +1,27 @@
-import { Component, Input, OnChanges, SimpleChange } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChange } from '@angular/core';
 import { CacheService } from '../../shared/cache/cache.service';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 
 @Component({
   selector: 'custom-header',
   templateUrl: 'custom-header.html'
 })
-export class CustomHeaderComponent implements OnChanges {
+export class CustomHeaderComponent implements OnChanges, OnInit {
   @Input() customHeader: SafeStyle;
+  isMobile: boolean;
 
   constructor(
     private cacheService: CacheService,
-    private sanitizer: DomSanitizer
-  ) {}
+    private sanitizer: DomSanitizer,
+    private platform: Platform
+  ) {
+  }
+
+  ngOnInit() {
+    this.isMobile = (this.platform.width() < 460) ? true: false;
+  }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
     if (changes.customHeader && changes.customHeader.currentValue) {

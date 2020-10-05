@@ -182,10 +182,12 @@ use for custom header (*Study perth)
     width: 100%;
   }
 
-  @media screen and (max-width: 460px) {
+  &.mobile {
+    height: 54px;
+
     .posper-header-container {
-      padding-top: 10px !important;
-      padding-bottom: 10px !important;
+      padding-top: 5px !important;
+      padding-bottom: 5px !important;
     }
     .prosper-col-logo {
       padding-left: 10px !important;
