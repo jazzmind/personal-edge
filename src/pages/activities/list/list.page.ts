@@ -189,6 +189,9 @@ export class ActivitiesListPage {
   }
 
   ionViewWillEnter() {
+    const html_branding = this.cacheService.getLocalObject('user.branding.html');
+    this.customHeader = (html_branding && html_branding.header) ? html_branding.header : null;
+
     // reset data to 0 when page reloaded before got new data
     this.initilized_varible();
     this.loadingDashboard();
@@ -202,9 +205,6 @@ export class ActivitiesListPage {
         newItemsData: this.cacheService.getLocalObject('allNewItems')
       });
     }
-
-    const html_branding = this.cacheService.getLocalObject('user.branding.html');
-    this.customHeader = (html_branding && html_branding.header) ? html_branding.header : null;
   }
 
   refreshPage() {

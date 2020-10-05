@@ -31,15 +31,17 @@ export class CustomHeaderComponent implements OnChanges, OnInit {
     console.log('onchange::', this.screenWdith);
     this.isMobile = (this.screenWdith < 460) ? true: false;
 
-    if (changes.customHeader) {
-      if (changes.customHeader.currentValue) {
-        this.customHeader = this.sanitizer.bypassSecurityTrustHtml(changes.customHeader.currentValue);
-      } else if (_.isEmpty(changes.customHeader.currentValue)) {
-        const html_branding = this.cacheService.getLocalObject('user.branding.html');
-        if (html_branding && html_branding.header) {
-          this.customHeader = this.sanitizer.bypassSecurityTrustHtml(html_branding.header);
+    setTimeout(() => {
+      if (changes.customHeader) {
+        if (changes.customHeader.currentValue) {
+          this.customHeader = this.sanitizer.bypassSecurityTrustHtml(changes.customHeader.currentValue);
+        } else if (_.isEmpty(changes.customHeader.currentValue)) {
+          const html_branding = this.cacheService.getLocalObject('user.branding.html');
+          if (html_branding && html_branding.header) {
+            this.customHeader = this.sanitizer.bypassSecurityTrustHtml(html_branding.header);
+          }
         }
       }
-    }
+    }, 1000);
   }
 }
