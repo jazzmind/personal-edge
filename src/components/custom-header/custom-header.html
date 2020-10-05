@@ -1,1 +1,4 @@
-<div class="custom-header" [innerHtml]="customHeader"></div>
+<div class="custom-header"
+  [ngClass]="{'mobile': isMobile && customHeader}"
+  [innerHtml]="customHeader"
+></div>

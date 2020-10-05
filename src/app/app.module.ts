@@ -101,6 +101,7 @@ import { SettingsPage } from '../pages/settings/settings.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
 import { SpinwheelPage } from '../pages/spinwheel/spinwheel.page';
 import { SpinwheelPopOverPage } from '../pages/spinwheel/spinwheel-popover.page';
+import { ScoreBoardComponent } from '../pages/activities/list/score-board/score-board.component';
 import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
@@ -181,6 +182,7 @@ export function HttpLoaderFactory(http: Http) {
     RegistrationPage,
     ResetPasswordPage,
     RainbowIconsComponent,
+    ScoreBoardComponent,
     SettingsPage,
     SidenavPage,
     SpinwheelPage,
@@ -279,6 +281,8 @@ export function HttpLoaderFactory(http: Http) {
     ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
+    CustomHeaderComponent,
+    ScoreBoardComponent,
     EventCheckinPage,
     EventComponent,
     EventsDownloadPage,
