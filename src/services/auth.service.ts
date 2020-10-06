@@ -204,8 +204,11 @@ export class AuthService {
     let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('auth_token', auth_token);
-    return this.http.post(this.prefixUrl+'api/auths.json?', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.http.post(this.prefixUrl+'api/auths.json?', urlSearchParams.toString(), options).map(res => {
+        const result = res.json();
+        this.cacheUserSpecificConfig(result.data);
+        return result;
+      });
   }
 
   getUser() {

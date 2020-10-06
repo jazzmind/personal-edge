@@ -1,4 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { Events, Tabs } from 'ionic-angular';
 import { ActivitiesListPage } from '../activities/list/list.page';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -32,7 +33,8 @@ export class TabsPage {
     public translationService: TranslationService,
     public eventListener: Events,
     public cacheService: CacheService,
-    public sanitization: DomSanitizer
+    public sanitization: DomSanitizer,
+    @Inject(DOCUMENT) private document: HTMLDocument,
   ) {
     this.traceSpinProgress();
     this.config = this.cacheService.getLocalObject('config');

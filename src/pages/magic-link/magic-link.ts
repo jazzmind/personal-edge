@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Inject, Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { NavController,
          NavParams,
          LoadingController,
@@ -15,6 +16,7 @@ import { MilestoneService } from '../../services/milestone.service';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
+
 @Component({
   selector: 'page-magic-link',
   templateUrl: 'magic-link.html'
@@ -34,7 +36,8 @@ export class MagicLinkPage {
     private alertCtrl: AlertController,
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
-    private gameService: GameService
+    private gameService: GameService,
+    @Inject(DOCUMENT) private document: HTMLDocument,
   ) {}
 
   ionViewDidLoad() {
@@ -63,7 +66,7 @@ export class MagicLinkPage {
         this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
         this.cacheService.setLocalObject('teams', data.Teams);
         if (data.Experience.config) {
-          this.cacheService.setLocalObject('config', data.Experience.config);            
+          this.cacheService.setLocalObject('config', data.Experience.config);
         }
 
         Observable.forkJoin([
@@ -96,7 +99,7 @@ export class MagicLinkPage {
             this.milestone_id = milestone[0].id;
             this.cacheService.setLocalObject('milestone_id', milestone[0].id);
             this.navCtrl.setRoot(TabsPage).then(() => {
-              window.history.replaceState({}, '', window.location.origin);
+              window.history.replaceState({}, '', this.document.location.origin);
             });
 
             this.cacheService.write('isAuthenticated', true);
@@ -118,7 +121,7 @@ export class MagicLinkPage {
 
         failAlert.present().then(() => {
           this.navCtrl.push(LoginPage).then(() => {
-            window.history.replaceState({}, '', window.location.origin);
+            window.history.replaceState({}, '', this.document.location.origin);
           });
           this.cacheService.removeLocal('isAuthenticated');
           this.cacheService.write('isAuthenticated', false);

@@ -153,7 +153,6 @@ export class ActivitiesListPage {
     public sanitizer: DomSanitizer,
     @Inject(DOCUMENT) private document: HTMLDocument,
   ) {
-    this.customHeader = null;
     if (this.email && this.program_id) {
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = this.cacheService.getLocalObject('email');
@@ -186,6 +185,9 @@ export class ActivitiesListPage {
       this.hardcodeEndAssessmentContextId = this.config.hardcodeEndAssessmentContextId;
       this.achievementListNewbieIDs = this.config.achievementListNewbieIDs;
     }
+
+    const html_branding = this.cacheService.getLocalObject('user.branding.html');
+    this.customHeader = (html_branding && html_branding.header) ? html_branding.header : null;
   }
 
   ionViewWillEnter() {
@@ -202,9 +204,6 @@ export class ActivitiesListPage {
         newItemsData: this.cacheService.getLocalObject('allNewItems')
       });
     }
-
-    const html_branding = this.cacheService.getLocalObject('user.branding.html');
-    this.customHeader = (html_branding && html_branding.header) ? html_branding.header : null;
   }
 
   refreshPage() {

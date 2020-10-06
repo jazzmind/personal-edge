@@ -171,10 +171,37 @@ $mono-font: 'Roboto Mono';
   }
 }
 
+/***************
+use for custom header (*Study perth)
+***************/
+
 .custom-header {
   display: flex;
   padding: 0;
   div {
     width: 100%;
+  }
+
+  &.mobile {
+    height: 54px;
+
+    .posper-header-container {
+      padding-top: 5px !important;
+      padding-bottom: 5px !important;
+    }
+    .prosper-col-logo {
+      padding-left: 10px !important;
+      img {
+        width: 98px !important;
+        height: 41px !important;
+      }
+    }
+    .prosper-col-button {
+      padding-right: 10px !important;
+      .prosper-button {
+        font-size: 12px !important;
+        padding: 9px !important;
+      }
+    }
   }
 }
