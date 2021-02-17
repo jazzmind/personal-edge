@@ -57,9 +57,18 @@ export class MagicLinkPage {
         // localStorage.setItem('isAuthenticated', 'true');
         // this.navCtrl.push(TabsPage);
         data = data.data;
+        // saved timeline id for later
+        const thisTimeline = data.Timelines[0];
+
         this.cacheService.setLocalObject('apikey', data.apikey);
-        this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
         this.cacheService.setLocalObject('teams', data.Teams);
+        this.cacheService.setLocal('gotNewItems', false);
+
+        if (data.Timelines.length > 0) {
+          this.cacheService.setLocalObject('timelineID', thisTimeline.Timeline.id);
+          // to tell current enrolment status ('fullaccess'/'readonly')
+          this.cacheService.setLocalObject('enrolmentStatus', thisTimeline.Enrolment.status);
+        }
 
         Observable.forkJoin([
           // get game_id data after login
@@ -86,6 +95,7 @@ export class MagicLinkPage {
             this.cacheService.setLocalObject('email', userData.User.email);
             this.cacheService.setLocalObject('program_id', userData.User.program_id);
             this.cacheService.setLocalObject('project_id', userData.User.project_id);
+            this.cacheService.setLocalObject('user', userData.User);
 
             // milestone
             this.milestone_id = milestone[0].id;

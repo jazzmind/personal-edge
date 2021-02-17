@@ -13,7 +13,8 @@ Docs
 
 For development environment, here are mandatory utilities.
     - __Npm (Nodejs)__ : Refer to https://nodejs.org/download/
-    - __Ionic v2__ : version 2.*
+    - __Ionic v2__ : version 3.*
+    - __docker__: version ^3.0
 
 ## Setup Notes
 
@@ -21,29 +22,19 @@ For development environment, here are mandatory utilities.
     ```shell
     npm install -g ionic #install ionic-cli globally
     ```
-1. Make sure your ionic is running at v2 by `ionic -v`
+1. Make sure your ionic is running at v3 by `ionic -v`
     ```shell
     ionic -v
-    2.2.1 # example version number (> 2.2) from the command above
     ```
 
-1. If you have problem installing ionic v2, please uninstall current version of ionic with the following and repeat the step 1 & 2 above again to install ionic v2 correctly.
+1. If you have problem installing ionic v3, please uninstall current version of ionic with the following and repeat the step 1 & 2 above again to install ionic v3 correctly.
     ```shell
     npm uninstall -g ionic
     ```
-
-1. after git clone with `git clone git@github.com:jazzmind/practera-ionic.git`
-
-1. change directory into the project folder `cd practera-ionic`
-
-1. Install node dependencies
+1. Setup Docker and run the app locally
     ```shell
-    npm install
-    ```
-
-1. To run app locally
-    ```shell
-    ionic serve
+    docker-compose build # to setup docker container locally
+    npm run start-server
     ```
 
 ## Development Notes
