@@ -13,7 +13,8 @@
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
     "test": "./node_modules/karma/bin/karma start ./test-config/karma.conf.js",
-    "generate-version": "node ./hooks/post-build.js"
+    "generate-version": "node ./hooks/post-build.js",
+    "start-server": "docker-compose up"
   },
   "repository": {
     "type": "git",
