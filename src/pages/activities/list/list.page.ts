@@ -69,13 +69,13 @@ export class ActivitiesListPage {
   public activityIndex: any = 0;
   public activities: any = [];
   public activityIDs: any = [];
-  public completedActivityIndexes: any = [];
+  public completedActivityIndexes: number[] = [];
   public completedActivityIds: any = [];
   public averageScore: any = [];
   public totalAverageScore: any = 0;
   public eachActivityScores: any = [];
   public finalAverageScoreShow: any = '0';
-  public show_badge: boolean = true;
+  public show_badge: boolean = true; // indicates whether to show badge (with color status)
   public portfolio_request: boolean = false;
   public view_portfolio: boolean = false;
   public bookedEventsCount: number = 0;
@@ -112,7 +112,9 @@ export class ActivitiesListPage {
   };
   public achievementListIDs: any = Configure.achievementListIDs;
   public achievementListNewbieIDs: any = Configure.achievementListNewbieIDs;
-  public show_score: any = [
+
+  // indicates whether to display a score beside the awarded badge(s) of an activity
+  public show_score: boolean[] = [
     false,false,false,false,false,false,false
   ];
   public getUserAchievementData: any = [];
@@ -471,45 +473,62 @@ export class ActivitiesListPage {
     return tick;
   }
 
+  /**
+   * @name displayAverageScore
+   * @description to display average score for each activity obtained from summed up scores reviewed submissions
+   * @param {[type]} completedActivityIds [description]
+   * @param {[type]} submissionData       [description]
+   * @param {[type]} show_score           [description]
+   * @param {[type]} activityIndexes      [description]
+   * @param {[type]} averageScore         [description]
+   */
   displayAverageScore(completedActivityIds, submissionData, show_score, activityIndexes, averageScore) {
-    let scoresBySubmission = {
+    // index 0 to 6 indicates the position of the activity
+    // by default, all comes without a score or empty array
+    let scoresByActivity = {
       0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6:[]
     };
 
-    for (let j = 0; j < completedActivityIds.length; j++) {
-      // extract score from reviewed subsmission
-      for (let i = 0; i < submissionData.length; i++) {
-        const submission = submissionData[i].AssessmentSubmission;
-        if (submission.activity_id == completedActivityIds[j] && submission.status == 'published') {
-          scoresBySubmission[j].push(parseFloat(submission.moderated_score));
+    // Phase to bind submission & activity
+    for (let actPosition = 0; actPosition < completedActivityIds.length; actPosition++) {
+      // show score only when for-loop has iterate through the activityId (depend on its availability in completedActivityIds, if unavailable, show_score of an activity is default to false, check @line 115)
+      show_score[activityIndexes[actPosition]] = true;
+
+      // Phase of binding reviewed subsmission to obtained scores
+      for (let submissionIndex = 0; submissionIndex < submissionData.length; submissionIndex++) {
+        const submission = submissionData[submissionIndex].AssessmentSubmission;
+        // extract moderated score from reviewed+published submission
+        if (submission.activity_id == completedActivityIds[actPosition] && submission.status == 'published') {
+          scoresByActivity[actPosition].push(parseFloat(submission.moderated_score));
         }
       }
 
-      scoresBySubmission[j].reverse();
-      show_score[activityIndexes[j]] = true;
+      scoresByActivity[actPosition].reverse();
 
-      if (scoresBySubmission[j].length > 1) { // only first 2 highest reviews are counted
+      // if newbie submission completed, then look for first 2 highest reviews
+      if (scoresByActivity[actPosition].length > 1) {
         // old calculation,
-        // averageScore[activityIndexes[j]] = (scoresBySubmission[j][0] + scoresBySubmission[j][1]) * 2;
+        // averageScore[activityIndexes[actPosition]] = (scoresByActivity[actPosition][0] + scoresByActivity[actPosition][1]) * 2;
 
         // new calculation:
         // - pick the highest one instead of average
         // - Moderated_score comes in the form of pointer (0.0 - 0.5 - 1.0) as percentage
-        averageScore[activityIndexes[j]] = Math.max(...scoresBySubmission[j]) * 4;
-      } else if (scoresBySubmission[j].length == 1) {
-        averageScore[activityIndexes[j]] = scoresBySubmission[j][0] * 4;
-      }
-      // if index = 6, just assign full score
-      if (activityIndexes[j] == 6) {
-        averageScore[activityIndexes[j]] = 4;
+        averageScore[activityIndexes[actPosition]] = Math.max(...scoresByActivity[actPosition]) * 4;
+      } else if (scoresByActivity[actPosition].length == 1) { // if only newbie submission exist
+        averageScore[activityIndexes[actPosition]] = scoresByActivity[actPosition][0] * 4;
       }
 
-      if (activityIndexes[j] <= 5) { // add up together about each acitity average score
-        this.totalAverageScore += averageScore[activityIndexes[j]];
+      // if index = 6 (newbie activity), just award user with hardcoded full score (4)
+      if (activityIndexes[actPosition] == 6) {
+        averageScore[activityIndexes[actPosition]] = 4;
+      }
+
+      if (activityIndexes[actPosition] <= 5) { // add up together about each acitity average score
+        this.totalAverageScore += averageScore[activityIndexes[actPosition]];
       }
     }
 
-    this.totalAverageScore = this.totalAverageScore/6;
+    this.totalAverageScore = this.totalAverageScore / 6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
 
     this.show_badge = false;
