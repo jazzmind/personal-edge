@@ -171,37 +171,36 @@ export class EventsListPage {
    * @description retrieve events (from get_events) with a list of activity_id (from get_activity)
    * @return {Promise<any>}
    */
-  loadEvents(): Promise<any> {
-    return new Promise((resolve, reject) => {
+  async loadEvents(): Promise<any> {
+    try {
       // Get activities IDs
-      this.activityService.getList().toPromise()
-      .then((activities) => {
-        this.activities = {};
-        let activityIDs = [];
-        _.forEach(activities, (act) => {
-          this.activities[act.Activity.id] = act;
-          activityIDs.push(act.Activity.id);
-        });
+      const activities = await this.activityService.getList().toPromise();
+      this.activities = {};
+      let activityIDs = [];
+      _.forEach(activities, (act) => {
+        this.activities[act.Activity.id] = act;
+        activityIDs.push(act.Activity.id);
+      });
 
-        // Get event by activityIDs
-        this.eventService.getEvents({
-          search: {
-            activity_id: '[' + _.toString(activityIDs) + ']',
-            type: 'session'
-          }
-        })
-        .then((events) => {
-          // loadedEvents will never change (private use),
-          // it will be used for filtering of events (prep for display/template variable).
-          this.loadedEvents = this._injectCover(this._mapWithActivity(events));
+      // Get event by activityIDs
+      const events = await this.eventService.getEvents({
+        search: {
+          activity_id: '[' + _.toString(activityIDs) + ']',
+          type: 'session'
+        }
+      });
 
-          // events use to rendering on page
-          this.events = _.clone(this.loadedEvents);
-          this.filterEvents();
-          return resolve();
-        }, reject);
-      }, reject);
-    });
+      // loadedEvents will never change (private use),
+      // it will be used for filtering of events (prep for display/template variable).
+      this.loadedEvents = this._injectCover(this._mapWithActivity(events));
+
+      // events use to rendering on page
+      this.events = _.clone(this.loadedEvents);
+      this.filterEvents();
+      return;
+    } catch (err) {
+      throw err;
+    }
   }
 
   ionViewDidEnter() {
@@ -228,7 +227,7 @@ export class EventsListPage {
     });
   }
   /**
-   * @TODO: remove this once we decided to remove hardcoded images, big size picture is ruining UX because it induces long download time
+   * @TODO: remove this once we decided to remove hardcoded images, big size picture is ruining UX because it increase long download time
    *
    * @name _injectCover
    * @description inject hardcoded images by array index number
