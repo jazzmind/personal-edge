@@ -462,14 +462,14 @@ export class ActivitiesListPage {
 
       scoresByActivity[actPosition].reverse();
 
-      // if newbie submission completed, then look for first 2 highest reviews
+      // look for first 2 highest reviews (happen only after newbie submission completed)
       if (scoresByActivity[actPosition].length > 1) {
         // old calculation,
         // averageScore[activityIndexes[actPosition]] = (scoresByActivity[actPosition][0] + scoresByActivity[actPosition][1]) * 2;
 
         // new calculation:
         // - pick the highest one instead of average
-        // - Moderated_score comes in the form of pointer (0.0 - 0.5 - 1.0) as percentage
+        // - Moderated_score is in decimal form (0.0 - 0.5 - 1.0) which indicate rate/percentage
         averageScore[activityIndexes[actPosition]] = Math.max(...scoresByActivity[actPosition]) * 4;
       } else if (scoresByActivity[actPosition].length == 1) { // if only newbie submission exist
         averageScore[activityIndexes[actPosition]] = scoresByActivity[actPosition][0] * 4;
@@ -488,9 +488,11 @@ export class ActivitiesListPage {
     this.totalAverageScore = this.totalAverageScore / 6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
 
+    // reset show_badge & portfolio_request
     this.show_badge = false;
     this.portfolio_request = false;
-    // check if every activity has a score
+
+    // check if every activity has a score, if any "false" found in show_score, app would never show_badge
     if (!show_score.includes(false)) {
       this.show_badge = true;
     }
