@@ -37,16 +37,17 @@ export class ActivityAchievementModalPage {
   ) {}
   ionViewDidEnter(): void {
     this.achievementData = this.navParams.get('achievementData');
-    if(this.achievementData.badge){
+    if (this.achievementData.badge) {
       this.imageResource = this.achievementData.badge;
-    }else {
-      if(this.achievementData.meta.image){
+    } else {
+      if (this.achievementData.meta.image) {
         this.imageResource = this.achievementData.meta.image;
-      }else {
+      } else {
         this.imageResource = this.badgeUrl;  
       }
     }
   }
+
   dismiss() {
     this.viewCtrl.dismiss();
   }
