@@ -447,11 +447,14 @@ export class ActivitiesListPage {
   /**
    * @name displayAverageScore
    * @description to display average score for each activity obtained from summed up scores reviewed submissions
-   * @param {[type]} completedActivityIds [description]
-   * @param {[type]} submissionData       [description]
-   * @param {[type]} show_score           [description]
-   * @param {[type]} activityIndexes      [description]
-   * @param {[type]} averageScore         [description]
+   * 
+   * @param   {number[]}  completedActivityIds
+   * @param   {any}  submissionData
+   * @param   {boolean}  show_score
+   * @param   {number[]}  activityIndexes
+   * @param   {number[]}  averageScore
+   *
+   * @return  {void}                        
    */
   displayAverageScore(completedActivityIds, submissionData, show_score, activityIndexes, averageScore) {
     // index 0 to 6 indicates the position of the activity
