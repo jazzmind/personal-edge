@@ -112,7 +112,17 @@ export class ActivitiesListPage {
     false,false,false,false,false,false,false
   ];
   public getUserAchievementData: any = [];
-  public changeColor: Array<Array<Boolean>> = [
+
+  /**
+   * definition of changeColor
+   * 1st level array indicates a particular activity
+   * 2nd level (inner) array has four values, position of this array indicates
+   *   - 0: first submission
+   *   - 1: reviewed obtained
+   *   - 2: second submission
+   *   - 3: reviewed obtained (for submission from position: 2)
+   */
+  public changeColor: Boolean[][] = [
     [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
@@ -416,10 +426,14 @@ export class ActivitiesListPage {
     }
   }
 
+  /**
+   * Definition of isTicked: ticked means completed or a boolean value of "true"
+   * @param {number[]} userAchievementIDs
+   */
   isTicked(userAchievementIDs) {
     let tick = this.changeColor;
     for (let i = 0; i < 7; i++) { // we have 7 activities
-      for (let j = 0; j < 4; j++) { // we have 4 ticks
+      for (let j = 0; j < 4; j++) { // we have 4 ticks (submitted & reviewed statues)
         if (userAchievementIDs.includes(this.achievementListIDs[i][j])) {
           tick[i][j] = true;
         } else {
@@ -443,7 +457,13 @@ export class ActivitiesListPage {
     // index 0 to 6 indicates the position of the activity
     // by default, all comes without a score or empty array
     let scoresByActivity = {
-      0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6:[]
+      0: [],
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+      6: [],
     };
 
     // Phase to bind submission & activity
@@ -498,12 +518,13 @@ export class ActivitiesListPage {
     }
 
     // 2019_04_02: we only allow request after user obtained scores 2.5 and above
-    const thirdTicks = [];
+    const firstReviewTicks = [];
     this.changeColor.forEach(ticks => {
-      thirdTicks.push(ticks[2]); // extract 3rd tick (boolean)
+      firstReviewTicks.push(ticks[1]); // collect reviewed submission
     });
 
-    if (!thirdTicks.includes(false) && this.totalAverageScore >= 2.5) {
+    // Allow portfolio access
+    if (!firstReviewTicks.includes(false) && this.totalAverageScore >= 2.5) {
       this.portfolio_request = true;
     }
 
