@@ -447,14 +447,14 @@ export class ActivitiesListPage {
   /**
    * @name displayAverageScore
    * @description to display average score for each activity obtained from summed up scores reviewed submissions
-   * 
+   *
    * @param   {number[]}  completedActivityIds
    * @param   {any}  submissionData
    * @param   {boolean}  show_score
    * @param   {number[]}  activityIndexes
    * @param   {number[]}  averageScore
    *
-   * @return  {void}                        
+   * @return  {void}
    */
   displayAverageScore(completedActivityIds, submissionData, show_score, activityIndexes, averageScore) {
     // index 0 to 6 indicates the position of the activity
@@ -521,13 +521,14 @@ export class ActivitiesListPage {
     }
 
     // 2019_04_02: we only allow request after user obtained scores 2.5 and above
+    // 2021_06_21: we allow portfolie request for scores = 2 or above
     const firstReviewTicks = [];
     this.changeColor.forEach(ticks => {
       firstReviewTicks.push(ticks[1]); // collect reviewed submission
     });
 
     // Allow portfolio access
-    if (!firstReviewTicks.includes(false) && this.totalAverageScore >= 2.5) {
+    if (!firstReviewTicks.includes(false) && this.totalAverageScore >= 2) {
       this.portfolio_request = true;
     }
 
