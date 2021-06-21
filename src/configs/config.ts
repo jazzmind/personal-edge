@@ -13,7 +13,7 @@ const milestones = {
    [326, 326, 326, 326], // newbie
   ],
   2535: [
-    [628, 650, 626, 627], // creative thinker
+    [628, 626, 650, 627], // creative thinker
     [625, 623, 652, 624], // confident communicator
     [637, 635, 655, 636], // ethical leader
     [622, 620, 651, 621], // career strategist
@@ -68,7 +68,7 @@ const HardcodeDataList = () => {
     // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
     // experience (PE 2.0)
     this.achievementListIDs = [
-      [628, 650, 626, 627], // creative thinker
+      [628, 626, 650, 627], // creative thinker
       [625, 623, 652, 624], // confident communicator
       [637, 635, 655, 636], // ethical leader
       [622, 620, 651, 621], // career strategist
