@@ -1,9 +1,19 @@
 // Need update read me
 // Copy file to config.ts
 export default {
+  // prefixUrl: 'https://admin.p1-sandbox.practera.com', // remote
   prefixUrl: 'http://local.practera.com/',
   appKey: '',
   filestack: {
     apiKey: ''
   },
-}
+  achievementListIDs: [],
+  newbieOrderedIDs: [],
+  hardcode_assessment_id: 0,
+  hardcode_context_id: 0,
+  hardcode_activity_id: 0,
+  hardcodeAssessmentIds: [],
+  hardcodeQuestionIDs: [],
+  portfolio_domain: '',
+  achievementsByMilestone: {},
+};

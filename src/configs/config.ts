@@ -48,6 +48,7 @@ const hardcodeAssessmentIds = [2124, 2125, 2126, 2127, 2128, 2129, 2050]; // for
 // const hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661]; // for handling submitted assessments title display
 const portfolio_domain = 'assess/assessments/portfolio'; //for handling digital portfolio url
 // function of hardcode list data
+const sandboxDomain = 'https://admin.p1-sandbox.practera.com';
 const HardcodeDataList = () => {
   const liveEndpoints = ['pe.practera.com', 'pe.rmit.edu.vn'];
   const devEndpoints = ['localhost', 'local.practera.com', '127.0.0.1'];
@@ -56,13 +57,13 @@ const HardcodeDataList = () => {
   if (devEndpoints.includes(window.location.hostname)) {
     // function for app to access hardcoded data
     // this is the URL prefix for all api requests
-    this.prefixUrl = 'https://sandbox.practera.com/';
+    this.prefixUrl = `${sandboxDomain}/`;
 
     // this is the AppKey from the experience admin screen
     this.appKey = appKey;
 
     // This is the base URL for the student to access their portfolio
-    this.portfolio_domain = `https://sandbox.practera.com/portfolio`;
+    this.portfolio_domain = `${sandboxDomain}/portfolio`;
 
     // these are achievement IDs for the achievements earned when skills are submitted and pass review
     // they are used for determining the ordering/visibility of the ticks on the main page and skill detail page
@@ -117,10 +118,10 @@ const HardcodeDataList = () => {
 
   } else if (!liveEndpoints.includes(window.location.hostname)) {
      // if not live server, then, go to sandbox hardcode list and pre-config data
-    this.prefixUrl = 'https://sandbox.practera.com/';
-    this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
-    // this.prefixUrl = 'https://sandbox.practera.com/';
-    // this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
+    this.prefixUrl = `${sandboxDomain}/`;
+    this.portfolio_domain = `${sandboxDomain}/${portfolio_domain}`;
+    // this.prefixUrl = `${sandboxDomain}/`;
+    // this.portfolio_domain = `${sandboxDomain}/${portfolio_domain}`;
 
     // hardcoded for Personal Edge Test Experience 1.0
     this.achievementListIDs = [
